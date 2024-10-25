@@ -2,20 +2,22 @@ package gui4me.market;
 
 import java.util.List;
 
-import gui4me.product.Product;
+import gui4me.market_product.MarketProduct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "markets")
 public class Market {
@@ -30,11 +32,7 @@ public class Market {
 	@NotEmpty
 	private String cnpj;
 	
-    @ManyToMany
-    @JoinTable(
-    		name = "market_product",
-    		joinColumns = @JoinColumn(name = "market_id"),
-    		inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private List<Product> products;
+    @OneToMany(mappedBy = "market")
+    private List<MarketProduct> marketProduct;
 
 }
