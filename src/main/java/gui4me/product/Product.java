@@ -1,23 +1,11 @@
 package gui4me.product;
 
-import java.util.List;
-
-import gui4me.market_product.MarketProduct;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "products")
 public class Product {
@@ -29,6 +17,37 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "product")
-    private List<MarketProduct> marketProduct;
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Product() {
+		super();
+	}
+	
+	public Product(String name) {
+		super();
+		this.name = name;
+	}
+
+	public Product(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+    
+	
+    
 }
