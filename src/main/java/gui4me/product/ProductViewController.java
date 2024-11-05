@@ -1,7 +1,5 @@
 package gui4me.product;
 
-import gui4me.product.Product;
-import gui4me.product.ProductRepository; // Assuming you have a ProductRepository for database operations
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +18,13 @@ public class ProductViewController {
     public String listProducts(Model model) {
         List<Product> products = productRepository.findAll();
         model.addAttribute("products", products);
-        return "list_products";
+        return "products/list_products";
     }
 
     @GetMapping("/create")
     public String createProductForm(Model model) {
         model.addAttribute("product", new Product());
-        return "create_product";
+        return "products/create_product";
     }
 
     @PostMapping
@@ -40,7 +38,7 @@ public class ProductViewController {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid product ID: " + id));
         model.addAttribute("product", product);
-        return "edit_product";
+        return "products/edit_product";
     }
 
     @PostMapping("/{id}")

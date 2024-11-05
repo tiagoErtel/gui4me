@@ -35,19 +35,6 @@ public class Product {
 
 	public Product() {
 		super();
-	}
-	
-	public Product(String name) {
-		super();
-		this.name = name;
-	}
-
-	public Product(Long id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-    
-	
+	}	
     
 }

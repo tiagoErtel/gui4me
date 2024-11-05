@@ -5,12 +5,15 @@ import java.util.List;
 import gui4me.user.shopping_list.ShoppingList;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +28,14 @@ public class User {
 	
 	@NotEmpty
 	private String password;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private UserLanguage userLanguage;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private UserCurrency userCurrency;
 	
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id") // This will create a `user_id` foreign key in the ShoppingList table
@@ -53,6 +64,23 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+
+	public UserLanguage getUserLanguage() {
+		return userLanguage;
+	}
+
+	public void setUserLanguage(UserLanguage userLanguage) {
+		this.userLanguage = userLanguage;
+	}
+
+	public UserCurrency getUserCurrency() {
+		return userCurrency;
+	}
+
+	public void setUserCurrency(UserCurrency userCurrency) {
+		this.userCurrency = userCurrency;
+	}
 
 	public List<ShoppingList> getShoppingList() {
 		return shoppingList;
@@ -64,21 +92,6 @@ public class User {
 
 	public User() {
 		super();
-	}
-	
-	public User(@NotEmpty String username, @NotEmpty String password, List<ShoppingList> shoppingList) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.shoppingList = shoppingList;
-	}
-
-	public User(Long id, @NotEmpty String username, @NotEmpty String password, List<ShoppingList> shoppingList) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.shoppingList = shoppingList;
 	}
     
 }

@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+}
+
+.content div {
+    margin-bottom: 20px; /* Spacing between sections */
+}
+
+body {
+    height: 100vh; /* Make body take full height */
+    display: flex; /* Use flexbox to arrange items */
+}
+
+.sidebar {
+    width: 200px; /* Fixed width for sidebar */
+    background-color: #f8f9fa; /* Light background for sidebar */
+    padding: 15px; /* Add some padding */
+    position: sticky; /* Make it sticky */
+    top: 0; /* Stick to the top */
+    height: 100vh; /* Full height */
+    overflow-y: auto; /* Scroll if content overflows */
+}
+
+.content {
+    flex-grow: 1; /* Take remaining space */
+    padding: 15px; /* Add some padding */
+    overflow-y: auto; /* Allow scrolling for content */
+    height: 100vh; /* Full height */
+}
+
+.sidebar a {
+    display: block; /* Make links block elements */
+    padding: 10px; /* Add some padding */
+    text-decoration: none; /* Remove underline */
+    color: #000; /* Black text color */
+}
+
+.sidebar a:hover {
+    background-color: #e2e6ea; /* Light grey on hover */
+}
+
+.section {
+    border: 1px solid #dee2e6; /* Light grey border */
+    padding: 15px; /* Padding inside the section */
+    margin-bottom: 15px; /* Space between sections */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #fff; /* White background for sections */
+}

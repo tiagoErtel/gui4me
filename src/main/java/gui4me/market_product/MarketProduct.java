@@ -62,14 +62,4 @@ public class MarketProduct {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-
-	public MarketProduct(Market market, Product product, @NotNull double price) {
-		super();
-		this.market = market;
-		this.product = product;
-		this.price = price;
-	}
-	
-	
-	
 }

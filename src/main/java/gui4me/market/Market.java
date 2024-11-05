@@ -48,10 +48,8 @@ public class Market {
 		this.cnpj = cnpj;
 	}
 
-	public Market(@NotEmpty String name, @NotEmpty String cnpj) {
+	public Market() {
 		super();
-		this.name = name;
-		this.cnpj = cnpj;
 	}
 
 }

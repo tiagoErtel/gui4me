@@ -1,7 +1,5 @@
 package gui4me.user;
 
-import gui4me.user.User;
-import gui4me.user.UserRepository; // Assuming you have a UserRepository for database operations
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +24,8 @@ public class UserViewController {
     @GetMapping("/create")
     public String createUserForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("languages", UserLanguage.values());
+        model.addAttribute("currencies", UserCurrency.values());
         return "user/create_user";
     }
 
