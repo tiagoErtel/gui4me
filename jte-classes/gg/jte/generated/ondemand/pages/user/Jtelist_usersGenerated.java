@@ -18,10 +18,10 @@ public final class Jtelist_usersGenerated {
 					jteOutput.writeUserContent(user.getUsername());
 					jteOutput.writeContent("</td>\r\n                    <td>");
 					jteOutput.setContext("td", null);
-					jteOutput.writeUserContent(user.getUserLanguage());
+					jteOutput.writeUserContent(user.getLanguage());
 					jteOutput.writeContent("</td>\r\n                    <td>");
 					jteOutput.setContext("td", null);
-					jteOutput.writeUserContent(user.getUserCurrency());
+					jteOutput.writeUserContent(user.getCurrency());
 					jteOutput.writeContent("</td>\r\n                    <td>\r\n                        <a href=\"/users/edit/");
 					jteOutput.setContext("a", "href");
 					jteOutput.writeUserContent(user.getId());

@@ -24,12 +24,12 @@ public class UserController {
     @GetMapping("/create")
     public String createUserForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("languages", UserLanguage.values());
-        model.addAttribute("currencies", UserCurrency.values());
-        return "user/create_user";
+        model.addAttribute("currencies", List.of(Currency.values()));
+        model.addAttribute("languages", List.of(Language.values()));
+        return "pages/user/create_user";
     }
 
-    @PostMapping
+    @PostMapping("create")
     public String createUser(@ModelAttribute User user) {
         userRepository.save(user);
         return "redirect:/users";
@@ -40,7 +40,7 @@ public class UserController {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
         model.addAttribute("user", user);
-        return "user/edit_user";
+        return "pages/user/create_user";
     }
 
     @PostMapping("/edit/{id}")

@@ -1,5 +1,5 @@
 package gui4me.user;
 
-public enum UserCurrency {
+public enum Currency {
 	BRL, USD
 }

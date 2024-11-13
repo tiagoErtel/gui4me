@@ -1,6 +1,11 @@
 @import gui4me.user.User
+@import gui4me.user.Currency
+@import gui4me.user.Language
+@import java.util.List
 
-@param User users
+@param User user
+@param List<Currency> currencies
+@param List<Language> languages
 
 @template.layout.main(content = @`
 	<div class="sidebar">
@@ -10,48 +15,50 @@
 
 	<div class="content">
         <h1>
-            @if(user.getId().isEmpty())
+            @if(user.getId() == null)
                 Create User
             @else
                 Edit User
             @endif
         </h1>
-		<form action="${user.id != null} ? @{/users/edit} : @{/users}" method="post">
-			<div class="section" id="general">
+		<form action="/users/create" method="post">
+			<div id="general">
 				<h2>General</h2>
 
-				<div class="form-group">
+				<div>
 					<label for="username">Username</label>
-					<input type="text" id="username" th:field="*{username}" class="form-control" required>
+					<input type="text" id="username" name="username" value="${user.getUsername()}" required>
 				</div>
 				<div class="form-group">
 					<label for="password">Password</label>
-					<input type="password" id="password" th:field="*{password}" class="form-control"
-						th:disabled="${user.id != null}">
+					<input type="password" id="password" name="password" value="${user.getPassword()}">
 				</div>
 			</div>
-
+			
 			<div class="section" id="preferences">
 				<h2>Preferences</h2>
-				<div class="form-group">
+				<div>
 					<label for="currency">Currency</label>
-					<select id="currency" th:field="*{userCurrency}" class="form-control" required>
+					<select id="currency" name="currency" value="${user.getCurrency()}" required>
 						<option value="" disabled selected>Select Currency</option>
-						<option th:each="curr : ${currencies}" th:value="${curr}" th:text="${curr}"></option>
+						@for(Currency currency : currencies)
+							<option value="${currency}"></option>
+						@endfor
 					</select>
 				</div>
-				<div class="form-group">
+				<div>
 					<label for="language">Language</label>
-					<select id="language" th:field="*{userLanguage}" class="form-control" required>
+					<select id="language" name="language" value="${user.getLanguage()}" required>
 						<option value="" disabled selected>Select Language</option>
-						<option th:each="lang : ${languages}" th:value="${lang}" th:text="${lang}"></option>
+						@for(Language language : languages)
+							<option value="${language}"></option>
+						@endfor
 					</select>
 				</div>
 			</div>
 
-			<button type="submit" class="btn btn-primary"
-				th:text="${user.id != null} ? 'Save Changes' : 'Create User'">Create User</button>
-			<a th:href="@{/users}" class="btn btn-secondary">Cancel</a>
+			<button type="submit">Create User</button>
+			<a href="/users">Cancel</a>
 		</form>
 	</div>
 `)

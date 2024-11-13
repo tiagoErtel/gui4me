@@ -23,8 +23,8 @@
                 <tr>
                     <td>${user.getId()}</td>
                     <td>${user.getUsername()}</td>
-                    <td>${user.getUserLanguage()}</td>
-                    <td>${user.getUserCurrency()}</td>
+                    <td>${user.getLanguage()}</td>
+                    <td>${user.getCurrency()}</td>
                     <td>
                         <a href="/users/edit/${user.getId()}">Edit</a>
                         <a href="/users/delete/${user.getId()}">Delete</a>

@@ -31,11 +31,11 @@ public class User {
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private UserLanguage userLanguage;
+	private Language language;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private UserCurrency userCurrency;
+	private Currency currency;
 	
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id") // This will create a `user_id` foreign key in the ShoppingList table
@@ -66,20 +66,20 @@ public class User {
 	}
 	
 
-	public UserLanguage getUserLanguage() {
-		return userLanguage;
+	public Language getLanguage() {
+		return language;
 	}
 
-	public void setUserLanguage(UserLanguage userLanguage) {
-		this.userLanguage = userLanguage;
+	public void setLanguage(Language language) {
+		this.language = language;
 	}
 
-	public UserCurrency getUserCurrency() {
-		return userCurrency;
+	public Currency getCurrency() {
+		return currency;
 	}
 
-	public void setUserCurrency(UserCurrency userCurrency) {
-		this.userCurrency = userCurrency;
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	}
 
 	public List<ShoppingList> getShoppingList() {
