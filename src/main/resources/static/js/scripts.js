@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.sidebar a').forEach(anchor => {
+    document.querySelectorAll('.list-group a').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
 
