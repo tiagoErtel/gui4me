@@ -14,11 +14,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
-    public String listUsers(Model model) {
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        return "pages/user/list_users";
+    @GetMapping("/edit/{id}")
+    public String editUserForm(@PathVariable Long id, Model model) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
+        model.addAttribute("user", user);
+        model.addAttribute("currencies", List.of(Currency.values()));
+        model.addAttribute("languages", List.of(Language.values()));
+        return "pages/user/user_form";
     }
 
     @GetMapping("/create")
@@ -26,24 +29,23 @@ public class UserController {
         model.addAttribute("user", new User());
         model.addAttribute("currencies", List.of(Currency.values()));
         model.addAttribute("languages", List.of(Language.values()));
-        return "pages/user/create_user";
+        return "pages/user/user_form";
     }
 
-    @PostMapping("create")
+    @GetMapping
+    public String listUsers(Model model) {
+        List<User> users = userRepository.findAll();
+        model.addAttribute("users", users);
+        return "pages/user/list_users";
+    }
+
+    @PostMapping("/save")
     public String createUser(@ModelAttribute User user) {
         userRepository.save(user);
         return "redirect:/users";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editUserForm(@PathVariable Long id, Model model) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + id));
-        model.addAttribute("user", user);
-        return "pages/user/create_user";
-    }
-
-    @PostMapping("/edit/{id}")
+    @PostMapping("/save/{id}")
     public String updateUser(@PathVariable Long id, @ModelAttribute User user) {
     	user.setId(id);
         userRepository.save(user);
