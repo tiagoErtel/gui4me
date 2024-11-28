@@ -1,5 +1,6 @@
 @import org.springframework.security.web.csrf.CsrfToken
 
+@param gg.jte.Content navbar
 @param gg.jte.Content content
 
 <!DOCTYPE html>
@@ -12,7 +13,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="font-sans bg-gray-900 text-gray-300">
-
+@if (navbar != null)
+    <div>
+        ${navbar}
+    </div>
+@endif
 <!--  Main Content  -->
 <main>
     ${content}

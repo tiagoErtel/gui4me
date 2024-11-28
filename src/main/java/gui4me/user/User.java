@@ -3,15 +3,7 @@ package gui4me.user;
 import java.util.List;
 
 import gui4me.user.shopping_list.ShoppingList;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -20,20 +12,18 @@ import jakarta.validation.constraints.NotNull;
 public class User {
 	
 	@Id
-	@GeneratedValue
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
 	
 	@NotEmpty
-	private String username;
+	private String email;
 	
 	@NotEmpty
 	private String password;
-	
-	@NotNull
+
 	@Enumerated(EnumType.STRING)
 	private Language language;
-	
-	@NotNull
+
 	@Enumerated(EnumType.STRING)
 	private Currency currency;
 	
@@ -41,20 +31,20 @@ public class User {
     @JoinColumn(name = "user_id") // This will create a `user_id` foreign key in the ShoppingList table
     private List<ShoppingList> shoppingList;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {

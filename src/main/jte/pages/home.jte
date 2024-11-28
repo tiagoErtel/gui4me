@@ -1,4 +1,6 @@
-@template.layout.main(content = @`
+@template.layout.main(
+navbar = null,
+content = @`
     <div class="min-h-screen flex items-center justify-center">
         <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
             <h1 class="text-4xl font-bold text-center">Welcome</h1>
