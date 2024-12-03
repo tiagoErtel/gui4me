@@ -30,15 +30,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/", "/login", "/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/", "/login", "/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/login", "/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                         .anyRequest().authenticated()
-                )
-                .exceptionHandling(exception -> exception
-                        // Redirect unauthenticated users to the login page
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendRedirect("/");
-                        })
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

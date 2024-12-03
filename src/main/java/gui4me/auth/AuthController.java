@@ -25,67 +25,42 @@ public class AuthController {
     @Autowired
     TokenService tokenService;
 
-    @GetMapping
-    public String home() {
-        return "pages/home";
-    }
-
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(Model model){
         model.addAttribute("user", new User());
         return "pages/login";
     }
 
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(Model model){
         model.addAttribute("user", new User());
         return "pages/register";
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute User userLog, Model model) {
-        try {
-            User user = userRepository.findByEmail(userLog.getEmail())
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-
-            if (passwordEncoder.matches(userLog.getPassword(), user.getPassword())) {
-                String token = tokenService.generateToken(user);
-
-                return "redirect:/dashboard";
-            } else {
-                throw new RuntimeException("Invalid password");
-            }
-        } catch (RuntimeException e) {
-            // Add error parameters to the model
-            model.addAttribute("error", true);
-            model.addAttribute("errorMessage", e.getMessage());
-            return "pages/login"; // Return the login page template
+    public String login(@ModelAttribute User userLog){
+        User user = userRepository.findByEmail(userLog.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        if(passwordEncoder.matches(userLog.getPassword(), user.getPassword())) {
+            String token = tokenService.generateToken(user);
+            return "pages/dashboard";
         }
+        return "pages/login";
     }
 
 
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute User userReg) {
-        try {
-            Optional<User> user = userRepository.findByEmail(userReg.getEmail());
+    public String register(@ModelAttribute User UserReg){
+        Optional<User> user = userRepository.findByEmail(UserReg.getEmail());
 
-            if (user.isEmpty()) {
-                User newUser = new User();
-                newUser.setPassword(passwordEncoder.encode(userReg.getPassword()));
-                newUser.setEmail(userReg.getEmail());
-                userRepository.save(newUser);
+        if(user.isEmpty()) {
+            User newUser = new User();
+            newUser.setPassword(passwordEncoder.encode(UserReg.getPassword()));
+            newUser.setEmail(UserReg.getEmail());
+            userRepository.save(newUser);
 
-                String token = tokenService.generateToken(newUser);
-                // Redirect to /dashboard on successful registration
-                return "redirect:/dashboard";
-            } else {
-                throw new RuntimeException("User already exists");
-            }
-        } catch (RuntimeException e){
-            // Add error parameters to the model
-            model.addAttribute("error", true);
-            model.addAttribute("errorMessage", e.getMessage());
-            return "pages/register"; // Return the register page template
+            String token = tokenService.generateToken(newUser);
+            return "pages/dashboard";
         }
+        return "pages/register";
     }
 }

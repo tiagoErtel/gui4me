@@ -9,10 +9,6 @@ content = @`
                    class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
                     Login
                 </a>
-                <a href="/register"
-                   class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                    Register
-                </a>
             </div>
         </div>
     </div>

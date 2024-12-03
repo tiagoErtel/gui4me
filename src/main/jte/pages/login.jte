@@ -21,6 +21,7 @@ content = @`
 
             <!-- Login Form -->
             <form class="mt-8 space-y-6" action="/login" method="POST">
+                <%-- ${csrfHiddenInput} --%>
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
                         <input name="email" type="text" required
