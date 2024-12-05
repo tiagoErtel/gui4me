@@ -1,10 +1,12 @@
+@import gui4me.security.CsrfHiddenInput
+
 @param Boolean error = false
 @param String errorMessage = null
+@param CsrfHiddenInput csrfHiddenInput
 
 @template.layout.main(
-navbar = null,
-
-content = @`
+    navbar = null,
+    content = @`
     <div class="min-h-screen flex items-center justify-center">
         <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
             <div>
@@ -21,12 +23,12 @@ content = @`
 
             <!-- Login Form -->
             <form class="mt-8 space-y-6" action="/login" method="POST">
-                <%-- ${csrfHiddenInput} --%>
+                ${csrfHiddenInput}
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
-                        <input name="email" type="text" required
+                        <input name="username" type="text" required
                                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                               placeholder="email">
+                               placeholder="Username">
                     </div>
                     <div>
                         <input name="password" type="password" required

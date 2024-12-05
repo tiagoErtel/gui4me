@@ -1,4 +1,4 @@
-package gui4me.user;
+package gui4me.customUserDetails;
 
 public enum Language {
     PT_BR,

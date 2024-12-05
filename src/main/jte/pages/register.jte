@@ -1,9 +1,11 @@
+@import gui4me.security.CsrfHiddenInput
+
 @param Boolean error = false
 @param String errorMessage = null
+@param CsrfHiddenInput csrfHiddenInput
 
 @template.layout.main(
 navbar = null,
-
 content = @`
     <div class="min-h-screen flex items-center justify-center">
         <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
@@ -15,13 +17,13 @@ content = @`
 
             @if(error)
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <span class="block sm:inline">${errorMessage != null ? errorMessage : "An error occurred during login"}</span>
+                    <span class="block sm:inline">${errorMessage != null ? errorMessage : "An error occurred during register"}</span>
                 </div>
             @endif
 
-            <!-- Login Form -->
+            <!-- Register Form -->
             <form class="mt-8 space-y-6" action="/register" method="POST">
-                <%-- ${csrfHiddenInput} --%>
+                ${csrfHiddenInput}
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
                         <input name="email" type="text" required
@@ -38,7 +40,7 @@ content = @`
                 <div>
                     <button type="submit"
                             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Sign up
+                        Sign in
                     </button>
                 </div>
             </form>

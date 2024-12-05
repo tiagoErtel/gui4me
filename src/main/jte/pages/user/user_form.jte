@@ -1,9 +1,9 @@
-@import gui4me.user.User
-@import gui4me.user.Currency
-@import gui4me.user.Language
+@import gui4me.customUserDetails.CustomUserDetails
+@import gui4me.customUserDetails.Currency
+@import gui4me.customUserDetails.Language
 @import java.util.List
 
-@param User user
+@param CustomUserDetails user
 @param List<Currency> currencies
 @param List<Language> languages
 

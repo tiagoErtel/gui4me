@@ -1,4 +1,4 @@
-package gui4me.user.shopping_list;
+package gui4me.customUserDetails.shopping_list;
 
 import gui4me.product.Product;
 import jakarta.persistence.Entity;

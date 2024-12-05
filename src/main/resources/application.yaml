@@ -14,7 +14,3 @@ logging:
     org:
       springframework:
         security: ERROR #change to DEBUG or INFO for more information about spring security
-api:
-  security:
-    token:
-      secret: token-super-seguro
