@@ -13,7 +13,7 @@ public class LoginController {
 
         if (error != null) {
             model.addAttribute("error", true);
-            model.addAttribute("errorMessage", "Invalid username or password");
+            model.addAttribute("errorMessage", "Invalid email or password");
         }
 
         return "pages/login";

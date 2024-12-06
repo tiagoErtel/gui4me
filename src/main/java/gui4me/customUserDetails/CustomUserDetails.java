@@ -1,6 +1,8 @@
 package gui4me.customUserDetails;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,9 +17,14 @@ public class CustomUserDetails implements UserDetails {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
 
-	@Column(unique = true, nullable = false)
-	private String email; // Use email for authentication
+	@NotBlank
+	private String username;
 
+	@Email
+	@NotBlank
+	private String email;
+
+	@NotBlank
 	private String password;
 
 	private String role = "ROLE_USER";
@@ -31,12 +38,12 @@ public class CustomUserDetails implements UserDetails {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override
@@ -54,12 +61,6 @@ public class CustomUserDetails implements UserDetails {
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	// Override Spring Security methods
-	@Override
-	public String getUsername() { // Must return email for authentication
-		return email;
 	}
 
 	@Override
@@ -86,5 +87,13 @@ public class CustomUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
 
