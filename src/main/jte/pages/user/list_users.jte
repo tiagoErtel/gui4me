@@ -1,4 +1,4 @@
-@import gui4me.user.User
+@import gui4me.customUserDetails.User
 @import java.util.List
 
 @param List<User> users
