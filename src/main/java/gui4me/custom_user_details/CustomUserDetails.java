@@ -1,4 +1,4 @@
-package gui4me.customUserDetails;
+package gui4me.custom_user_details;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

@@ -1,4 +1,4 @@
-package gui4me.customUserDetails;
+package gui4me.custom_user_details;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
