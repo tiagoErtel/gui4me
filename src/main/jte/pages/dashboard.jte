@@ -38,6 +38,31 @@
             <div class="px-4 py-6 sm:px-0">
                 <div class="bg-white shadow rounded-lg p-6">
                     <h2 class="text-2xl font-semibold text-gray-800 mb-4">Register purchase</h2>
+                    <button
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        Scan QR Code
+                    </button>
+
+                    <!-- Or Input Invoice Link -->
+                    <form action="/invoice/register" method="POST" class="flex flex-col space-y-2">
+                        ${csrfHiddenInput}
+                        <label for="invoiceLink" class="text-gray-700 font-medium">
+                            Or input the link to the invoice here:
+                        </label>
+                        <input
+                                type="text"
+                                id="invoiceUrl"
+                                name="invoiceUrl"
+                                class="border-gray-300 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="Paste the invoice link here..."
+                        />
+                        <!-- Submit Button -->
+                        <button
+                                type="submit"
+                                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+                            Submit Link
+                        </button>
+                    </form>
                 </div>
             </div>
         </main>

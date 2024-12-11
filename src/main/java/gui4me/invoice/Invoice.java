@@ -15,10 +15,11 @@ public class Invoice {
     private String id;
 
     @NotBlank
-    private String chave;
+    @Lob
+    private String html;
 
     @NotBlank
-    private String html;
+    private String chave;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
