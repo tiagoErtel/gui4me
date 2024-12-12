@@ -1,6 +1,9 @@
 package gui4me.invoice;
 
-import org.jsoup.nodes.Element;
+import gui4me.store.Store;
+import gui4me.store.StoreRepository;
+import gui4me.store.StoreService;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +18,29 @@ public class InvoiceService {
     @Autowired
     InvoiceRepository invoiceRepository;
 
-    public Invoice save(String invoiceUrl){
-        Invoice invoice = new Invoice();
-        Document doc = getHtmlInvoice(invoiceUrl);
-        Element chave = doc.selectFirst(".chave");
-        invoice.setChave(chave.text());
-        invoice.setHtml(doc.html());
-        return invoiceRepository.save(invoice);
-    }
+    @Autowired
+    StoreService storeService;
 
-    public Document getHtmlInvoice(String invoiceUrl){
-        try {
-            return Jsoup.connect(invoiceUrl).get();
+    public Invoice save(String invoiceUrl){
+        try{
+            Document doc = Jsoup.connect(invoiceUrl).get();
+
+            String invoiceChave = doc.getElementsByClass("chave").text();
+
+            String storeName = doc.getElementsByClass("txtTopo").text();
+
+            String storeDocument = doc.getElementsContainingOwnText("CNPJ:").text().replace("CNPJ:", "").strip();
+
+            Store store = new Store();
+            store.setDocument(storeDocument);
+            store.setName(storeName);
+            store = storeService.checkStoreDocAndSave(store);
+
+            Invoice invoice = new Invoice();
+            invoice.setChave(invoiceChave);
+            invoice.setHtml(doc.html());
+            invoice.setStore(store);
+            return invoiceRepository.save(invoice);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

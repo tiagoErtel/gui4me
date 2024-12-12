@@ -1,6 +1,6 @@
 package gui4me.market_product;
 
-import gui4me.market.Market;
+import gui4me.store.Store;
 import gui4me.product.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +21,7 @@ public class MarketProduct {
 	
 	@ManyToOne
 	@JoinColumn(name = "market_id")
-	private Market market;
+	private Store store;
 	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
@@ -39,12 +39,12 @@ public class MarketProduct {
 		this.id = id;
 	}
 
-	public Market getMarket() {
-		return market;
+	public Store getMarket() {
+		return store;
 	}
 
-	public void setMarket(Market market) {
-		this.market = market;
+	public void setMarket(Store store) {
+		this.store = store;
 	}
 
 	public Product getProduct() {

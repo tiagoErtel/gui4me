@@ -1,6 +1,7 @@
 package gui4me.invoice;
 
 import gui4me.invoice_item.InvoiceItem;
+import gui4me.store.Store;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
@@ -20,6 +21,10 @@ public class Invoice {
 
     @NotBlank
     private String chave;
+
+    @OneToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
@@ -55,5 +60,13 @@ public class Invoice {
 
     public void setItems(List<InvoiceItem> items) {
         this.items = items;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }
