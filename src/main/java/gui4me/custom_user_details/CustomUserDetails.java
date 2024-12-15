@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +29,17 @@ public class CustomUserDetails implements UserDetails {
 	private String password;
 
 	private String role = "ROLE_USER";
+
+
+	private List<ShoppingList> shoppingList;
+
+	public List<ShoppingList> getShoppingList() {
+		return shoppingList;
+	}
+
+	public void setShoppingList(List<ShoppingList> shoppingList) {
+		this.shoppingList = shoppingList;
+	}
 
 	// Getters and Setters
 	public String getId() {

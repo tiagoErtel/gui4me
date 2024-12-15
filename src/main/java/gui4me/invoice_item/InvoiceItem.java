@@ -1,5 +1,6 @@
 package gui4me.invoice_item;
 
+import gui4me.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,14 +13,23 @@ public class InvoiceItem {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String Id;
 
-    @NotBlank
-    private String name;
-
     @NotNull
     private Double price;
 
     @NotNull
     private int quantity;
+
+    @OneToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     public String getId() {
         return Id;
@@ -27,14 +37,6 @@ public class InvoiceItem {
 
     public void setId(String id) {
         Id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Double getPrice() {
