@@ -3,6 +3,8 @@ package gui4me.store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class StoreService {
 
@@ -10,12 +12,12 @@ public class StoreService {
     StoreRepository storeRepository;
 
     public Store checkStoreDocAndSave(Store newStore){
-        Store store = storeRepository.findByDocument(newStore.getDocument());
+        Optional<Store> store = storeRepository.findByDocument(newStore.getDocument());
 
-        if (store.getId().isEmpty()){
-            return storeRepository.save(store);
+        if (store.isEmpty()){
+            return storeRepository.save(newStore);
         } else {
-            return store;
+            return store.get();
         }
     }
 }

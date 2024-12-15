@@ -14,12 +14,18 @@ public class InvoiceItem {
     private String Id;
 
     @NotNull
-    private Double price;
+    private Double unitPrice;
 
     @NotNull
-    private int quantity;
+    private Double totalPrice;
 
-    @OneToOne
+    @NotNull
+    private Double quantity;
+
+    @NotNull
+    private String unit;
+
+    @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
@@ -39,19 +45,36 @@ public class InvoiceItem {
         Id = id;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getUnitPrice() {
+        return unitPrice;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
-    public int getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
 }

@@ -30,7 +30,8 @@ public class CustomUserDetails implements UserDetails {
 
 	private String role = "ROLE_USER";
 
-
+	@OneToMany
+	@JoinColumn(name = "user_id")
 	private List<ShoppingList> shoppingList;
 
 	public List<ShoppingList> getShoppingList() {
@@ -41,7 +42,6 @@ public class CustomUserDetails implements UserDetails {
 		this.shoppingList = shoppingList;
 	}
 
-	// Getters and Setters
 	public String getId() {
 		return id;
 	}

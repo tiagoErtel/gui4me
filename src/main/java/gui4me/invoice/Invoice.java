@@ -1,10 +1,13 @@
 package gui4me.invoice;
 
+import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.invoice_item.InvoiceItem;
 import gui4me.store.Store;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +31,19 @@ public class Invoice {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "invoice_id")
-    private List<InvoiceItem> items;
+    private List<InvoiceItem> invoiceItems = new ArrayList<>();
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private CustomUserDetails user;
+
+    public CustomUserDetails getUser() {
+        return user;
+    }
+
+    public void setUser(CustomUserDetails user) {
+        this.user = user;
+    }
 
     public String getId() {
         return id;
@@ -54,12 +69,16 @@ public class Invoice {
         this.html = html;
     }
 
-    public List<InvoiceItem> getItems() {
-        return items;
+    public List<InvoiceItem> getInvoiceItems() {
+        return invoiceItems;
     }
 
-    public void setItems(List<InvoiceItem> items) {
-        this.items = items;
+    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+        this.invoiceItems = invoiceItems;
+    }
+
+    public void addInvoiceItem(InvoiceItem invoiceItem){
+        this.invoiceItems.add(invoiceItem);
     }
 
     public Store getStore() {
