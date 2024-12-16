@@ -1,6 +1,6 @@
-@import gui4me.customUserDetails.CustomUserDetails
-@import gui4me.customUserDetails.Currency
-@import gui4me.customUserDetails.Language
+@import gui4me.custom_user_details.CustomUserDetails
+@import gui4me.custom_user_details.Currency
+@import gui4me.custom_user_details.Language
 @import java.util.List
 
 @param CustomUserDetails user
