@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class RegisterController {
@@ -26,12 +27,14 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(CustomUserDetails user){
+    public String register(CustomUserDetails user, RedirectAttributes redirectAttributes){
         try {
             customUserDetailsService.save(user);
             return "redirect:login";
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            redirectAttributes.addAttribute("error", true);
+            redirectAttributes.addAttribute("errorMessage", e.getMessage());
+            return "redirect:register";
         }
     }
 }

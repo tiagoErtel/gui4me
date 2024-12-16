@@ -23,6 +23,7 @@ public class CustomUserDetails implements UserDetails {
 
 	@Email
 	@NotBlank
+	@Column(unique = true)
 	private String email;
 
 	@NotBlank

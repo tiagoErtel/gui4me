@@ -1,6 +1,7 @@
 package gui4me.invoice;
 
 import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.exceptions.InvoiceAlreadyProcessedException;
 import gui4me.invoice_item.InvoiceItem;
 import gui4me.product.Product;
 import gui4me.product.ProductService;
@@ -37,6 +38,14 @@ public class InvoiceService {
             // Get the invoice HTML document
             Document doc = Jsoup.connect(invoiceUrl).get();
 
+            // Check if the invoice already exists based on the 'chave'
+            String invoiceChave = doc.getElementsByClass("chave").text();
+            Optional<Invoice> existingInvoice = invoiceRepository.findByChave(invoiceChave);
+            if (existingInvoice.isPresent()) {
+                logger.error("Invoice with chave '{}' already exists. Throwing exception.", invoiceChave);
+                throw new InvoiceAlreadyProcessedException();
+            }
+
             // Create or fetch the store
             Store store = createOrFetchStore(doc);
 
@@ -44,7 +53,6 @@ public class InvoiceService {
             Invoice invoice = new Invoice();
             invoice.setStore(store);
             invoice.setUser(user);
-            invoice.setHtml(doc.html());
             invoice.setChave(doc.getElementsByClass("chave").text());
 
             // Process the invoice items
