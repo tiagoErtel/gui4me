@@ -32,8 +32,8 @@ public class RegisterController {
             customUserDetailsService.save(user);
             return "redirect:login";
         } catch (Exception e) {
-            redirectAttributes.addAttribute("error", true);
-            redirectAttributes.addAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:register";
         }
     }

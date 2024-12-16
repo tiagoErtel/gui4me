@@ -31,12 +31,12 @@ public class InvoiceController {
                 Invoice invoice = invoiceService.save(invoiceUrl, user);
             }
 
-            redirectAttributes.addAttribute("success", true);
-            redirectAttributes.addAttribute("successMessage", "Invoice registered!");
+            redirectAttributes.addFlashAttribute("success", true);
+            redirectAttributes.addFlashAttribute("successMessage", "Invoice registered!");
             return "redirect:/dashboard";
         } catch (Exception e) {
-            redirectAttributes.addAttribute("error", true);
-            redirectAttributes.addAttribute("errorMessage", e.getMessage());
+            redirectAttributes.addFlashAttribute("error", true);
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/dashboard";
         }
     }
