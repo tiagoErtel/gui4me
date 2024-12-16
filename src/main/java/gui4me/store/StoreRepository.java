@@ -1,4 +1,4 @@
-package gui4me.product;
+package gui4me.store;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, String>{
-    Optional<Product> findByName(String name);
+public interface StoreRepository extends JpaRepository<Store, Long>{
+
+    public Optional<Store> findByDocument(String document);
 }

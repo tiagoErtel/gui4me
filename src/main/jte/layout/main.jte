@@ -11,6 +11,7 @@
     <title>Gui4Me</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
 </head>
 <body class="font-sans bg-gray-900 text-gray-300">
 @if (navbar != null)
