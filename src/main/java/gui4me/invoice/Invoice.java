@@ -19,10 +19,7 @@ public class Invoice {
     private String id;
 
     @NotBlank
-    @Lob
-    private String html;
-
-    @NotBlank
+    @Column(unique = true)
     private String chave;
 
     @OneToOne
@@ -53,9 +50,6 @@ public class Invoice {
         return chave;
     }
 
-    public String getHtml() {
-        return html;
-    }
 
     public void setId(String id) {
         this.id = id;
@@ -63,10 +57,6 @@ public class Invoice {
 
     public void setChave(String chave) {
         this.chave = chave;
-    }
-
-    public void setHtml(String html) {
-        this.html = html;
     }
 
     public List<InvoiceItem> getInvoiceItems() {
