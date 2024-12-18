@@ -2,6 +2,8 @@ package gui4me.invoice;
 
 import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.exceptions.InvoiceAlreadyProcessedException;
+import gui4me.utils.Message;
+import gui4me.utils.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,12 +33,14 @@ public class InvoiceController {
                 Invoice invoice = invoiceService.save(invoiceUrl, user);
             }
 
-            redirectAttributes.addFlashAttribute("success", true);
-            redirectAttributes.addFlashAttribute("successMessage", "Invoice registered!");
+            Message message = new Message(MessageType.SUCCESS, "Invoice registered!");
+            redirectAttributes.addFlashAttribute("message", message);
+
             return "redirect:/dashboard";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", true);
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            Message message = new Message(MessageType.ERROR, e.getMessage());
+            redirectAttributes.addFlashAttribute("message", message);
+
             return "redirect:/dashboard";
         }
     }

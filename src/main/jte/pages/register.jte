@@ -1,7 +1,7 @@
 @import gui4me.security.CsrfHiddenInput
+@import gui4me.utils.Message
 
-@param Boolean error = false
-@param String errorMessage = null
+@param Message message = null
 @param CsrfHiddenInput csrfHiddenInput
 
 @template.layout.main(
@@ -18,10 +18,10 @@ content = @`
                 </p>
             </div>
 
-            @if(error)
+            @if(message != null && message.isError())
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                     <span class="block sm:inline">
-                        ${errorMessage != null ? errorMessage : "An error occurred during registration"}
+                        ${message.getMessage() != null ? message.getMessage() : "An error occurred."}
                     </span>
                 </div>
             @endif
