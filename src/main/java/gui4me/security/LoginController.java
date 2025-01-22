@@ -13,22 +13,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class LoginController {
 
     @GetMapping("/login")
-    public String login(HttpServletRequest request, Model model, String error, String logout) {
-
-        if (error != null) {
-            model.addAttribute("error", true);
-            model.addAttribute("errorMessage", "Invalid email or password");
-        }
-
+    public String login(HttpServletRequest request, Model model, Message message) {
+        model.addAttribute("message", message);
         return "pages/login";
     }
 
     @GetMapping("/login-error")
     public String loginError(RedirectAttributes redirectAttributes) {
-        Message message = new Message(MessageType.ERROR, "Invalid email or password");
-        redirectAttributes.addFlashAttribute("message", message);
-
-        // Redirect back to the login page
+        redirectAttributes.addFlashAttribute("message", new Message(MessageType.ERROR, "Invalid email or password"));
         return "redirect:/login";
     }
 

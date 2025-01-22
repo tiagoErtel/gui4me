@@ -29,17 +29,14 @@ public class InvoiceController {
             }
 
             if (authentication.getPrincipal() instanceof CustomUserDetails customUserDetails) {
-                CustomUserDetails user = customUserDetails;
-                Invoice invoice = invoiceService.save(invoiceUrl, user);
+                Invoice invoice = invoiceService.save(invoiceUrl, customUserDetails);
             }
 
-            Message message = new Message(MessageType.SUCCESS, "Invoice registered!");
-            redirectAttributes.addFlashAttribute("message", message);
+            redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Invoice registered!"));
 
             return "redirect:/dashboard";
         } catch (Exception e) {
-            Message message = new Message(MessageType.ERROR, e.getMessage());
-            redirectAttributes.addFlashAttribute("message", message);
+            redirectAttributes.addFlashAttribute("message", new Message(MessageType.ERROR, e.getMessage()));
 
             return "redirect:/dashboard";
         }

@@ -20,9 +20,7 @@ public class DashboardController {
             model.addAttribute("authorities", userDetails.getAuthorities());
         }
 
-        if (message != null) {
-            model.addAttribute("message", message);
-        }
+        model.addAttribute("message", message);
 
         // Add CSRF token
         CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());

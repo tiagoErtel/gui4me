@@ -13,11 +13,11 @@ public class Message {
 
     // Getters and Setters
     public boolean isError() {
-        return messageType.equals(MessageType.ERROR);
+        return messageType == MessageType.ERROR;
     }
 
     public boolean isSuccess() {
-        return messageType.equals(MessageType.SUCCESS);
+        return messageType == MessageType.SUCCESS;
     }
 
     public MessageType getMessageType(){
