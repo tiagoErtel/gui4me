@@ -1,6 +1,5 @@
-@template.layout.main(
-navbar = null,
-content = @`
+@template.layout.home(
+    content = @`
     <div class="min-h-screen bg-gray-100 flex items-center justify-center">
         <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
             <h1 class="text-4xl font-extrabold text-center text-indigo-600 mb-4">Welcome to Gui4me</h1>

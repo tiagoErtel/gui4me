@@ -1,12 +1,10 @@
-@import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 
 @param Message message = null
-@param CsrfHiddenInput csrfHiddenInput
 
-@template.layout.main(
-navbar = null,
-content = @`
+@template.layout.home(
+    message = message,
+    content = @`
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
             <div class="mb-6 text-center">
