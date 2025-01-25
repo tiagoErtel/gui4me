@@ -30,7 +30,7 @@ public class Invoice {
     @JoinColumn(name = "invoice_id")
     private List<InvoiceItem> invoiceItems = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private CustomUserDetails user;
 
