@@ -1,12 +1,12 @@
+@import gui4me.utils.Message
 @import gui4me.security.CsrfHiddenInput
 
-@param Boolean error = false
-@param String errorMessage = null
+@param Message message = null
 @param CsrfHiddenInput csrfHiddenInput
 
-@template.layout.main(
-navbar = null,
-content = @`
+@template.layout.home(
+    message = message,
+    content = @`
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="max-w-md w-full p-8 bg-white rounded-lg shadow-md">
             <div class="mb-6 text-center">
@@ -18,10 +18,10 @@ content = @`
                 </p>
             </div>
 
-            @if(error)
+            @if(message != null && message.isError())
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                     <span class="block sm:inline">
-                        ${errorMessage != null ? errorMessage : "An error occurred during login"}
+                        ${message.getMessage() != null ? message.getMessage() : "An error occurred."}
                     </span>
                 </div>
             @endif
