@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -46,6 +47,9 @@ public class InvoiceService {
                 throw new InvoiceAlreadyProcessedException();
             }
 
+            // TODO: extract the issuance date from the doc
+            LocalDateTime issuanceDate = LocalDateTime.now();
+
             // Create or fetch the store
             Store store = createOrFetchStore(doc);
 
@@ -53,7 +57,7 @@ public class InvoiceService {
             Invoice invoice = new Invoice();
             invoice.setStore(store);
             invoice.setUser(user);
-            invoice.setChave(doc.getElementsByClass("chave").text());
+            invoice.setChave(invoiceChave);
 
             // Process the invoice items
             processInvoiceItems(doc, invoice);

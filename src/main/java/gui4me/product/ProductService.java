@@ -18,4 +18,8 @@ public class ProductService {
     public Product save(Product product){
         return productRepository.save(product);
     }
+
+//    public List<String a, String b> search_product(String productName){
+//
+//    }
 }

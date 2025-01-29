@@ -4,9 +4,10 @@ import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.invoice_item.InvoiceItem;
 import gui4me.store.Store;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class Invoice {
     @NotBlank
     @Column(unique = true)
     private String chave;
+
+    @NotNull
+    private LocalDateTime issuanceDate;
 
     @OneToOne
     @JoinColumn(name = "store_id")
@@ -50,6 +54,7 @@ public class Invoice {
         return chave;
     }
 
+    public LocalDateTime getIssuanceDate() { return issuanceDate; }
 
     public void setId(String id) {
         this.id = id;
@@ -58,6 +63,8 @@ public class Invoice {
     public void setChave(String chave) {
         this.chave = chave;
     }
+
+    public void setIssuanceDate(LocalDateTime issuanceDate) { this.issuanceDate = issuanceDate; }
 
     public List<InvoiceItem> getInvoiceItems() {
         return invoiceItems;
