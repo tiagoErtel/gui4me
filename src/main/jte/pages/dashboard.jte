@@ -22,7 +22,7 @@ content = @`
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Action Cards -->
-                        <a href="/products/search" class="block p-6 bg-gray-50 shadow rounded-lg hover:shadow-md transition">
+                        <a href="/product/search" class="block p-6 bg-gray-50 shadow rounded-lg hover:shadow-md transition">
                             <h2 class="text-lg font-medium text-gray-800">Search for Products</h2>
                             <p class="text-gray-600 mt-2">Find the products you need quickly and efficiently.</p>
                         </a>

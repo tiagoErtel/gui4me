@@ -1,9 +1,13 @@
 package gui4me.invoice_item;
 
+import gui4me.invoice.Invoice;
 import gui4me.product.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "invoice_items")
@@ -25,6 +29,10 @@ public class InvoiceItem {
     @NotNull
     private String unit;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
+
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
@@ -35,6 +43,14 @@ public class InvoiceItem {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
     }
 
     public String getId() {

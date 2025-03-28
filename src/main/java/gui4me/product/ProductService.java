@@ -18,4 +18,15 @@ public class ProductService {
     public Product save(Product product){
         return productRepository.save(product);
     }
+
+    public List<ProductSearchResultDTO> findAllByName(String name){
+        try {
+            List<ProductSearchResultDTO> pr = productRepository.findAllByName(name);
+            return pr;
+
+        }
+        catch(Exception ex) {
+            return null;
+        }
+    }
 }

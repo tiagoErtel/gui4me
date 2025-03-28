@@ -3,6 +3,7 @@ package gui4me.invoice;
 import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.exceptions.InvoiceAlreadyProcessedException;
 import gui4me.invoice_item.InvoiceItem;
+import gui4me.invoice_item.InvoiceItemRepository;
 import gui4me.product.Product;
 import gui4me.product.ProductService;
 import gui4me.store.Store;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -26,6 +28,9 @@ public class InvoiceService {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+
+    @Autowired
+    InvoiceItemRepository invoiceItemRepository;
 
     @Autowired
     StoreService storeService;
@@ -46,6 +51,9 @@ public class InvoiceService {
                 throw new InvoiceAlreadyProcessedException();
             }
 
+            // TODO: extract the issuance date from the doc
+            LocalDateTime issuanceDate = LocalDateTime.now();
+
             // Create or fetch the store
             Store store = createOrFetchStore(doc);
 
@@ -53,7 +61,8 @@ public class InvoiceService {
             Invoice invoice = new Invoice();
             invoice.setStore(store);
             invoice.setUser(user);
-            invoice.setChave(doc.getElementsByClass("chave").text());
+            invoice.setChave(invoiceChave);
+            invoice.setIssuanceDate(issuanceDate);
 
             // Process the invoice items
             processInvoiceItems(doc, invoice);
@@ -102,7 +111,10 @@ public class InvoiceService {
                 invoiceItem.setProduct(product.get());
             }
 
-            invoice.addInvoiceItem(invoiceItem);
+            invoiceItem.setInvoice(invoice);
+
+            invoiceItemRepository.save(invoiceItem);
+
         }
     }
 
