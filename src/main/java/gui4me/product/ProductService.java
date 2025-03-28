@@ -19,7 +19,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-//    public List<String a, String b> search_product(String productName){
-//
-//    }
+    public List<ProductSearchResultDTO> findAllByName(String name){
+        try {
+            List<ProductSearchResultDTO> pr = productRepository.findAllByName(name);
+            return pr;
+
+        }
+        catch(Exception ex) {
+            return null;
+        }
+    }
 }

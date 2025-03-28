@@ -3,6 +3,7 @@ package gui4me.invoice;
 import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.exceptions.InvoiceAlreadyProcessedException;
 import gui4me.invoice_item.InvoiceItem;
+import gui4me.invoice_item.InvoiceItemRepository;
 import gui4me.product.Product;
 import gui4me.product.ProductService;
 import gui4me.store.Store;
@@ -27,6 +28,9 @@ public class InvoiceService {
 
     @Autowired
     InvoiceRepository invoiceRepository;
+
+    @Autowired
+    InvoiceItemRepository invoiceItemRepository;
 
     @Autowired
     StoreService storeService;
@@ -58,6 +62,7 @@ public class InvoiceService {
             invoice.setStore(store);
             invoice.setUser(user);
             invoice.setChave(invoiceChave);
+            invoice.setIssuanceDate(issuanceDate);
 
             // Process the invoice items
             processInvoiceItems(doc, invoice);
@@ -106,7 +111,10 @@ public class InvoiceService {
                 invoiceItem.setProduct(product.get());
             }
 
-            invoice.addInvoiceItem(invoiceItem);
+            invoiceItem.setInvoice(invoice);
+
+            invoiceItemRepository.save(invoiceItem);
+
         }
     }
 

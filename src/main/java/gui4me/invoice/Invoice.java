@@ -30,10 +30,6 @@ public class Invoice {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "invoice_id")
-    private List<InvoiceItem> invoiceItems = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private CustomUserDetails user;
@@ -65,18 +61,6 @@ public class Invoice {
     }
 
     public void setIssuanceDate(LocalDateTime issuanceDate) { this.issuanceDate = issuanceDate; }
-
-    public List<InvoiceItem> getInvoiceItems() {
-        return invoiceItems;
-    }
-
-    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
-        this.invoiceItems = invoiceItems;
-    }
-
-    public void addInvoiceItem(InvoiceItem invoiceItem){
-        this.invoiceItems.add(invoiceItem);
-    }
 
     public Store getStore() {
         return store;
