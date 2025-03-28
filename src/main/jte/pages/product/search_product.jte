@@ -1,13 +1,15 @@
+@import gui4me.product.ProductSearchResultDTO
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 @import gui4me.product.Product
 @import java.util.List
+@import java.time.LocalDateTime
 
 @param Message message = null
 @param String username = ""
 @param String email = null
 @param CsrfHiddenInput csrfHiddenInput
-@param List<Product> productList = null
+@param List<ProductSearchResultDTO> productList = null
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
@@ -42,16 +44,27 @@ content = @`
                         <th class="border-b py-2 px-4">Product Name</th>
                         <th class="border-b py-2 px-4">Unit Price</th>
                         <th class="border-b py-2 px-4">Store</th>
+                        <th class="border-b py-2 px-4">Last Purchase Date</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- Example rows (replace with JTE logic) -->
-                    <tr>
-                        <td class="py-2 px-4">Product A</td>
-                        <td class="py-2 px-4">$12.99</td>
-                        <td class="py-2 px-4">Store X</td>
-                    </tr>
-                    <!-- End Example Rows -->
+                    @if (productList == null)
+                        <tr>
+                            <td colspan="4" class="text-center text-gray-500 py-4">
+                                <h3 class="text-lg font-semibold">No products found</h3>
+                                <p>Try searching for a different product.</p>
+                            </td>
+                        </tr>
+                    @else
+                        @for (ProductSearchResultDTO product : productList)
+                            <tr>
+                                <td class="py-2 px-4">${product.getProductName()}</td>
+                                <td class="py-2 px-4">${product.getUnitPrice()}</td>
+                                <td class="py-2 px-4">${product.getStoreName()}</td>
+                                <td class="py-2 px-4">${product.getFormattedLastIssuanceDate()}</td>
+                            </tr>
+                        @endfor
+                    @endif
                     </tbody>
                 </table>
             </div>

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -35,9 +36,9 @@ public class ProductController {
             model.addAttribute("csrf", csrf);
         }
 
-        if (productName != null){
-            Optional<Product> pr = productService.findByName(productName);
-            System.out.println(pr.get().getName());
+        if (productName != null && !productName.isBlank()) {
+            List<ProductSearchResultDTO> pr = productService.findAllByName(productName);
+            model.addAttribute("productList", pr);
         }
 
         return "pages/product/search_product";

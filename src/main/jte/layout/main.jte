@@ -16,14 +16,14 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="font-sans bg-gray-900 text-gray-300">
+<body class="font-sans bg-gray-900">
 
 <nav class="bg-white shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div
                     class="flex items-center">
-                <h1 class="text-xl font-semibold">Dashboard</h1>
+                <a href="/dashboard" class="text-xl font-semibold">Dashboard</a>
             </div>
             <div class="flex items-center space-x-4">
                 <span class="text-gray-700">Welcome, ${username}</span>

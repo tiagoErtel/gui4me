@@ -1,6 +1,8 @@
 @import gui4me.utils.Message
+@import gui4me.security.CsrfHiddenInput
 
 @param Message message = null
+@param CsrfHiddenInput csrfHiddenInput
 
 @template.layout.home(
     message = message,
