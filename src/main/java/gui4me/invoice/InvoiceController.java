@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/invoice")
 public class InvoiceController {
@@ -25,7 +27,7 @@ public class InvoiceController {
     InvoiceService invoiceService;
 
     @GetMapping("/register")
-    public String dashboard(Authentication authentication, HttpServletRequest request, Model model, Message message) {
+    public String register(Authentication authentication, HttpServletRequest request, Model model, Message message) {
 
         if (authentication.getPrincipal() instanceof UserDetails userDetails) {
             model.addAttribute("username", userDetails.getUsername());
@@ -40,7 +42,7 @@ public class InvoiceController {
             model.addAttribute("csrf", csrf);
         }
 
-        return "pages/invoice/register_invoice";
+        return "pages/invoice/register";
     }
 
     @PostMapping("/register")
@@ -63,5 +65,28 @@ public class InvoiceController {
 
             return "redirect:/dashboard";
         }
+    }
+
+    @GetMapping("/list")
+    public String list(Authentication authentication, HttpServletRequest request, Model model, Message message) {
+
+        if (authentication.getPrincipal() instanceof UserDetails userDetails) {
+            model.addAttribute("username", userDetails.getUsername());
+            model.addAttribute("authorities", userDetails.getAuthorities());
+        }
+
+        model.addAttribute("message", message);
+
+        // Add CSRF token
+        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        if (csrf != null) {
+            model.addAttribute("csrf", csrf);
+        }
+
+        List<Invoice> invoiceList = invoiceService.findAll();
+
+        model.addAttribute("invoiceList", invoiceList);
+
+        return "pages/invoice/list";
     }
 }

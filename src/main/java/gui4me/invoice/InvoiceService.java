@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,6 +52,9 @@ public class InvoiceService {
                 throw new InvoiceAlreadyProcessedException();
             }
 
+            String a = doc.selectFirst("span.totalNumb.txtMax").text().trim();
+            Double totalPrice = parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim());
+
             // TODO: extract the issuance date from the doc
             LocalDateTime issuanceDate = LocalDateTime.now();
 
@@ -63,6 +67,7 @@ public class InvoiceService {
             invoice.setUser(user);
             invoice.setChave(invoiceChave);
             invoice.setIssuanceDate(issuanceDate);
+            invoice.setTotalPrice(totalPrice);
 
             // Process the invoice items
             processInvoiceItems(doc, invoice);
@@ -116,6 +121,10 @@ public class InvoiceService {
             invoiceItemRepository.save(invoiceItem);
 
         }
+    }
+
+    public List<Invoice> findAll(){
+        return invoiceRepository.findAll();
     }
 
     private String extractText(Element row, String selector) {
