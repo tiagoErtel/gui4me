@@ -1,5 +1,6 @@
-package gui4me.product;
+package gui4me.invoice_item;
 
+import gui4me.invoice.Invoice;
 import gui4me.utils.Message;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +11,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
-@RequestMapping("/product")
-public class ProductController {
+@RequestMapping("/invoice/item")
+public class invoiceItemController {
 
     @Autowired
-    ProductService productService;
+    InvoiceItemService invoiceItemService;
 
-    @GetMapping("/search")
-    public String searchProduct(Authentication authentication, HttpServletRequest request, Model model, Message message, String productName) {
+    @GetMapping("/list")
+    String list(Authentication authentication, HttpServletRequest request, Model model, Message message, @RequestParam String invoiceId) {
+
         if (authentication.getPrincipal() instanceof UserDetails userDetails) {
             model.addAttribute("username", userDetails.getUsername());
             model.addAttribute("authorities", userDetails.getAuthorities());
@@ -36,11 +38,9 @@ public class ProductController {
             model.addAttribute("csrf", csrf);
         }
 
-        if (productName != null && !productName.isBlank()) {
-            List<ProductSearchResultDTO> pr = productService.findAllByName(productName);
-            model.addAttribute("productList", pr);
-        }
+        List<InvoiceItem> invoiceItemsList = invoiceItemService.findAllByInvoiceId(invoiceId);
 
-        return "pages/product/search";
+        model.addAttribute("invoiceItemsList", invoiceItemsList);
+        return "pages/invoice/item/list";
     }
 }
