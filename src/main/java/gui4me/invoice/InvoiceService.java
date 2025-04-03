@@ -2,82 +2,83 @@ package gui4me.invoice;
 
 import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.exceptions.InvoiceAlreadyProcessedException;
+import gui4me.exceptions.InvoiceParseErrorException;
 import gui4me.invoice_item.InvoiceItem;
 import gui4me.invoice_item.InvoiceItemRepository;
 import gui4me.product.Product;
 import gui4me.product.ProductService;
 import gui4me.store.Store;
 import gui4me.store.StoreService;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.jsoup.nodes.Document;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class InvoiceService {
 
     private static final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
+    private static final Pattern DATE_PATTERN = Pattern.compile("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     @Autowired
-    InvoiceRepository invoiceRepository;
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
-    InvoiceItemRepository invoiceItemRepository;
+    private InvoiceItemRepository invoiceItemRepository;
 
     @Autowired
-    StoreService storeService;
+    private StoreService storeService;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     public Invoice save(String invoiceUrl, CustomUserDetails user) {
         try {
-            // Get the invoice HTML document
             Document doc = Jsoup.connect(invoiceUrl).get();
-
-            // Check if the invoice already exists based on the 'chave'
             String invoiceChave = doc.getElementsByClass("chave").text();
-            Optional<Invoice> existingInvoice = invoiceRepository.findByChave(invoiceChave);
-            if (existingInvoice.isPresent()) {
-                logger.error("Invoice with chave '{}' already exists. Throwing exception.", invoiceChave);
+
+            if (invoiceRepository.findByChave(invoiceChave).isPresent()) {
+                logger.error("Invoice with chave '{}' already exists.", invoiceChave);
                 throw new InvoiceAlreadyProcessedException();
             }
 
-            String a = doc.selectFirst("span.totalNumb.txtMax").text().trim();
-            Double totalPrice = parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim());
-
-            // TODO: extract the issuance date from the doc
-            LocalDateTime issuanceDate = LocalDateTime.now();
-
-            // Create or fetch the store
-            Store store = createOrFetchStore(doc);
-
-            // Create the invoice
             Invoice invoice = new Invoice();
-            invoice.setStore(store);
-            invoice.setUser(user);
             invoice.setChave(invoiceChave);
-            invoice.setIssuanceDate(issuanceDate);
-            invoice.setTotalPrice(totalPrice);
+            invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
+            invoice.setIssuanceDate(extractIssuanceDate(doc));
+            invoice.setStore(createOrFetchStore(doc));
+            invoice.setUser(user);
 
-            // Process the invoice items
             processInvoiceItems(doc, invoice);
-
             return invoiceRepository.save(invoice);
-
         } catch (IOException e) {
             logger.error("Error fetching invoice from URL: " + invoiceUrl, e);
             throw new RuntimeException("Error fetching invoice details", e);
         }
+    }
+
+    private LocalDateTime extractIssuanceDate(Document doc) {
+        Element element = doc.selectFirst("div[data-role=collapsible] ul li");
+        if (element != null) {
+            Matcher matcher = DATE_PATTERN.matcher(element.text());
+            if (matcher.find()) {
+                return LocalDateTime.parse(matcher.group(), DATE_FORMATTER);
+            }
+        }
+        throw new InvoiceParseErrorException("Could not find the date");
     }
 
     private Store createOrFetchStore(Document doc) {
@@ -87,6 +88,7 @@ public class InvoiceService {
         Store store = new Store();
         store.setDocument(storeDocument);
         store.setName(storeName);
+
         return storeService.checkStoreDocAndSave(store);
     }
 
@@ -95,35 +97,18 @@ public class InvoiceService {
 
         for (Element row : rows) {
             InvoiceItem invoiceItem = new InvoiceItem();
-            String productName = extractText(row, "span.txtTit");
-            String quantityText = extractText(row, "span.Rqtd").replace("Qtde.:", "").trim();
-            String unit = extractText(row, "span.RUN").replace("UN:", "").trim();
-            String unitPriceText = extractText(row, "span.RvlUnit").replace("Vl. Unit.:", "").trim();
-            String totalPriceText = extractText(row, "span.valor");
-
-            invoiceItem.setUnit(unit);
-            invoiceItem.setQuantity(parseDouble(quantityText));
-            invoiceItem.setUnitPrice(parseDouble(unitPriceText));
-            invoiceItem.setTotalPrice(parseDouble(totalPriceText));
-
-            Optional<Product> product = productService.findByName(productName);
-            if (product.isEmpty()) {
-                Product newProduct = new Product();
-                newProduct.setName(productName);
-                newProduct = productService.save(newProduct);
-                invoiceItem.setProduct(newProduct);
-            } else {
-                invoiceItem.setProduct(product.get());
-            }
-
+            invoiceItem.setUnit(extractText(row, "span.RUN").replace("UN:", "").trim());
+            invoiceItem.setQuantity(parseDouble(extractText(row, "span.Rqtd").replace("Qtde.:", "").trim()));
+            invoiceItem.setUnitPrice(parseDouble(extractText(row, "span.RvlUnit").replace("Vl. Unit.:", "").trim()));
+            invoiceItem.setTotalPrice(parseDouble(extractText(row, "span.valor")));
             invoiceItem.setInvoice(invoice);
+            invoiceItem.setProduct(productService.getOrCreateProduct(extractText(row, "span.txtTit")));
 
             invoiceItemRepository.save(invoiceItem);
-
         }
     }
 
-    public List<Invoice> findAll(){
+    public List<Invoice> findAll() {
         return invoiceRepository.findAll();
     }
 
@@ -136,10 +121,8 @@ public class InvoiceService {
         try {
             return Double.parseDouble(value.replace(",", "."));
         } catch (NumberFormatException e) {
-            logger.warn("Failed to parse double value: " + value);
-            return 0.0; // or consider throwing an exception depending on your needs
+            logger.warn("Failed to parse double value: {}", value);
+            return 0.0;
         }
     }
-
-
 }

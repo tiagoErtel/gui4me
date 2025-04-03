@@ -1,5 +1,4 @@
 @import gui4me.invoice.Invoice
-@import gui4me.product.ProductSearchResultDTO
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 @import java.util.List

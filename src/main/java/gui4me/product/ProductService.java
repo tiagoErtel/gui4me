@@ -19,7 +19,12 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<ProductSearchResultDTO> findAllByName(String name) {
-            return productRepository.findAllByName(name);
+    public List<ProductSearchResultDTO> findLatestProductByNameForAllStores(String name) {
+            return productRepository.findLatestProductByNameForAllStores(name);
+    }
+
+    public Product getOrCreateProduct(String productName) {
+        return findByName(productName)
+                .orElseGet(() -> save(new Product(productName)));
     }
 }
