@@ -14,47 +14,55 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <div class="min-h-screen bg-gray-100">
-        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Invoices List</h2>
+    <div class="py-6 px-4 sm:px-6 lg:px-8 bg-gray-100">
+        <div class="w-full max-w-3xl p-6 bg-white rounded-lg shadow-md">
+            <div class="mb-6 text-center">
+                <h2 class="text-2xl font-bold text-gray-900">Invoices List</h2>
+                <p class="text-sm text-gray-600">Details of your invoices</p>
+            </div>
 
-                <div class="mt-6">
-                    <!-- Results Section -->
-                    <table class="w-full text-left border-collapse">
-                        <thead>
+            <div class="mb-4">
+                <a href="/dashboard"
+                   class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead class="bg-gray-50 text-gray-700 uppercase">
+                    <tr>
+                        <th class="px-4 py-3">Store Name</th>
+                        <th class="px-4 py-3">Total Price</th>
+                        <th class="px-4 py-3">Purchase Date</th>
+                        <th class="px-4 py-3">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                    @if (invoiceList == null || invoiceList.isEmpty())
                         <tr>
-                            <th class="border-b py-2 px-4">Invoice Key</th>
-                            <th class="border-b py-2 px-4">Store Name</th>
-                            <th class="border-b py-2 px-4">Total Price</th>
-                            <th class="border-b py-2 px-4">Purchase Date</th>
+                            <td colspan="5" class="text-center py-6 text-gray-500">
+                                No invoices found.
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        @if (invoiceList == null)
-                            <tr>
-                                <td colspan="4" class="text-center text-gray-500 py-4">
-                                    <h3 class="text-lg font-semibold">No products found</h3>
-                                    <p>Try searching for a different product.</p>
+                    @else
+                        @for (Invoice invoice : invoiceList)
+                            <tr class="border-t">
+                                <td class="px-4 py-2">${invoice.getStore().getName()}</td>
+                                <td class="px-4 py-2">R$ ${invoice.getTotalPrice()}</td>
+                                <td class="px-4 py-2">${invoice.getFormattedIssuanceDate()}</td>
+                                <td class="px-4 py-2">
+                                    <a href="/invoice/item/list?invoiceId=${invoice.getId()}"
+                                       class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 inline-block text-center">
+                                        View Items
+                                    </a>
                                 </td>
                             </tr>
-                        @else
-                            @for (Invoice invoice : invoiceList)
-                                <tr>
-                                    <td class="py-2 px-4">${invoice.getChave()}</td>
-                                    <td class="py-2 px-4">${invoice.getStore().getName()}</td>
-                                    <td class="py-2 px-4">R$ ${invoice.getTotalPrice()}</td>
-                                    <td class="py-2 px-4">${invoice.getFormattedIssuanceDate()}</td>
-                                    <td class="py-2 px-4">
-                                        <a href="/invoice/item/list?invoiceId=${invoice.getId()}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 inline-block text-center">View Items</a>
-                                    </td>
-                                </tr>
-                            @endfor
-                        @endif
-                        </tbody>
-                    </table>
-                </div>
+                        @endfor
+                    @endif
+                    </tbody>
+                </table>
             </div>
-        </main>
+        </div>
     </div>
 `)

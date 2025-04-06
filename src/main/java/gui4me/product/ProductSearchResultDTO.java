@@ -9,7 +9,7 @@ public class ProductSearchResultDTO {
     private String storeName;
     private LocalDateTime lastIssuanceDate;
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public ProductSearchResultDTO(String productName, Double unitPrice, String storeName, LocalDateTime lastIssuanceDate) {
         this.productName = productName;
