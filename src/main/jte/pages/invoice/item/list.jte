@@ -15,52 +15,52 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <div class="min-h-screen bg-gray-100">
-        <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Invoices Items List</h2>
-
-                <!-- Botão para voltar -->
-                <div class="mb-4">
-                    <a href="/invoice/list" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
-                        ← Back to Invoices
-                    </a>
-                </div>
-
-                <div class="mt-6">
-                    <!-- Results Section -->
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                        <tr>
-                            <th class="border-b py-2 px-4">Product Name</th>
-                            <th class="border-b py-2 px-4">Quantity</th>
-                            <th class="border-b py-2 px-4">Unit</th>
-                            <th class="border-b py-2 px-4">Unit Price</th>
-                            <th class="border-b py-2 px-4">Total Price</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @if (invoiceItemsList == null)
-                            <tr>
-                                <td colspan="4" class="text-center text-gray-500 py-4">
-                                    <h3 class="text-lg font-semibold">No items found</h3>
-                                </td>
-                            </tr>
-                        @else
-                            @for (InvoiceItem invoiceItem : invoiceItemsList)
-                                <tr>
-                                    <td class="py-2 px-4">${invoiceItem.getProduct().getName()}</td>
-                                    <td class="py-2 px-4">${invoiceItem.getQuantity()}</td>
-                                    <td class="py-2 px-4">${invoiceItem.getUnit()}</td>
-                                    <td class="py-2 px-4">R$ ${invoiceItem.getUnitPrice()}</td>
-                                    <td class="py-2 px-4">R$ ${invoiceItem.getTotalPrice()}</td>
-                                </tr>
-                            @endfor
-                        @endif
-                        </tbody>
-                    </table>
-                </div>
+    <div class="bg-gray-100 py-6 px-4 sm:px-6 lg:px-8">
+        <div class="w-full max-w-3xl p-6 bg-white rounded-lg shadow-md">
+            <div class="mb-6 text-center">
+                <h2 class="text-2xl font-bold text-gray-900">Invoice Items</h2>
+                <p class="text-sm text-gray-600">Details of the selected invoice</p>
             </div>
-        </main>
+
+            <div class="mb-4">
+                <a href="/invoice/list"
+                   class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm">
+                    ← Back to Invoices
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead class="bg-gray-50 text-gray-700 uppercase">
+                    <tr>
+                        <th class="px-4 py-3">Product Name</th>
+                        <th class="px-4 py-3">Quantity</th>
+                        <th class="px-4 py-3">Unit</th>
+                        <th class="px-4 py-3">Unit Price</th>
+                        <th class="px-4 py-3">Total Price</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-gray-700">
+                    @if (invoiceItemsList == null || invoiceItemsList.isEmpty())
+                        <tr>
+                            <td colspan="5" class="text-center py-6 text-gray-500">
+                                No items found.
+                            </td>
+                        </tr>
+                    @else
+                        @for (InvoiceItem item : invoiceItemsList)
+                            <tr class="border-t">
+                                <td class="px-4 py-2">${item.getProduct().getName()}</td>
+                                <td class="px-4 py-2">${item.getQuantity()}</td>
+                                <td class="px-4 py-2">${item.getUnit()}</td>
+                                <td class="px-4 py-2">R$ ${item.getUnitPrice()}</td>
+                                <td class="px-4 py-2">R$ ${item.getTotalPrice()}</td>
+                            </tr>
+                        @endfor
+                    @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 `)
