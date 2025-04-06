@@ -38,7 +38,7 @@ public class Invoice {
     @NotNull
     private Double totalPrice;
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public Double getTotalPrice() {
         return totalPrice;
