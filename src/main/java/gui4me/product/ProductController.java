@@ -37,7 +37,7 @@ public class ProductController {
         }
 
         if (productName != null && !productName.isBlank()) {
-            List<ProductSearchResultDTO> pr = productService.findAllByName(productName);
+            List<ProductSearchResultDTO> pr = productService.findLatestProductByNameForAllStores(productName);
             model.addAttribute("productList", pr);
         }
 

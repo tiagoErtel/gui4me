@@ -20,6 +20,13 @@ content = @`
             <div class="bg-white shadow rounded-lg p-6">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-6">Invoices Items List</h2>
 
+                <!-- Botão para voltar -->
+                <div class="mb-4">
+                    <a href="/invoice/list" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                        ← Back to Invoices
+                    </a>
+                </div>
+
                 <div class="mt-6">
                     <!-- Results Section -->
                     <table class="w-full text-left border-collapse">
@@ -45,8 +52,8 @@ content = @`
                                     <td class="py-2 px-4">${invoiceItem.getProduct().getName()}</td>
                                     <td class="py-2 px-4">${invoiceItem.getQuantity()}</td>
                                     <td class="py-2 px-4">${invoiceItem.getUnit()}</td>
-                                    <td class="py-2 px-4">${invoiceItem.getUnitPrice()}</td>
-                                    <td class="py-2 px-4">${invoiceItem.getTotalPrice()}</td>
+                                    <td class="py-2 px-4">R$ ${invoiceItem.getUnitPrice()}</td>
+                                    <td class="py-2 px-4">R$ ${invoiceItem.getTotalPrice()}</td>
                                 </tr>
                             @endfor
                         @endif
