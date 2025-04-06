@@ -43,7 +43,7 @@ content = @`
                                 <tr>
                                     <td class="py-2 px-4">${invoice.getChave()}</td>
                                     <td class="py-2 px-4">${invoice.getStore().getName()}</td>
-                                    <td class="py-2 px-4">${invoice.getTotalPrice()}</td>
+                                    <td class="py-2 px-4">R$ ${invoice.getTotalPrice()}</td>
                                     <td class="py-2 px-4">${invoice.getFormattedIssuanceDate()}</td>
                                     <td class="py-2 px-4">
                                         <a href="/invoice/item/list?invoiceId=${invoice.getId()}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 inline-block text-center">View Items</a>

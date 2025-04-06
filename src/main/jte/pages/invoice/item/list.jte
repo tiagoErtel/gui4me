@@ -52,8 +52,8 @@ content = @`
                                     <td class="py-2 px-4">${invoiceItem.getProduct().getName()}</td>
                                     <td class="py-2 px-4">${invoiceItem.getQuantity()}</td>
                                     <td class="py-2 px-4">${invoiceItem.getUnit()}</td>
-                                    <td class="py-2 px-4">${invoiceItem.getUnitPrice()}</td>
-                                    <td class="py-2 px-4">${invoiceItem.getTotalPrice()}</td>
+                                    <td class="py-2 px-4">R$ ${invoiceItem.getUnitPrice()}</td>
+                                    <td class="py-2 px-4">R$ ${invoiceItem.getTotalPrice()}</td>
                                 </tr>
                             @endfor
                         @endif
