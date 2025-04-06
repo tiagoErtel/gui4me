@@ -59,7 +59,7 @@ content = @`
                         @for (ProductSearchResultDTO product : productList)
                             <tr>
                                 <td class="py-2 px-4">${product.getProductName()}</td>
-                                <td class="py-2 px-4">${product.getUnitPrice()}</td>
+                                <td class="py-2 px-4">R$ ${product.getUnitPrice()}</td>
                                 <td class="py-2 px-4">${product.getStoreName()}</td>
                                 <td class="py-2 px-4">${product.getFormattedLastIssuanceDate()}</td>
                             </tr>
