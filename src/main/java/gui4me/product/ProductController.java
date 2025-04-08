@@ -22,20 +22,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/search")
-    public String searchProduct(Authentication authentication, HttpServletRequest request, Model model, Message message, String productName) {
-        if (authentication.getPrincipal() instanceof UserDetails userDetails) {
-            model.addAttribute("username", userDetails.getUsername());
-            model.addAttribute("authorities", userDetails.getAuthorities());
-        }
-
-        model.addAttribute("message", message);
-
-        // Add CSRF token
-        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrf != null) {
-            model.addAttribute("csrf", csrf);
-        }
-
+    public String searchProduct(Model model, String productName) {
         if (productName != null && !productName.isBlank()) {
             List<ProductSearchResultDTO> pr = productService.findLatestProductByNameForAllStores(productName);
             model.addAttribute("productList", pr);
