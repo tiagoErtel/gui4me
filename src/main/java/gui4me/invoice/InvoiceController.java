@@ -68,21 +68,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String list(Authentication authentication, HttpServletRequest request, Model model, Message message) {
-
-        if (authentication.getPrincipal() instanceof UserDetails userDetails) {
-            model.addAttribute("username", userDetails.getUsername());
-            model.addAttribute("authorities", userDetails.getAuthorities());
-        }
-
-        model.addAttribute("message", message);
-
-        // Add CSRF token
-        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrf != null) {
-            model.addAttribute("csrf", csrf);
-        }
-
+    public String list(Model model) {
         List<Invoice> invoiceList = invoiceService.findAll();
 
         model.addAttribute("invoiceList", invoiceList);
