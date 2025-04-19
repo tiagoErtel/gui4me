@@ -27,21 +27,7 @@ public class InvoiceController {
     InvoiceService invoiceService;
 
     @GetMapping("/register")
-    public String register(Authentication authentication, HttpServletRequest request, Model model, Message message) {
-
-        if (authentication.getPrincipal() instanceof UserDetails userDetails) {
-            model.addAttribute("username", userDetails.getUsername());
-            model.addAttribute("authorities", userDetails.getAuthorities());
-        }
-
-        model.addAttribute("message", message);
-
-        // Add CSRF token
-        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrf != null) {
-            model.addAttribute("csrf", csrf);
-        }
-
+    public String register() {
         return "pages/invoice/register";
     }
 

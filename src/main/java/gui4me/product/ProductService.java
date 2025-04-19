@@ -27,4 +27,12 @@ public class ProductService {
         return findByName(productName)
                 .orElseGet(() -> save(new Product(productName)));
     }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
+    public Product findById(String id) {
+        return productRepository.findById(id).orElseThrow();
+    }
 }

@@ -1,5 +1,6 @@
 package gui4me.custom_user_details;
 
+import gui4me.shopping_list.ShoppingList;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
