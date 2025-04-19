@@ -26,4 +26,8 @@ public class ShoppingListService {
     public ShoppingList findById(String id) {
         return shoppingListRepository.findById(id).orElseThrow();
     }
+
+    public void delete(ShoppingList shoppingList) {
+        shoppingListRepository.delete(shoppingList);
+    }
 }

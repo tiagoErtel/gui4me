@@ -66,11 +66,21 @@ content = @`
                         @for (ShoppingList shoppingList : shoppingLists)
                             <tr class="border-t">
                                 <td class="px-4 py-2">${shoppingList.getName()}</td>
-                                <td class="px-4 py-2 text-center">
-                                    <a href="/shopping-list/${shoppingList.getId()}/item"
-                                       class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 inline-block text-sm">
-                                        View/Manage Items
-                                    </a>
+                                <td class="px-4 py-2">
+                                    <div class="flex justify-center items-center gap-2">
+                                        <a href="/shopping-list/${shoppingList.getId()}/item"
+                                           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm shadow-sm transition-all">
+                                            Manage
+                                        </a>
+                                        <form action="/shopping-list/delete" method="POST">
+                                            ${csrfHiddenInput}
+                                            <input type="hidden" name="shoppingList" value="${shoppingList.getId()}" />
+                                            <button type="submit"
+                                                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 text-sm shadow-sm transition-all">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endfor
