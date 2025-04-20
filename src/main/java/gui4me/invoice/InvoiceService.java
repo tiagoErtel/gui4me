@@ -112,6 +112,10 @@ public class InvoiceService {
         return invoiceRepository.findAll();
     }
 
+    public List<Invoice> findAllByUser(CustomUserDetails user) {
+        return invoiceRepository.findAllByUser(user);
+    }
+
     private String extractText(Element row, String selector) {
         Element element = row.selectFirst(selector);
         return element != null ? element.text() : "";
