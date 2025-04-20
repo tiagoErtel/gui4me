@@ -35,6 +35,11 @@ content = @`
                     <p class="text-gray-600 mt-2">List your invoices and drill down the information.</p>
                 </a>
 
+                <a href="/shopping-list" class="block p-6 bg-gray-50 shadow rounded-lg hover:shadow-md transition">
+                    <h2 class="text-lg font-medium text-gray-800">Your Shopping Lists</h2>
+                    <p class="text-gray-600 mt-2">Add and manage your shopping lists</p>
+                </a>
+
                 <a href="/reports/view" class="block p-6 bg-gray-50 shadow rounded-lg hover:shadow-md transition">
                     <h2 class="text-lg font-medium text-gray-800">View Reports</h2>
                     <p class="text-gray-600 mt-2">Analyze your data with detailed reports.</p>
