@@ -2,6 +2,7 @@ package gui4me.shopping_list;
 
 import gui4me.custom_user_details.CustomUserDetails;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "shopping_lists")
@@ -13,8 +14,10 @@ public class ShoppingList {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
+    @NotNull
 	private CustomUserDetails user;
 
+    @NotNull
     private String name;
 
     public String getId() {

@@ -32,18 +32,6 @@ public class CustomUserDetails implements UserDetails {
 
 	private String role = "ROLE_USER";
 
-	@OneToMany
-	@JoinColumn(name = "user_id")
-	private List<ShoppingList> shoppingList;
-
-	public List<ShoppingList> getShoppingList() {
-		return shoppingList;
-	}
-
-	public void setShoppingList(List<ShoppingList> shoppingList) {
-		this.shoppingList = shoppingList;
-	}
-
 	public String getId() {
 		return id;
 	}
