@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/gui4me
+    username: admin
+    password: 1234
   application:
     name: gui4me
   jpa:

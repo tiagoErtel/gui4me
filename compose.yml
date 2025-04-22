@@ -1,6 +1,6 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+  db:
+    image: 'postgis/postgis:latest'
     environment:
       - 'POSTGRES_DB=gui4me'
       - 'POSTGRES_USER=admin'

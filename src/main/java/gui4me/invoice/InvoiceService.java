@@ -13,6 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.jsoup.Jsoup;
+import org.locationtech.jts.geom.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,9 +86,15 @@ public class InvoiceService {
         String storeName = doc.getElementsByClass("txtTopo").text();
         String storeDocument = doc.getElementsContainingOwnText("CNPJ:").text().replace("CNPJ:", "").strip();
 
+        String address = storeService.getFullAddressFromCnpj(storeDocument.replaceAll("[^0-9]", ""));
+
+        Point location = storeService.geocodeAddress(address);
+
         Store store = new Store();
         store.setDocument(storeDocument);
         store.setName(storeName);
+        store.setAddress(address);
+        store.setLocation(location);
 
         return storeService.checkStoreDocAndSave(store);
     }
