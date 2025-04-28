@@ -7,10 +7,11 @@ spring:
 
 gg:
   jte:
-    developmentMode: true
+    developmentMode: false
+    usePrecompiledTemplates: true
 
 logging:
   level:
     org:
       springframework:
-        security: ERROR #change to DEBUG or INFO for more information about spring security
+        security: DEBUG
