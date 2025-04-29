@@ -1,6 +1,5 @@
 package gui4me.custom_user_details;
 
-import gui4me.shopping_list.ShoppingList;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -31,18 +29,6 @@ public class CustomUserDetails implements UserDetails {
 	private String password;
 
 	private String role = "ROLE_USER";
-
-	@OneToMany
-	@JoinColumn(name = "user_id")
-	private List<ShoppingList> shoppingList;
-
-	public List<ShoppingList> getShoppingList() {
-		return shoppingList;
-	}
-
-	public void setShoppingList(List<ShoppingList> shoppingList) {
-		this.shoppingList = shoppingList;
-	}
 
 	public String getId() {
 		return id;
