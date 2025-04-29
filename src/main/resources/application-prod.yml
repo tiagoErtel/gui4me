@@ -14,11 +14,11 @@ spring:
 
 gg:
   jte:
-    developmentMode: true
-    usePrecompiledTemplates: false
+    developmentMode: false
+    usePrecompiledTemplates: true
 
 logging:
   level:
     org:
       springframework:
-        security: DEBUG
+        security: ERROR

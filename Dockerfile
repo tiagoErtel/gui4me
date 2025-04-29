@@ -8,5 +8,7 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:23-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
+# Set profile to prod
+ENV SPRING_PROFILES_ACTIVE=prod
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
