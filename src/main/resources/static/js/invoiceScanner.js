@@ -5,7 +5,7 @@ function onScanSuccess(decodedText, decodedResult) {
 }
 
 function onScanFailure(error) {
-    // optionally log scan failure for debugging
+    console.log(error);
 }
 
 const html5QrCode = new Html5Qrcode("reader");

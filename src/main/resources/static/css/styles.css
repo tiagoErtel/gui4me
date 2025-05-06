@@ -1,26 +1,275 @@
-body {
+:root {
+  --purple: #bb86fc;
+  --purple-light: #bb86fc4D;
+  --purple-medium: #bb86fc80;
+  --green: #04AA6D;
+  --green-light: #04AA6D4D;
+  --red: #cf6679;
+  --red-light: #cf66794D;
+  --background-light: #242424;
+  --background-dark: #181818;
+  --blue: #82aaff;
+}
+
+* {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Add a black background color to the top navigation */
-.navbar {
-    background-color: #333;
-    overflow: hidden;
-}
-
-/* Style the links inside the navigation bar */
-.navbar a {
-    float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
+    padding: 0;
+    box-sizing: border-box;
     text-decoration: none;
-    font-size: 17px;
 }
 
-/* Change the color of links on hover */
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
+body {
+    background-color: var(--background-light);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-text: center;
+}
+
+input[type=text],
+input[type=email],
+input[type=number],
+input[type=password],
+select {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 1rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    transition: outline 0.15s ease;
+}
+
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus {
+    outline: 3px solid var(--purple-dark);
+}
+
+.input-error {
+    outline: 3px solid var(--red-dark);
+}
+
+
+.panel {
+    background-color: var(--background-dark);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+img {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+}
+
+table {
+    margin-top: 2rem;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 1rem;
+}
+
+.table-row {
+    transition: background-color 0.2s;
+}
+
+.table-row:hover {
+    background-color: var(--purple-light);
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+h1, h2, h3 {
+    color: var(--purple);
+}
+
+a {
+    color: var(--blue);
+}
+
+nav {
+    height: 4rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 5%;
+    background-color: var(--background-dark);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--purple);
+}
+
+.message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.error {
+    background-color: var(--red);
+    color: #f0f0f0;
+}
+
+.success {
+    background-color: var(--green);
+    color: #f0f0f0;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.card {
+    color: #e0e0e0;
+    background-color: var(--background-light);
+    border: 2px solid var(--purple-medium);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 240px;
+    padding: 1rem;
+    text-align: center;
+    justify-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px #bb86fc;
+    transform: translateY(-5px);
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.button {
+    border: none;
+    border-radius: 16px;
+    padding: 1rem;
+    margin: 1rem;
+    text-align: center;
+    display: inline-block;
+    min-width: 8rem;
+    color: #3a006a;
+    font-size: 16px;
+    transition: background-color 0.2s ease outline 0.2s ease;
+}
+
+.btn-purple {
+    background-color: var(--purple);
+}
+
+.btn-purple:hover {
+    background-color: var(--purple-light);
+    outline: 2px solid var(--purple);
+}
+
+.btn-green {
+    background-color: var(--green);
+}
+
+.btn-green:hover {
+    background-color: var(--green-light);
+    outline: 2px solid #04AA6D;
+}
+
+.btn-red {
+    background-color: var(--red);
+}
+
+.btn-red:hover {
+    background-color: var(--red-light);
+    outline: 2px solid #cf6679;
+}
+
+.centered-content {
+    margin-top: 10%;
+}
+
+.back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    border-radius: 50%;
+    width: 4rem;
+    height: 4rem;
+    min-width: 0px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+    list-style: none;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 8rem;
+    background-color: var(--background-dark);
+    border: 2px solid var(--purple);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 0.25rem 0;
+    margin-top: 0.25rem;
+}
+
+.dropdown-menu li {
+    list-style: none;
+    margin: 0.25rem 0;
+}
+
+.dropdown-menu li:hover {
+}
+
+.actions-column {
+  width: 40px; /* or adjust to fit your icon */
+  text-align: center;
+  padding: 0;
 }
