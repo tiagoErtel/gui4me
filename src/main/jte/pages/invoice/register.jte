@@ -13,9 +13,13 @@ username = username,
 content = @`
     <h2>Register Purchase</h2>
 
-    <br>
+    <a href="/dashboard" class="button back-button btn-purple">
+        ←
+    </a>
 
-    <div id="reader"></div>
+    <br>
+    
+    <div id="reader" class="mt-2"></div>
 
     <form action="/invoice/register" method="POST" id="invoiceForm">
         ${csrfHiddenInput}
