@@ -16,7 +16,7 @@ Html5Qrcode.getCameras().then(cameras => {
             cameras[0].id,
             {
                 fps: 10,    // frames per second
-                qrbox: 250  // square area to scan
+                qrbox: document.getElementById('reader').clientWidth*0.6// square area to scan
             },
             onScanSuccess,
             onScanFailure
