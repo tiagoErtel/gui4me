@@ -14,40 +14,36 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <div>
-        <h2>Invoices List</h2>
-        <p>Details of your invoices</p>
-    </div>
+    <section class="list-container">
+        <div>
+            <a href="/dashboard" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
 
-    <a href="/dashboard"
-       class="button btn-purple back-button">
-        ←
-    </a>
+            <div class="list-header">
+                <h2 class="title">Invoices List</h2>
+                <p class="subtitle">Explore the details of your invoices</p>
+            </div>
+        </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Store Name</th>
-            <th>Total Price</th>
-            <th>Purchase Date</th>
-        </tr>
-        </thead>
-        <tbody>
         @if (invoiceList == null || invoiceList.isEmpty())
-            <tr>
-                <td colspan="5">
-                    No invoices found.
-                </td>
-            </tr>
+            <div class="no-items">
+                <p>No invoices found.</p>
+            </div>
         @else
-            @for (Invoice invoice : invoiceList)
-                <tr class="table-row clickable" onclick="location.assign('/invoice/item/list?invoiceId=${invoice.getId()}')">
-                    <td>${invoice.getStore().getName()}</td>
-                    <td>R$ ${invoice.getTotalPrice()}</td>
-                    <td>${invoice.getFormattedIssuanceDate()}</td>
-                </tr>
-            @endfor
+            <div class="card-list">
+                @for (Invoice invoice : invoiceList)
+                    <div class="card-item" onclick="location.assign('/invoice/item/list?invoiceId=${invoice.getId()}')">
+                        <div class="card-content">
+                            <h3 class="card-title">${invoice.getStore().getName()}</h3>
+                            <p class="card-details">R$ ${invoice.getTotalPrice()}</p>
+                            <p class="card-details"> ${invoice.getFormattedIssuanceDate()}</p>
+                        </div>
+
+                    </div>
+                @endfor
+            </div>
         @endif
-        </tbody>
-    </table>
+    </section>
 `)
+

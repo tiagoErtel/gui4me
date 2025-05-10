@@ -14,71 +14,90 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <div>
-        <h2>Shopping List</h2>
-        <p>Your Shopping Lists</p>
-    </div>
-
-    <a href="/dashboard"
-       class="button btn-purple back-button">
-        ←
+    <a href="/dashboard" class="back-button">
+        <i class="fas fa-arrow-left"></i>
     </a>
 
-    <br>
+    <div class="list-header">
+        <h2 class="title">Shopping Lists</h2>
+        <p class="subtitle">Your saved shopping lists</p>
+    </div>
 
-    <h3>Create a New Shopping List</h3>
-    <form action="/shopping-list/create" method="post">
-        ${csrfHiddenInput}
-        <input name="name" type="text" required
-               placeholder="Give your shopping list a name"/>
+    <div id="show-form-btn" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+    </div>
 
-        <button type="submit" class="button btn-purple">
-            Create
-        </button>
-    </form>
+    <div id="new-list-form" class="panel form-card hidden">
+        <div id="cancel-form-btn" class="back-button">
+            <i class="fas fa-times"></i>
+        </div>
 
+        <h4 class="title">Create a New Shopping List</h4>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th class="actions-column"></th>
-        </tr>
-        </thead>
-        <tbody>
-        @if (shoppingLists == null || shoppingLists.isEmpty())
-            <tr>
-                <td colspan="2">
-                    No shopping list created yet.
-                </td>
-            </tr>
-        @else
+        <form action="/shopping-list/create" method="post">
+            ${csrfHiddenInput}
+            <input name="name" type="text" required placeholder="Give your shopping list a name" />
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+
+    @if (shoppingLists == null || shoppingLists.isEmpty())
+        <div class="no-items">
+            <p>No shopping lists created yet.</p>
+        </div>
+    @else
+        <div class="card-list">
             @for (ShoppingList shoppingList : shoppingLists)
 
-                <tr class="table-row clickable">
-                    <td onclick="location.assign('/shopping-list/${shoppingList.getId()}/item')">
-                        ${shoppingList.getName()}
-                    </td>
-                    <td>
-                        <details class="dropdown">
-                            <summary class="dropdown-toggle">
-                                &#x22EE;
-                            </summary>
-                            <ul class="dropdown-menu">
-                                <li>Rename</li>
-                                <li class="clickable table-row">
-                                    <form id="delete" action="/shopping-list/delete" method="post">
-                                        ${csrfHiddenInput}
-                                        <input type="hidden" name="shoppingList" value="${shoppingList.getId()}">
-                                        <span onclick="document.getElementById('delete').submit()">Delete</span>
-                                    </form>
-                                </li>
-                            </ul>
-                        </details>
-                    </td>
-                </tr>
+                <div class="card-item">
+                    <div class="card-content" onclick="location.assign('/shopping-list/${shoppingList.getId()}/item')">
+                        <h3 class="card-title">${shoppingList.getName()}</h3>
+                    </div>
+
+                    <details class="dropdown">
+                        <summary class="dropdown-toggle">&#x22EE;</summary>
+                        <ul class="dropdown-menu">
+                            <li>Rename</li>
+                            <li>
+                                <form id="delete-${shoppingList.getId()}" action="/shopping-list/delete" method="post">
+                                    ${csrfHiddenInput}
+                                    <input type="hidden" name="shoppingList" value="${shoppingList.getId()}">
+                                    <span onclick="document.getElementById('delete-${shoppingList.getId()}').submit()">Delete</span>
+                                </form>
+                            </li>
+                        </ul>
+                    </details>
+                </div>
+
             @endfor
-        @endif
-        </tbody>
-    </table>
+        </div>
+    @endif
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const showBtn = document.getElementById('show-form-btn');
+            const cancelBtn = document.getElementById('cancel-form-btn');
+            const form = document.getElementById('new-list-form');
+
+            showBtn.addEventListener('click', () => {
+                form.classList.remove('hidden');
+                showBtn.classList.add('hidden');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                form.classList.add('hidden');
+                showBtn.classList.remove('hidden');
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('click', function(event) {
+            document.querySelectorAll('details.dropdown').forEach(dropdown => {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.removeAttribute('open');
+                }
+            });
+        });
+    </script>
 `)

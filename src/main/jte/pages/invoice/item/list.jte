@@ -14,44 +14,35 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <div>
-        <h2>Invoice Items</h2>
-        <p>Details of the selected invoice</p>
-    </div>
+    <section class="list-container">
+        <div>
+            <a href="/invoice/list" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
 
-    <a href="/invoice/list"
-       class="button btn-purple back-button">
-        ←
-    </a>
+            <div class="list-header">
+                <h2 class="title">Invoice Items</h2>
+                <p class="subtitle">Details of the selected invoice</p>
+            </div>
+        </div>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Unit</th>
-            <th>Unit Price</th>
-            <th>Total Price</th>
-        </tr>
-        </thead>
-        <tbody>
         @if (invoiceItemsList == null || invoiceItemsList.isEmpty())
-            <tr>
-                <td colspan="5">
-                    No items found.
-                </td>
-            </tr>
+            <div class="no-items">
+                <p>No items found.</p>
+            </div>
         @else
-            @for (InvoiceItem item : invoiceItemsList)
-                <tr class="table-row">
-                    <td>${item.getProduct().getName()}</td>
-                    <td>${item.getQuantity()}</td>
-                    <td>${item.getUnit()}</td>
-                    <td>R$ ${item.getUnitPrice()}</td>
-                    <td>R$ ${item.getTotalPrice()}</td>
-                </tr>
-            @endfor
+            <div class="card-list">
+                @for (InvoiceItem item : invoiceItemsList)
+                    <div class="card-item">
+                        <div class="card-content">
+                            <h3 class="card-title">${item.getProduct().getName()}</h3>
+                            <p class="card-details">${item.getQuantity()} ${item.getUnit()}</p>
+                            <p class="card-details">Unit: R$ ${item.getUnitPrice()}</p>
+                            <p class="card-details">Total: R$ ${item.getTotalPrice()}</p>
+                        </div>
+                    </div>
+                @endfor
+            </div>
         @endif
-        </tbody>
-    </table>
+    </section>
 `)
