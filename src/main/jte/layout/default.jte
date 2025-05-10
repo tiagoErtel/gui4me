@@ -11,11 +11,9 @@
 </head>
 <body>
 
-<main>
-    <div class="centered-content panel">
-        ${content}
-    </div>
+<main class="main-container center">
+    ${content}
 </main>
-<script src="/js/removeErrorOutline.js" type="text/javascript"></script>
+<script src="/js/removeInputErrorStyling.js" type="text/javascript"></script>
 </body>
 </html>

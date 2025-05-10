@@ -11,27 +11,28 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <h2>Register Purchase</h2>
-
-    <a href="/dashboard" class="button back-button btn-purple">
-        ←
+    <a href="/dashboard" class="back-button">
+        <i class="fas fa-arrow-left"></i>
     </a>
 
-    <br>
-    
-    <div id="reader" class="mt-2"></div>
+    <div class="list-header">
+        <h2 class="title">Register Purchase</h2>
+        <p class="subtitle">Scan the invoice or input the link</p>
+    </div>
 
-    <form action="/invoice/register" method="POST" id="invoiceForm">
+    <div id="reader"></div>
+
+    <form action="/invoice/register" method="POST" id="invoiceForm" class="mt-2">
         ${csrfHiddenInput}
-        <label for="invoiceUrl">
-            Or input the link to the invoice here:
-        </label>
+        <label for="invoiceUrl" class="label">Or input the link to the invoice here:</label>
         <input
                 type="text"
                 id="invoiceUrl"
                 name="invoiceUrl"
-                placeholder="Paste the invoice link here...">
-        <button type="submit" class="button btn-purple">
+                placeholder="Paste the invoice link here..."
+                required
+        />
+        <button type="submit" class="btn btn-primary">
             Submit Link
         </button>
     </form>

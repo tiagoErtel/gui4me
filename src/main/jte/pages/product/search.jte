@@ -14,52 +14,43 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <h2>Search Products</h2>
-
-    <a href="/dashboard" class="button btn-purple back-button">
-        ←
+    <a href="/dashboard" class="back-button">
+        <i class="fas fa-arrow-left"></i>
     </a>
 
-    <form action="/product/search" method="GET">
+    <div class="list-header">
+        <h2 class="title">Search Products</h2>
+        <p class="subtitle">Find items you've bought before</p>
+    </div>
+
+    <form action="/product/search" method="GET" class="panel form-card">
         <input
                 type="text"
                 name="productName"
                 placeholder="Search by product name..."
+                required
         />
-        <button class="button btn-purple"
-                type="submit"
-        >
+        <button class="btn btn-primary" type="submit">
             Search
         </button>
     </form>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>Unit Price</th>
-            <th>Store</th>
-            <th>Last Purchase Date</th>
-        </tr>
-        </thead>
-        <tbody>
-        @if (productList == null)
-            <tr>
-                <td colspan="4">
-                    <h3>No products found</h3>
-                    <p>Try searching for a different product.</p>
-                </td>
-            </tr>
-        @else
+    @if (productList == null || productList.isEmpty())
+        <div class="no-items">
+            <p>No products found. Try a different search term.</p>
+        </div>
+    @else
+        <div class="card-list">
             @for (ProductSearchResultDTO product : productList)
-                <tr>
-                    <td>${product.getProductName()}</td>
-                    <td>R$ ${product.getUnitPrice()}</td>
-                    <td>${product.getStoreName()}</td>
-                    <td>${product.getFormattedLastIssuanceDate()}</td>
-                </tr>
+                <div class="card-item">
+                    <div class="card-content">
+                        <h3 class="card-title">${product.getProductName()}</h3>
+                        <p class="card-details">R$ ${product.getUnitPrice()}</p>
+                        <p class="card-details">${product.getStoreName()}</p>
+                        <p class="card-details">${product.getFormattedLastIssuanceDate()}</p>
+                    </div>
+                </div>
             @endfor
-        @endif
-        </tbody>
-    </table>
+        </div>
+    @endif
 `)
