@@ -17,87 +17,105 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <h2>
-        Shopping List: ${shoppingList.getName()}
-    </h2>
-
-    <a href="/shopping-list" class="button back-button btn-purple">
-        ←
+    <a href="/shopping-list" class="back-button">
+        <i class="fas fa-arrow-left"></i>
     </a>
 
-    <br>
+    <div class="list-header">
+        <h2 class="title">Shopping List: ${shoppingList.getName()}</h2>
+        <p class="subtitle">Manage your items</p>
+    </div>
 
-    <h3>Add Item to the List</h3>
-    <form action="/shopping-list/${shoppingList.getId()}/item/save" method="POST">
-        ${csrfHiddenInput}
-        <input type="hidden" name="shoppingList" value="${shoppingList.getId()}"/>
+    <div id="show-form-btn" class="btn btn-primary">
+        <i class="fas fa-plus"></i>
+    </div>
 
-        <select id="product" name="product" required>
-            <option value="" selected disabled>Select a product to add to the list</option>
-            @for(Product product : productList)
-                <option value="${product.getId()}">${product.getName()}</option>
+    <div id="new-list-form" class="panel form-card hidden">
+        <div id="cancel-form-btn" class="back-button">
+            <i class="fas fa-times"></i>
+        </div>
+
+        <h4 class="title">Add Item to the List</h4>
+
+        <form action="/shopping-list/${shoppingList.getId()}/item/save" method="POST">
+            ${csrfHiddenInput}
+            <input type="hidden" name="shoppingList" value="${shoppingList.getId()}"/>
+
+            <select class="tom-select-class" name="product" required>
+                <option value="" selected disabled>Select a product</option>
+                @for(Product product : productList)
+                    <option value="${product.getId()}">${product.getName()}</option>
+                @endfor
+            </select>
+
+            <input type="number" name="quantity" step="any"
+                   placeholder="e.g. 2" required/>
+
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    @if(shoppingListItems == null || shoppingListItems.isEmpty())
+        <div class="no-items">
+            <p>No items added yet.</p>
+        </div>
+    @else
+        <div class="card-list">
+            @for(ShoppingListItem shoppingListItem : shoppingListItems)
+                <div class="card-item">
+                    <div class="card-content">
+                        <h3 class="card-title">${shoppingListItem.getProduct().getName()}</h3>
+                        <p class="card-subtitle">Quantity: ${shoppingListItem.getQuantity()}</p>
+                    </div>
+                    <details class="dropdown">
+                        <summary class="dropdown-toggle">&#x22EE;</summary>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form action="/shopping-list/${shoppingList.getId()}/item/delete" method="post">
+                                    ${csrfHiddenInput}
+                                    <input type="hidden" name="shoppingListItem" value="${shoppingListItem.getId()}">
+                                    <span onclick="this.closest('form').submit()">Delete</span>
+                                </form>
+                            </li>
+                        </ul>
+                    </details>
+                </div>
             @endfor
-        </select>
+        </div>
+    @endif
 
-        <input type="number" id="quantity" name="quantity" step="any"
-               placeholder="e.g. 2" required/>
-
-        <button type="submit" class="button btn-purple">
-            Add Item
-        </button>
-    </form>
-
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.min.css" rel="stylesheet"/>
-
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
     <script>
         new TomSelect('.tom-select-class', {
             create: false,
             maxItems: 1,
-            placeholder: 'Select a product to add to the list',
+            placeholder: 'Select a product',
             allowEmptyOption: false
         });
-    </script>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th class="actions-column"></th>
-        </tr>
-        </thead>
-        <tbody>
-        @if(shoppingListItems == null || shoppingListItems.isEmpty())
-            <tr>
-                <td colspan="3">
-                    No items added yet.
-                </td>
-            </tr>
-        @else
-            @for(ShoppingListItem shoppingListItem : shoppingListItems)
-                <tr class="table-row">
-                    <td>${shoppingListItem.getProduct().getName()}</td>
-                    <td>${shoppingListItem.getQuantity()}</td>
-                    <td>
-                        <details class="dropdown">
-                            <summary class="dropdown-toggle">
-                                &#x22EE;
-                            </summary>
-                            <ul class="dropdown-menu">
-                                <li class="clickable table-row">
-                                    <form id="delete" action="/shopping-list/${shoppingList.getId()}/item/delete" method="post">
-                                        ${csrfHiddenInput}
-                                        <input type="hidden" name="shoppingListItem" value="${shoppingListItem.getId()}">
-                                        <span onclick="this.closest('form').submit()">Delete</span>
-                                    </form>
-                                </li>
-                            </ul>
-                        </details>
-                    </td>
-                </tr>
-            @endfor
-        @endif
-        </tbody>
-    </table>
+        document.addEventListener('DOMContentLoaded', () => {
+            const showBtn = document.getElementById('show-form-btn');
+            const cancelBtn = document.getElementById('cancel-form-btn');
+            const form = document.getElementById('new-list-form');
+
+            showBtn.addEventListener('click', () => {
+                form.classList.remove('hidden');
+                showBtn.classList.add('hidden');
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                form.classList.add('hidden');
+                showBtn.classList.remove('hidden');
+            });
+
+            document.addEventListener('click', function(event) {
+                document.querySelectorAll('details.dropdown').forEach(dropdown => {
+                    if (!dropdown.contains(event.target)) {
+                        dropdown.removeAttribute('open');
+                    }
+                });
+            });
+        });
+    </script>
 `)

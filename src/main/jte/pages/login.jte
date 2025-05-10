@@ -5,41 +5,28 @@
 @param CsrfHiddenInput csrfHiddenInput
 
 @template.layout.default(
-    content = @`
-    <h2>Sign in to your account</h2>
-    <p>Enter your credentials to access your account.</p>
-    <br>
+content = @`
+    <div class="panel">
+        <h2 class="title">Sign in to your account</h2>
+        <p class="subtitle">Enter your credentials to access your account.</p>
 
-    @if(message != null && message.isError())
-        <div class="message error">
-            ${message.getMessage()}
-        </div>
-    @endif
+        @if(message != null && message.isError())
+            <div class="message error">${message.getMessage()}</div>
+        @endif
 
-    <form action="/login" method="POST">
-        ${csrfHiddenInput}
-        <div>
-            <input name="email" type="text" required
-                   placeholder="Email"
-                   class="${message != null && message.isError() ? "input-error" : ""}"
-                   id="email">
-        </div>
-        <div>
-            <input name="password" type="password" required
-                   placeholder="Password"
-                   class="${message != null && message.isError() ? "input-error" : ""}"
-                   id="password">
-        </div>
+        <form action="/login" method="POST">
+            ${csrfHiddenInput}
+            <input name="email" type="email" required placeholder="Email"
+                   class="${message != null && message.isError() ? "input-error" : ""}" />
+            <input name="password" type="password" required placeholder="Password"
+                   class="${message != null && message.isError() ? "input-error" : ""}" />
 
-        <button type="submit" class="button btn-purple">
-            Sign in
-        </button>
-    </form>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
 
-    <p>
-        Don't have an account?
-        <a href="/register">
-            Create one here
-        </a>
-    </p>
+        <p class="mt-2">
+            Don't have an account?
+            <a href="/register" class="link">Create one here</a>
+        </p>
+    </div>
 `)

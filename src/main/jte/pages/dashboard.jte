@@ -11,36 +11,34 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <div class="card-grid">
-        <!-- Action Cards -->
-        <a href="/product/search" class="card">
-            <h2>Search for Products</h2>
-            <p>Find the products you need quickly and efficiently.</p>
-        </a>
+    <section class="dashboard">
+        <h1 class="title">Welcome back, ${username}!</h1>
 
-        <a href="/invoice/register" class="card">
-            <h2>Register a Purchase</h2>
-            <p>Add new purchases and keep your records up to date.</p>
-        </a>
-
-        <a href="/invoice/list" class="card">
-            <h2>List Invoices</h2>
-            <p>List your invoices and drill down the information.</p>
-        </a>
-
-        <a href="/shopping-list" class="card">
-            <h2>Your Shopping Lists</h2>
-            <p>Add and manage your shopping lists</p>
-        </a>
-
-        <a href="/reports/view" class="card">
-            <h2>View Reports</h2>
-            <p>Analyze your data with detailed reports.</p>
-        </a>
-
-        <a href="/settings/preferences" class="card">
-            <h2>Manage Preferences</h2>
-            <p>Customize your settings and preferences.</p>
-        </a>
-    </div>
+        <div class="grid">
+            <a href="/product/search" class="card">
+                <h2>🔍 Search Products</h2>
+                <p>Quickly find any product you need.</p>
+            </a>
+            <a href="/invoice/register" class="card">
+                <h2>🧾 Register Purchase</h2>
+                <p>Record your recent shopping.</p>
+            </a>
+            <a href="/invoice/list" class="card">
+                <h2>📄 List Invoices</h2>
+                <p>View and manage your invoice history.</p>
+            </a>
+            <a href="/shopping-list" class="card">
+                <h2>🛒 Shopping Lists</h2>
+                <p>Create and track shopping plans.</p>
+            </a>
+            <a href="/reports/view" class="card">
+                <h2>📊 Reports</h2>
+                <p>Analyze your purchases and patterns.</p>
+            </a>
+            <a href="/settings/preferences" class="card">
+                <h2>⚙️ Preferences</h2>
+                <p>Customize your settings.</p>
+            </a>
+        </div>
+    </section>
 `)

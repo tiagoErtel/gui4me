@@ -6,41 +6,36 @@
 
 @template.layout.default(
 content = @`
-    <h2>Create your account</h2>
-    <p>Please fill in the details below to get started.</p>
-    <br>
+    <div class="panel">
+        <h2 class="title">Create your account</h2>
+        <p class="subtitle">Please fill in the details below to get started.</p>
 
-    @if(message != null && message.isError())
-        <div class="message error">
-            ${message.getMessage() != null ? message.getMessage() : "An error occurred."}
-        </div>
-    @endif
+        @if(message != null && message.isError())
+            <div class="message error">
+                ${message.getMessage() != null ? message.getMessage() : "An error occurred."}
+            </div>
+        @endif
 
-    <form action="/register" method="POST" id="register-form">
-        ${csrfHiddenInput}
-
-        <div>
+        <form action="/register" method="POST">
+            ${csrfHiddenInput}
             <input id="username" name="username" type="text" required
                    placeholder="Full Name"
-                   class="${message != null && message.isError() ? "input-error" : ""}">
-        </div>
+                   class="${message != null && message.isError() ? "input-error" : ""}" />
 
-        <div>
             <input id="email" name="email" type="email" required
                    placeholder="Email"
-                   class="${message != null && message.isError() ? "input-error" : ""}">
-        </div>
+                   class="${message != null && message.isError() ? "input-error" : ""}" />
 
-        <div>
             <input id="password" name="password" type="password" required
                    placeholder="Password"
-                   class="${message != null && message.isError() ? "input-error" : ""}">
-        </div>
+                   class="${message != null && message.isError() ? "input-error" : ""}" />
 
-        <button type="submit" class="button btn-purple">Register</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
 
-    <div>
-        <p>Already have an account? <a href="/login">Sign in here</a></p>
+        <p class="mt-2">
+            Already have an account?
+            <a href="/login" class="link">Sign in here</a>
+        </p>
     </div>
 `)
