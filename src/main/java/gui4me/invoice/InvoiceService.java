@@ -5,7 +5,6 @@ import gui4me.exceptions.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.InvoiceParseErrorException;
 import gui4me.invoice_item.InvoiceItem;
 import gui4me.invoice_item.InvoiceItemRepository;
-import gui4me.product.Product;
 import gui4me.product.ProductService;
 import gui4me.store.Store;
 import gui4me.store.StoreService;
@@ -22,7 +21,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,10 +104,6 @@ public class InvoiceService {
 
             invoiceItemRepository.save(invoiceItem);
         }
-    }
-
-    public List<Invoice> findAll() {
-        return invoiceRepository.findAll();
     }
 
     public List<Invoice> findAllByUser(CustomUserDetails user) {

@@ -11,6 +11,10 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
+    @if(message != null && message.isError())
+        <div class="message error">${message.getMessage()}</div>
+    @endif
+
     <a href="/dashboard" class="back-button">
         <i class="fas fa-arrow-left"></i>
     </a>
@@ -19,6 +23,9 @@ content = @`
         <h2 class="title">Register Purchase</h2>
         <p class="subtitle">Scan the invoice or input the link</p>
     </div>
+
+    <label for="cameraSelect" class="label">Choose camera:</label>
+    <select id="cameraSelect" class="mt-1 mb-2"></select>
 
     <div id="reader"></div>
 
