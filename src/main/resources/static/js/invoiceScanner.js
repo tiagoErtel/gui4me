@@ -1,3 +1,6 @@
+const html5QrCode = new Html5Qrcode("reader");
+const cameraSelect = document.getElementById('cameraSelect');
+
 function onScanSuccess(decodedText, decodedResult) {
     const invoiceInput = document.getElementById('invoiceUrl');
     invoiceInput.value = decodedText;
@@ -8,22 +11,58 @@ function onScanFailure(error) {
     console.log(error);
 }
 
-const html5QrCode = new Html5Qrcode("reader");
+let currentCameraId = null;
 
-Html5Qrcode.getCameras().then(cameras => {
-    if (cameras && cameras.length) {
+function startCamera(cameraId) {
+    if (html5QrCode._isScanning) {
+        html5QrCode.stop().then(() => {
+            html5QrCode.start(
+                cameraId,
+                {
+                    fps: 10,
+                    qrbox: document.getElementById('reader').clientWidth * 0.6
+                },
+                onScanSuccess,
+                onScanFailure
+            );
+        });
+    } else {
         html5QrCode.start(
-            cameras[0].id,
+            cameraId,
             {
-                fps: 10,    // frames per second
-                qrbox: document.getElementById('reader').clientWidth*0.6// square area to scan
+                fps: 10,
+                qrbox: document.getElementById('reader').clientWidth * 0.6
             },
             onScanSuccess,
             onScanFailure
         );
-    } else {
-        console.error("No cameras found.");
     }
-}).catch(err => {
-    // handle error
+}
+
+Html5Qrcode.getCameras().then(cameras => {
+    if (cameras.length === 0) {
+        console.error("No cameras found.");
+        return;
+    }
+
+    cameras.forEach((camera, index) => {
+        const option = document.createElement("option");
+        option.value = camera.id;
+        option.text = camera.label || `Camera ${index + 1}`;
+        cameraSelect.appendChild(option);
+    });
+
+    // Select last camera (often back camera on mobile)
+    const preferredCameraId = cameras[cameras.length - 1].id;
+    cameraSelect.value = preferredCameraId;
+    currentCameraId = preferredCameraId;
+    startCamera(currentCameraId);
+});
+
+cameraSelect.addEventListener('change', (e) => {
+    const selectedId = e.target.value;
+    if (selectedId !== currentCameraId) {
+        currentCameraId = selectedId;
+        startCamera(currentCameraId);
+    }
 });
