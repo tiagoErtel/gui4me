@@ -24,10 +24,10 @@ content = @`
         <p class="subtitle">Scan the invoice or input the link</p>
     </div>
 
-    <label for="cameraSelect" class="label">Choose camera:</label>
-    <select id="cameraSelect" class="mt-1 mb-2"></select>
+    <label for="cameraSelect">Choose camera:</label>
+    <select id="cameraSelect"></select>
 
-    <div id="reader"></div>
+    <div id="reader" class="mt-2"></div>
 
     <form action="/invoice/register" method="POST" id="invoiceForm" class="mt-2">
         ${csrfHiddenInput}

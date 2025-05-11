@@ -13,21 +13,13 @@ function onScanFailure(error) {
 
 let currentCameraId = null;
 
-function startCamera(cameraId) {
-    if (html5QrCode._isScanning) {
-        html5QrCode.stop().then(() => {
-            html5QrCode.start(
-                cameraId,
-                {
-                    fps: 10,
-                    qrbox: document.getElementById('reader').clientWidth * 0.6
-                },
-                onScanSuccess,
-                onScanFailure
-            );
-        });
-    } else {
-        html5QrCode.start(
+async function startCamera(cameraId) {
+    try {
+        if (html5QrCode._isScanning) {
+            await html5QrCode.stop();
+        }
+
+        await html5QrCode.start(
             cameraId,
             {
                 fps: 10,
@@ -36,6 +28,8 @@ function startCamera(cameraId) {
             onScanSuccess,
             onScanFailure
         );
+    } catch (err) {
+        console.error("Error switching camera:", err);
     }
 }
 
