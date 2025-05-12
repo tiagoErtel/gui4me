@@ -29,14 +29,26 @@ content = @`
 
     <div id="reader" class="mt-2"></div>
 
-    <form action="/invoice/register" method="POST" id="invoiceForm" class="mt-2">
+    <p id="showInvoiceLink" class="mt-2">
+        Having trouble scanning?
+        <a class="link" onclick="showManualInput()">
+            Click here to paste the invoice link manually.
+        </a>
+    </p>
+
+    <script>
+        function showManualInput() {
+            document.getElementById('invoiceForm').classList.remove('hidden');
+        }
+    </script>
+
+    <form action="/invoice/register" method="POST" id="invoiceForm" class="mt-2 hidden">
         ${csrfHiddenInput}
-        <label for="invoiceUrl" class="label">Or input the link to the invoice here:</label>
         <input
                 type="text"
                 id="invoiceUrl"
                 name="invoiceUrl"
-                placeholder="Paste the invoice link here..."
+                placeholder="Paste the invoice link here"
                 required
         />
         <button type="submit" class="btn btn-primary">

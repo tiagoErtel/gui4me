@@ -142,7 +142,15 @@ form {
 	gap: 1rem;
 }
 
-input {
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+input,
+select,
+textarea {
 	padding: 0.75rem 1rem;
 	border: 1px solid #ccc;
 	border-radius: var(--radius);
