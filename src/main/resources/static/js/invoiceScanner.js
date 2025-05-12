@@ -15,9 +15,14 @@ let currentCameraId = null;
 
 async function startCamera(cameraId) {
     try {
-        if (html5QrCode._isScanning) {
-            await html5QrCode.stop();
-        }
+		if (html5QrCode.getState() === Html5QrcodeScannerState.SCANNING ||
+			html5QrCode.getState() === Html5QrcodeScannerState.PAUSED) {
+			await html5QrCode.stop().then(() => {
+				html5QrCode.clear();
+			}).catch(err => {
+				console.error("Error stopping camera:", err);
+			});
+		}
 
         await html5QrCode.start(
             cameraId,
