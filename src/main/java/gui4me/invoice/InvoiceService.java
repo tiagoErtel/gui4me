@@ -65,6 +65,9 @@ public class InvoiceService {
         } catch (IOException e) {
             logger.error("Error fetching invoice from URL: " + invoiceUrl, e);
             throw new RuntimeException("Error fetching invoice details", e);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new InvoiceParseErrorException();
         }
     }
 
@@ -76,7 +79,8 @@ public class InvoiceService {
                 return LocalDateTime.parse(matcher.group(), DATE_FORMATTER);
             }
         }
-        throw new InvoiceParseErrorException("Could not find the date");
+        logger.error("Could not get the invoice date.");
+        throw new InvoiceParseErrorException();
     }
 
     private Store createOrFetchStore(Document doc) {
