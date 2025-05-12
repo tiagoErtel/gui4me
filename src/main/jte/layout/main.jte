@@ -21,6 +21,7 @@
 
 	<nav class="navbar">
 		<a href="/dashboard" class="logo">Gui4Me</a>
+        <p>Welcome back, ${username}</p>
 	</nav>
 
 	<main class="main-container">

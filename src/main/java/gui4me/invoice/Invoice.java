@@ -1,7 +1,6 @@
 package gui4me.invoice;
 
 import gui4me.custom_user_details.CustomUserDetails;
-import gui4me.invoice_item.InvoiceItem;
 import gui4me.store.Store;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,8 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "invoices")
