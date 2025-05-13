@@ -4,7 +4,6 @@ import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

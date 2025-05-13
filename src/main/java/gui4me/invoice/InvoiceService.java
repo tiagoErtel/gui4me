@@ -79,7 +79,6 @@ public class InvoiceService {
                 return LocalDateTime.parse(matcher.group(), DATE_FORMATTER);
             }
         }
-        logger.error("Could not get the invoice date.");
         throw new InvoiceParseErrorException();
     }
 
