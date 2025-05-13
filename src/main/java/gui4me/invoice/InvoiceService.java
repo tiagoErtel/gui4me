@@ -63,10 +63,10 @@ public class InvoiceService {
             processInvoiceItems(doc, invoice);
             return invoiceRepository.save(invoice);
         } catch (IOException e) {
-            logger.error("Error fetching invoice from URL: " + invoiceUrl, e);
-            throw new RuntimeException("Error fetching invoice details", e);
+            logger.error("Failed to parse invoice from URL: {}", invoiceUrl, e);
+            throw new RuntimeException(e);
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("Failed to parse invoice from URL: {}", invoiceUrl, e);
             throw new InvoiceParseErrorException();
         }
     }
