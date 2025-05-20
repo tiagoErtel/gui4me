@@ -11,9 +11,7 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    @if(message != null && message.isError())
-        <div class="message error">${message.getMessage()}</div>
-    @endif
+   @template.partials.error(message = message) 
 
     <a href="/dashboard" class="back-button">
         <i class="fas fa-arrow-left"></i>
