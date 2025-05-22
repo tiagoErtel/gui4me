@@ -8,6 +8,10 @@ import gui4me.invoice_item.InvoiceItemRepository;
 import gui4me.product.ProductService;
 import gui4me.store.Store;
 import gui4me.store.StoreService;
+import gui4me.utils.Link;
+import gui4me.utils.Message;
+import gui4me.utils.MessageType;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -45,26 +49,44 @@ public class InvoiceService {
 
     public Invoice save(String invoiceUrl, CustomUserDetails user) {
         try {
-            Document doc = Jsoup.connect(invoiceUrl).get();
-            String invoiceChave = doc.getElementsByClass("chave").text();
+            if (isQrCodeUrl(invoiceUrl)) {
+                // Proceed normally
+                Document doc = Jsoup.connect(invoiceUrl).get();
+                String invoiceChave = doc.getElementsByClass("chave").text();
 
-            if (invoiceRepository.findByChave(invoiceChave).isPresent()) {
-                logger.error("Invoice with chave '{}' already exists.", invoiceChave);
-                throw new InvoiceAlreadyProcessedException();
+                if (invoiceRepository.findByChave(invoiceChave).isPresent()) {
+                    logger.error("Invoice with chave '{}' already exists.", invoiceChave);
+                    throw new InvoiceAlreadyProcessedException();
+                }
+
+                Invoice invoice = new Invoice();
+                invoice.setChave(invoiceChave);
+                invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
+                invoice.setIssuanceDate(extractIssuanceDate(doc));
+                invoice.setStore(createOrFetchStore(doc));
+                invoice.setUser(user);
+
+                processInvoiceItems(doc, invoice);
+                return invoiceRepository.save(invoice);
+            } else {
+                String chave = extractChaveFromNfeUrl(invoiceUrl);
+                if (chave == null) {
+                    logger.error("Failed to extract chave from NFE URL: {}", invoiceUrl);
+                    throw new InvoiceParseErrorException();
+                }
+                String redirectUrl = "https://www.sefaz.rs.gov.br/dfe/Consultas/ConsultaPublicaDfe?ChaveAcessoDfe="
+                        + chave;
+                Link link = new Link(redirectUrl, "Click here to access the invoice page");
+                Message message = new Message(MessageType.ERROR,
+                        "The link in the invoice QrCode is invalid. Please access the invoice page and copy the QrCode (additional information), then paste the link in the input bellow",
+                        link);
+                throw new InvoiceParseErrorException(message);
             }
-
-            Invoice invoice = new Invoice();
-            invoice.setChave(invoiceChave);
-            invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
-            invoice.setIssuanceDate(extractIssuanceDate(doc));
-            invoice.setStore(createOrFetchStore(doc));
-            invoice.setUser(user);
-
-            processInvoiceItems(doc, invoice);
-            return invoiceRepository.save(invoice);
         } catch (IOException e) {
             logger.error("Failed to parse invoice from URL: {}", invoiceUrl, e);
             throw new RuntimeException(e);
+        } catch (InvoiceParseErrorException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("Failed to parse invoice from URL: {}", invoiceUrl, e);
             throw new InvoiceParseErrorException();
@@ -125,5 +147,15 @@ public class InvoiceService {
             logger.warn("Failed to parse double value: {}", value);
             return 0.0;
         }
+    }
+
+    private boolean isQrCodeUrl(String invoiceUrl) {
+        return invoiceUrl.contains("/NFCE/NFCE-COM.aspx?p=");
+    }
+
+    private String extractChaveFromNfeUrl(String url) {
+        Pattern pattern = Pattern.compile("chaveNFe=(\\d{44})");
+        Matcher matcher = pattern.matcher(url);
+        return matcher.find() ? matcher.group(1) : null;
     }
 }

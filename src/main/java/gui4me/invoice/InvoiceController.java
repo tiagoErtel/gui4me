@@ -1,6 +1,7 @@
 package gui4me.invoice;
 
 import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.exceptions.InvoiceParseErrorException;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,7 @@ public class InvoiceController {
     public String register(
             @ModelAttribute("currentUser") CustomUserDetails currentUser,
             @RequestParam String invoiceUrl,
-            RedirectAttributes redirectAttributes
-    ) {
+            RedirectAttributes redirectAttributes) {
         try {
 
             invoiceService.save(invoiceUrl, currentUser);
@@ -36,6 +36,10 @@ public class InvoiceController {
             redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Invoice registered!"));
 
             return "redirect:/dashboard";
+        } catch (InvoiceParseErrorException e) {
+            redirectAttributes.addFlashAttribute("message", e.getCustomMessage());
+
+            return "redirect:/invoice/register";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", new Message(MessageType.ERROR, e.getMessage()));
 
@@ -46,8 +50,7 @@ public class InvoiceController {
     @GetMapping("/list")
     public String list(
             Model model,
-            @ModelAttribute("currentUser") CustomUserDetails currentUser
-    ) {
+            @ModelAttribute("currentUser") CustomUserDetails currentUser) {
         List<Invoice> invoiceList = invoiceService.findAllByUser(currentUser);
 
         model.addAttribute("invoiceList", invoiceList);
