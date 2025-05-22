@@ -1,6 +1,5 @@
 package gui4me.invoice_item;
 
-import gui4me.invoice.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,29 +1,25 @@
 spring:
-  application:
-    name: gui4me
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-  docker:
-    compose:
-      enabled: false
-  web:
-    resources:
-      static-locations[0]: "file:src/main/resources/static/"
-      static-locations[1]: "classpath:/static/"
-
+    application:
+        name: gui4me
+    jpa:
+        hibernate:
+            ddl-auto: update
+    datasource:
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+    docker:
+        compose:
+            enabled: false
 
 gg:
-  jte:
-    developmentMode: true
-    usePrecompiledTemplates: false
+    jte:
+        developmentMode: true
+        usePrecompiledTemplates: false
 
 logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
+    level:
+        org:
+            springframework:
+                security: DEBUG
+

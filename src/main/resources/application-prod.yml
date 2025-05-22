@@ -1,24 +1,25 @@
 spring:
-  application:
-    name: gui4me
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-  docker:
-    compose:
-      enabled: false
+    application:
+        name: gui4me
+    jpa:
+        hibernate:
+            ddl-auto: update
+    datasource:
+        url: ${DB_URL}
+        username: ${DB_USERNAME}
+        password: ${DB_PASSWORD}
+    docker:
+        compose:
+            enabled: false
 
 gg:
-  jte:
-    developmentMode: false
-    usePrecompiledTemplates: true
+    jte:
+        developmentMode: false
+        usePrecompiledTemplates: true
 
 logging:
-  level:
-    org:
-      springframework:
-        security: ERROR
+    level:
+        org:
+            springframework:
+                security: ERROR
+
