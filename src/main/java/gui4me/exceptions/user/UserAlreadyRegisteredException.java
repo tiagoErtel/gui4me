@@ -1,4 +1,4 @@
-package gui4me.exceptions;
+package gui4me.exceptions.user;
 
 public class UserAlreadyRegisteredException extends RuntimeException {
     public UserAlreadyRegisteredException() {

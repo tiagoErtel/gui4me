@@ -19,7 +19,7 @@ public class Invoice {
 
     @NotBlank
     @Column(unique = true)
-    private String chave;
+    private String key;
 
     @NotNull
     private LocalDateTime issuanceDate;
@@ -57,21 +57,25 @@ public class Invoice {
         return id;
     }
 
-    public String getChave() {
-        return chave;
+    public String getKey() {
+        return key;
     }
 
-    public LocalDateTime getIssuanceDate() { return issuanceDate; }
+    public LocalDateTime getIssuanceDate() {
+        return issuanceDate;
+    }
 
     public void setId(String id) {
         this.id = id;
     }
 
-    public void setChave(String chave) {
-        this.chave = chave;
+    public void setKey(String chave) {
+        this.key = chave;
     }
 
-    public void setIssuanceDate(LocalDateTime issuanceDate) { this.issuanceDate = issuanceDate; }
+    public void setIssuanceDate(LocalDateTime issuanceDate) {
+        this.issuanceDate = issuanceDate;
+    }
 
     public Store getStore() {
         return store;
