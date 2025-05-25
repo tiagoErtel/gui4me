@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
+import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
 
@@ -43,6 +44,17 @@ public class GlobalExceptionHandler {
     public String handleInvoiceParseError(InvoiceParseErrorException e, RedirectAttributes redirectAttributes) {
 
         logger.error("Invoice parse error: {}", e.getMessage());
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "Failed to parse the invoice. Please check the URL and try again."));
+
+        return "redirect:/invoice/register";
+    }
+
+    @ExceptionHandler(InvoiceUrlIsNotQrCode.class)
+    public String handleInvoiceUrlIsNotQrCode(InvoiceUrlIsNotQrCode e, RedirectAttributes redirectAttributes) {
+
+        logger.error(e.getMessage());
 
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "Failed to parse the invoice. Please check the URL and try again."));

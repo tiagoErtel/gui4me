@@ -1,5 +1,6 @@
 package gui4me.invoice;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -46,23 +47,27 @@ public class InvoiceService {
     public Invoice save(String invoiceUrl, CustomUserDetails user) {
         if (isQrCodeUrl(invoiceUrl)) {
             // Proceed normally
-            Document doc = Jsoup.connect(invoiceUrl).get();
-            String invoicekey = doc.getElementsByClass("key").text();
+            try {
+                Document doc = Jsoup.connect(invoiceUrl).get();
+                String invoicekey = doc.getElementsByClass("chave").text();
 
-            if (invoiceRepository.findByKey(invoicekey).isPresent()) {
-                logger.error("Invoice with key '{}' already exists.", invoicekey);
-                throw new InvoiceAlreadyProcessedException(invoicekey);
+                if (invoiceRepository.findByKey(invoicekey).isPresent()) {
+                    logger.error("Invoice with key '{}' already exists.", invoicekey);
+                    throw new InvoiceAlreadyProcessedException(invoicekey);
+                }
+
+                Invoice invoice = new Invoice();
+                invoice.setKey(invoicekey);
+                invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
+                invoice.setIssuanceDate(extractIssuanceDate(doc));
+                invoice.setStore(createOrFetchStore(doc));
+                invoice.setUser(user);
+
+                processInvoiceItems(doc, invoice);
+                return invoiceRepository.save(invoice);
+            } catch (IOException e) {
+                throw new InvoiceParseErrorException();
             }
-
-            Invoice invoice = new Invoice();
-            invoice.setKey(invoicekey);
-            invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
-            invoice.setIssuanceDate(extractIssuanceDate(doc));
-            invoice.setStore(createOrFetchStore(doc));
-            invoice.setUser(user);
-
-            processInvoiceItems(doc, invoice);
-            return invoiceRepository.save(invoice);
         } else {
             String key = extractKeyFromNfeUrl(invoiceUrl);
             if (key == null) {
