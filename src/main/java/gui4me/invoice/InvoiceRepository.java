@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
-    Optional<Invoice> findByChave(String chave);
+    Optional<Invoice> findByKey(String key);
 
     List<Invoice> findAllByUser(CustomUserDetails user);
 }

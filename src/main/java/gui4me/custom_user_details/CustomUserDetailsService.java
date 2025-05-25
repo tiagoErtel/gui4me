@@ -1,13 +1,14 @@
 package gui4me.custom_user_details;
 
-import gui4me.exceptions.UserAlreadyRegisteredException;
-import gui4me.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import gui4me.exceptions.user.UserAlreadyRegisteredException;
+import gui4me.exceptions.user.UserNotFoundException;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -25,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public CustomUserDetails save(CustomUserDetails user) {
-        if (existsByEmail(user.getEmail())){
+        if (existsByEmail(user.getEmail())) {
             throw new UserAlreadyRegisteredException();
         }
 
