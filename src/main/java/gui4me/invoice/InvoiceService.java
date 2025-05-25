@@ -1,32 +1,29 @@
 package gui4me.invoice;
 
-import gui4me.custom_user_details.CustomUserDetails;
-import gui4me.exceptions.InvoiceAlreadyProcessedException;
-import gui4me.exceptions.InvoiceParseErrorException;
-import gui4me.invoice_item.InvoiceItem;
-import gui4me.invoice_item.InvoiceItemRepository;
-import gui4me.product.ProductService;
-import gui4me.store.Store;
-import gui4me.store.StoreService;
-import gui4me.utils.Link;
-import gui4me.utils.Message;
-import gui4me.utils.MessageType;
-
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.jsoup.Jsoup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
+import gui4me.exceptions.invoice.InvoiceParseErrorException;
+import gui4me.invoice_item.InvoiceItem;
+import gui4me.invoice_item.InvoiceItemRepository;
+import gui4me.product.ProductService;
+import gui4me.store.Store;
+import gui4me.store.StoreService;
 
 @Service
 public class InvoiceService {
@@ -48,19 +45,19 @@ public class InvoiceService {
     private ProductService productService;
 
     public Invoice save(String invoiceUrl, CustomUserDetails user) {
-        try {
-            if (isQrCodeUrl(invoiceUrl)) {
-                // Proceed normally
+        if (isQrCodeUrl(invoiceUrl)) {
+            // Proceed normally
+            try {
                 Document doc = Jsoup.connect(invoiceUrl).get();
-                String invoiceChave = doc.getElementsByClass("chave").text();
+                String invoicekey = doc.getElementsByClass("chave").text();
 
-                if (invoiceRepository.findByChave(invoiceChave).isPresent()) {
-                    logger.error("Invoice with chave '{}' already exists.", invoiceChave);
-                    throw new InvoiceAlreadyProcessedException();
+                if (invoiceRepository.findByKey(invoicekey).isPresent()) {
+                    logger.error("Invoice with key '{}' already exists.", invoicekey);
+                    throw new InvoiceAlreadyProcessedException(invoicekey);
                 }
 
                 Invoice invoice = new Invoice();
-                invoice.setChave(invoiceChave);
+                invoice.setKey(invoicekey);
                 invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
                 invoice.setIssuanceDate(extractIssuanceDate(doc));
                 invoice.setStore(createOrFetchStore(doc));
@@ -68,27 +65,17 @@ public class InvoiceService {
 
                 processInvoiceItems(doc, invoice);
                 return invoiceRepository.save(invoice);
-            } else {
-                String chave = extractChaveFromNfeUrl(invoiceUrl);
-                if (chave == null) {
-                    logger.error("Failed to extract chave from NFE URL: {}", invoiceUrl);
-                    throw new InvoiceParseErrorException();
-                }
-                String redirectUrl = "https://www.sefaz.rs.gov.br/dfe/Consultas/ConsultaPublicaDfe?ChaveAcessoDfe="
-                        + chave;
-                Link link = new Link(redirectUrl, "Click here to access the invoice page");
-                Message message = new Message(MessageType.ERROR,
-                        "The link in the invoice QrCode is invalid. Please access the invoice page and copy the QrCode (additional information), then paste the link in the input bellow",
-                        link);
-                throw new InvoiceParseErrorException(message);
+            } catch (IOException e) {
+                throw new InvoiceParseErrorException();
             }
-        } catch (IOException e) {
-            logger.error("Failed to parse invoice from URL: {}", invoiceUrl, e);
-            throw new RuntimeException(e);
-        } catch (InvoiceParseErrorException e) {
-            throw e;
-        } catch (Exception e) {
-            logger.error("Failed to parse invoice from URL: {}", invoiceUrl, e);
+        } else {
+            String key = extractKeyFromNfeUrl(invoiceUrl);
+            if (key == null) {
+                logger.error("Failed to extract key from NFE URL: {}", invoiceUrl);
+                throw new InvoiceParseErrorException();
+            }
+            String redirectUrl = "https://www.sefaz.rs.gov.br/dfe/Consultas/ConsultaPublicaDfe?keyAcessoDfe="
+                    + key;
             throw new InvoiceParseErrorException();
         }
     }
@@ -153,7 +140,7 @@ public class InvoiceService {
         return invoiceUrl.contains("/NFCE/NFCE-COM.aspx?p=");
     }
 
-    private String extractChaveFromNfeUrl(String url) {
+    private String extractKeyFromNfeUrl(String url) {
         Pattern pattern = Pattern.compile("chaveNFe=(\\d{44})");
         Matcher matcher = pattern.matcher(url);
         return matcher.find() ? matcher.group(1) : null;

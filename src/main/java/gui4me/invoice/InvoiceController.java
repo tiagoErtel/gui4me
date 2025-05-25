@@ -1,16 +1,20 @@
 package gui4me.invoice;
 
-import gui4me.custom_user_details.CustomUserDetails;
-import gui4me.exceptions.InvoiceParseErrorException;
-import gui4me.utils.Message;
-import gui4me.utils.MessageType;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.utils.Message;
+import gui4me.utils.MessageType;
 
 @Controller
 @RequestMapping("/invoice")
@@ -29,22 +33,12 @@ public class InvoiceController {
             @ModelAttribute("currentUser") CustomUserDetails currentUser,
             @RequestParam String invoiceUrl,
             RedirectAttributes redirectAttributes) {
-        try {
 
-            invoiceService.save(invoiceUrl, currentUser);
+        invoiceService.save(invoiceUrl, currentUser);
 
-            redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Invoice registered!"));
+        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Invoice registered!"));
 
-            return "redirect:/dashboard";
-        } catch (InvoiceParseErrorException e) {
-            redirectAttributes.addFlashAttribute("message", e.getCustomMessage());
-
-            return "redirect:/invoice/register";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", new Message(MessageType.ERROR, e.getMessage()));
-
-            return "redirect:/invoice/register";
-        }
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/list")
