@@ -14,9 +14,7 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <a href="/dashboard" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-    </a>
+    @template.partials.back-button(href = "/dashboard")
 
     <div class="list-header">
         <h2 class="title">Shopping Lists</h2>
