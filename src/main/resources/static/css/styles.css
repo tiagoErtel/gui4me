@@ -1,145 +1,145 @@
 :root {
-	--primary: #bb86fc;
-	--primary-light: #d1aaff;
-	--bg: #181818;
-	--panel: #242424;
-	--text: #f0f0f0;
-	--text-muted: #cccccc;
-	--radius: 12px;
-	--transition: 0.2s ease;
+    --primary: #bb86fc;
+    --primary-light: #d1aaff;
+    --bg: #181818;
+    --panel: #242424;
+    --text: #f0f0f0;
+    --text-muted: #cccccc;
+    --radius: 12px;
+    --transition: 0.2s ease;
 }
 
 * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	text-decoration: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
 }
 
 body {
-	background-color: var(--bg);
-	color: var(--text);
-	font-family: 'Segoe UI', sans-serif;
-	min-height: 100vh;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
 }
 
 .navbar {
-	background-color: var(--panel);
-	padding: 1rem 2rem;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: var(--panel);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .logo {
-	color: var(--primary);
-	font-weight: bold;
-	font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 .main-container {
-	padding: 2rem 1rem;
-	margin: 0 auto;
+    padding: 2rem 1rem;
+    margin: 0 auto;
 }
 
 .title {
-	margin-bottom: 1rem;
-	color: var(--primary);
+    margin-bottom: 1rem;
+    color: var(--primary);
 }
 
 .subtitle {
-	color: var(--text-muted);
-	margin-bottom: 1rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
 }
 
 .grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-	gap: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
 }
 
 .card {
-	background-color: var(--panel);
-	border: 2px solid var(--primary);
-	border-radius: var(--radius);
-	padding: 1.5rem;
-	text-align: center;
-	color: var(--text);
-	text-decoration: none;
-	transition: background-color var(--transition), transform var(--transition);
+    background-color: var(--panel);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text);
+    text-decoration: none;
+    transition: background-color var(--transition), transform var(--transition);
 }
 
 .card:hover {
-	background-color: var(--primary-light);
-	color: #000;
-	transform: translateY(-5px);
+    background-color: var(--primary-light);
+    color: #000;
+    transform: translateY(-5px);
 }
 
 .card h2 {
-	margin-bottom: 0.5rem;
-	font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
 }
 
 .card p {
-	font-size: 0.95rem;
-	color: var(--text-muted);
+    font-size: 0.95rem;
+    color: var(--text-muted);
 }
 
 .center {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
-	text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
 }
 
 .panel {
-	background-color: var(--panel);
-	border-radius: var(--radius);
-	padding: 2rem;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    background-color: var(--panel);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .actions {
-	display: flex;
-	justify-content: center;
-	gap: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
 }
 
 .btn {
-	display: inline-block;
-	padding: 0.75rem 1.5rem;
-	font-size: 1rem;
-	border: none;
-	border-radius: var(--radius);
-	cursor: pointer;
-	text-decoration: none;
-	transition: var(--transition);
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition);
 }
 
 .btn-primary {
-	background-color: var(--primary);
-	color: #000;
+    background-color: var(--primary);
+    color: #000;
 }
 
 .btn-primary:hover {
-	background-color: var(--primary-light);
+    background-color: var(--primary-light);
 }
 
 .btn-secondary {
-	background-color: #4caf50;
-	color: #fff;
+    background-color: #4caf50;
+    color: #fff;
 }
 
 .btn-secondary:hover {
-	background-color: #45a045;
+    background-color: #45a045;
 }
 
 form {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 label {
@@ -151,21 +151,21 @@ label {
 input,
 select,
 textarea {
-	padding: 0.75rem 1rem;
-	border: 1px solid #ccc;
-	border-radius: var(--radius);
-	font-size: 1rem;
-	width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    width: 100%;
 }
 
 .input-error {
-	border-color: #f44336;
-	background-color: #ffebee;
+    border-color: #f44336;
+    background-color: #ffebee;
 }
 
 .link {
-	color: var(--primary);
-	text-decoration: underline;
+    color: var(--primary);
+    text-decoration: underline;
     cursor: pointer;
 }
 
@@ -180,7 +180,7 @@ textarea {
 }
 
 .no-items {
-	margin-top: 30px;
+    margin-top: 30px;
     text-align: center;
     padding: 20px;
     background-color: var(--panel);
@@ -306,7 +306,7 @@ textarea {
 }
 
 .mt-2 {
-	margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .message {
