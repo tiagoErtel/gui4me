@@ -166,6 +166,7 @@ textarea {
 .link {
 	color: var(--primary);
 	text-decoration: underline;
+    cursor: pointer;
 }
 
 .back-button {
