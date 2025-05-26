@@ -2,8 +2,9 @@
 
 @param Message message
 
-@if(message != null && message.isError())
-    <div class="message error">${message.getMessage()}
+@if(message != null)
+    <div class="@if(message.isError()) message error @else message success @endif">
+        ${message.getMessage()}
         @if(message.getLink() != null)
             <a href="${message.getLinkUrl()}">${message.getLinkText()}</a>
         @endif
