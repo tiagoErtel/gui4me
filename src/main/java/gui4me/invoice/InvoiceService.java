@@ -11,14 +11,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
+import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
 import gui4me.invoice_item.InvoiceItem;
 import gui4me.invoice_item.InvoiceItemRepository;
 import gui4me.product.ProductService;
@@ -28,7 +27,6 @@ import gui4me.store.StoreService;
 @Service
 public class InvoiceService {
 
-    private static final Logger logger = LoggerFactory.getLogger(InvoiceService.class);
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
@@ -49,15 +47,14 @@ public class InvoiceService {
             // Proceed normally
             try {
                 Document doc = Jsoup.connect(invoiceUrl).get();
-                String invoicekey = doc.getElementsByClass("chave").text();
+                String invoiceKey = doc.getElementsByClass("chave").text();
 
-                if (invoiceRepository.findByKey(invoicekey).isPresent()) {
-                    logger.error("Invoice with key '{}' already exists.", invoicekey);
-                    throw new InvoiceAlreadyProcessedException(invoicekey);
+                if (invoiceRepository.findByKey(invoiceKey).isPresent()) {
+                    throw new InvoiceAlreadyProcessedException(invoiceKey);
                 }
 
                 Invoice invoice = new Invoice();
-                invoice.setKey(invoicekey);
+                invoice.setKey(invoiceKey);
                 invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
                 invoice.setIssuanceDate(extractIssuanceDate(doc));
                 invoice.setStore(createOrFetchStore(doc));
@@ -66,29 +63,22 @@ public class InvoiceService {
                 processInvoiceItems(doc, invoice);
                 return invoiceRepository.save(invoice);
             } catch (IOException e) {
-                throw new InvoiceParseErrorException();
+                throw new InvoiceParseErrorException(invoiceUrl);
             }
         } else {
-            String key = extractKeyFromNfeUrl(invoiceUrl);
-            if (key == null) {
-                logger.error("Failed to extract key from NFE URL: {}", invoiceUrl);
-                throw new InvoiceParseErrorException();
+            String invoiceKey = extractKeyFromNfeUrl(invoiceUrl);
+            if (invoiceKey == null) {
+                throw new InvoiceParseErrorException(invoiceUrl);
             }
-            String redirectUrl = "https://www.sefaz.rs.gov.br/dfe/Consultas/ConsultaPublicaDfe?keyAcessoDfe="
-                    + key;
-            throw new InvoiceParseErrorException();
+
+            throw new InvoiceUrlIsNotQrCode(invoiceKey);
         }
     }
 
     private LocalDateTime extractIssuanceDate(Document doc) {
         Element element = doc.selectFirst("div[data-role=collapsible] ul li");
-        if (element != null) {
-            Matcher matcher = DATE_PATTERN.matcher(element.text());
-            if (matcher.find()) {
-                return LocalDateTime.parse(matcher.group(), DATE_FORMATTER);
-            }
-        }
-        throw new InvoiceParseErrorException();
+        Matcher matcher = DATE_PATTERN.matcher(element.text());
+        return LocalDateTime.parse(matcher.group(), DATE_FORMATTER);
     }
 
     private Store createOrFetchStore(Document doc) {
@@ -131,7 +121,6 @@ public class InvoiceService {
         try {
             return Double.parseDouble(value.replace(",", "."));
         } catch (NumberFormatException e) {
-            logger.warn("Failed to parse double value: {}", value);
             return 0.0;
         }
     }
