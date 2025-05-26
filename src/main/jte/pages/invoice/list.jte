@@ -16,9 +16,7 @@ username = username,
 content = @`
     <section class="list-container">
         <div>
-            <a href="/dashboard" class="back-button">
-                <i class="fas fa-arrow-left"></i>
-            </a>
+            @template.partials.back-button(href = "/dashboard")
 
             <div class="list-header">
                 <h2 class="title">Invoices List</h2>

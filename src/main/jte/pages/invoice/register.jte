@@ -11,11 +11,9 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-   @template.partials.error(message = message) 
+    @template.partials.message(message = message) 
 
-    <a href="/dashboard" class="back-button">
-        <i class="fas fa-arrow-left"></i>
-    </a>
+    @template.partials.back-button(href = "/dashboard")
 
     <div class="list-header">
         <h2 class="title">Register Purchase</h2>
