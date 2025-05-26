@@ -11,13 +11,7 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    @if(message != null)
-        @if(message.isError())
-            <div class="message error">${message.getMessage()}</div>
-        @elseif(message.isSuccess())
-            <div class="message success">${message.getMessage()}</div>
-        @endif
-    @endif
+  @template.partials.message(message = message) 
 
     <section class="dashboard">
         <h1 class="title">Welcome back, ${username}!</h1>
