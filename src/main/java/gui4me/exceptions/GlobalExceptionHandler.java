@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
 import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
+import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
 
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
     public String handleInvoiceAlreadyProcessed(InvoiceAlreadyProcessedException e,
             RedirectAttributes redirectAttributes) {
 
-        logger.warn("Invoice already processed: {}", e.getMessage());
+        logger.warn("Invoice already processed: {}", e.getInvoiceKey());
 
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "This invoice has already been processed."));
@@ -43,10 +44,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvoiceParseErrorException.class)
     public String handleInvoiceParseError(InvoiceParseErrorException e, RedirectAttributes redirectAttributes) {
 
-        logger.error("Invoice parse error: {}", e.getMessage());
+        logger.error("Invoice parse error: {}", e.getInvoiceUrl());
 
         redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "Failed to parse the invoice. Please check the URL and try again."));
+                new Message(MessageType.ERROR, "Failed to parse the invoice."));
 
         return "redirect:/invoice/register";
     }
@@ -54,10 +55,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvoiceUrlIsNotQrCode.class)
     public String handleInvoiceUrlIsNotQrCode(InvoiceUrlIsNotQrCode e, RedirectAttributes redirectAttributes) {
 
-        logger.error(e.getMessage());
+        logger.warn("Invoice URL is not qr code: {}", e.getInvoiceKey());
+
+        String redirectUrl = "https://www.sefaz.rs.gov.br/dfe/Consultas/ConsultaPublicaDfe?chaveAcessoDfe="
+                + e.getInvoiceKey();
+
+        Link link = new Link(redirectUrl, "Click here to access the official invoice page.");
 
         redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "Failed to parse the invoice. Please check the URL and try again."));
+                new Message(MessageType.ERROR,
+                        "Invoice QR Code is invalid, please access the official invoice page and copy the QR Code link (additional information tab), then paste the link in the invoice link field.",
+                        link));
 
         return "redirect:/invoice/register";
     }
