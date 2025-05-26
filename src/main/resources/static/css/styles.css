@@ -173,6 +173,7 @@ textarea {
     text-decoration: none;
     color: #6a4ff2;
     cursor: pointer;
+    font-size: 1.3rem;
 }
 
 .back-button:hover {

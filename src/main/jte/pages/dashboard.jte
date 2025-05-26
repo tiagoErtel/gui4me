@@ -14,8 +14,6 @@ content = @`
   @template.partials.message(message = message) 
 
     <section class="dashboard">
-        <h1 class="title">Welcome back, ${username}!</h1>
-
         <div class="grid">
             <a href="/product/search" class="card">
                 <h2>🔍 Search Products</h2>
@@ -36,10 +34,6 @@ content = @`
             <a href="/reports/view" class="card">
                 <h2>📊 Reports</h2>
                 <p>Analyze your purchases and patterns.</p>
-            </a>
-            <a href="/settings/preferences" class="card">
-                <h2>⚙️ Preferences</h2>
-                <p>Customize your settings.</p>
             </a>
         </div>
     </section>
