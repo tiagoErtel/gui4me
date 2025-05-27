@@ -332,3 +332,20 @@ textarea {
 .hidden {
     display: none;
 }
+
+#qrcode-reader {
+    margin-top: 1rem;
+}
+
+@media (orientation: portrait) {
+  #qrcode-reader {
+    width: 90vw;
+  }
+}
+
+@media (orientation: landscape) {
+  #qrcode-reader {
+    width: 70vh;
+  }
+}
+
