@@ -23,7 +23,7 @@ content = @`
     <label for="cameraSelect">Choose camera:</label>
     <select id="cameraSelect"></select>
 
-    <div id="reader" class="mt-2"></div>
+    <div id="qrcode-reader"></div>
 
     <p id="showInvoiceLink" class="mt-2">
         Having trouble scanning?
