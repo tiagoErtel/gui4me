@@ -8,6 +8,11 @@ public class InvoiceParseErrorException extends RuntimeException {
         this.invoiceUrl = invoiceUrl;
     }
 
+    public InvoiceParseErrorException(String message, String invoiceUrl) {
+        super(message);
+        this.invoiceUrl = invoiceUrl;
+    }
+
     public String getInvoiceUrl() {
         return invoiceUrl;
     }
