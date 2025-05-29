@@ -1,4 +1,4 @@
-const html5QrCode = new Html5Qrcode("reader");
+const html5QrCode = new Html5Qrcode("qrcode-reader");
 const cameraSelect = document.getElementById('cameraSelect');
 
 function onScanSuccess(decodedText, decodedResult) {
@@ -15,20 +15,20 @@ let currentCameraId = null;
 
 async function startCamera(cameraId) {
     try {
-		if (html5QrCode.getState() === Html5QrcodeScannerState.SCANNING ||
-			html5QrCode.getState() === Html5QrcodeScannerState.PAUSED) {
-			await html5QrCode.stop().then(() => {
-				html5QrCode.clear();
-			}).catch(err => {
-				console.error("Error stopping camera:", err);
-			});
-		}
+        if (html5QrCode.getState() === Html5QrcodeScannerState.SCANNING ||
+            html5QrCode.getState() === Html5QrcodeScannerState.PAUSED) {
+            await html5QrCode.stop().then(() => {
+                html5QrCode.clear();
+            }).catch(err => {
+                console.error("Error stopping camera:", err);
+            });
+        }
 
         await html5QrCode.start(
             cameraId,
             {
                 fps: 10,
-                qrbox: document.getElementById('reader').clientWidth * 0.6
+                qrbox: document.getElementById('qrcode-reader').clientWidth * 0.6
             },
             onScanSuccess,
             onScanFailure
