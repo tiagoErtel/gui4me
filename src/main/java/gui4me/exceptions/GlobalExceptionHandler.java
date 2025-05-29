@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvoiceParseErrorException.class)
     public String handleInvoiceParseError(InvoiceParseErrorException e, RedirectAttributes redirectAttributes) {
 
-        logger.error("Invoice parse error: {}", e.getInvoiceUrl());
+        logger.error("Invoice parse error: {}, message: {}", e.getInvoiceUrl(), e.getMessage());
 
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "Failed to parse the invoice."));

@@ -56,7 +56,7 @@ public class InvoiceService {
                 Invoice invoice = new Invoice();
                 invoice.setKey(invoiceKey);
                 invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
-                invoice.setIssuanceDate(extractIssuanceDate(doc));
+                invoice.setIssuanceDate(extractIssuanceDate(doc, invoiceUrl));
                 invoice.setStore(createOrFetchStore(doc));
                 invoice.setUser(user);
 
@@ -75,10 +75,21 @@ public class InvoiceService {
         }
     }
 
-    private LocalDateTime extractIssuanceDate(Document doc) {
+    private LocalDateTime extractIssuanceDate(Document doc, String invoiceUrl) {
         Element element = doc.selectFirst("div[data-role=collapsible] ul li");
+
+        if (element == null) {
+            throw new InvoiceParseErrorException(invoiceUrl);
+        }
+
         Matcher matcher = DATE_PATTERN.matcher(element.text());
-        return LocalDateTime.parse(matcher.group(), DATE_FORMATTER);
+
+        if (matcher.find()) {
+            String dateStr = matcher.group();
+            return LocalDateTime.parse(dateStr, DATE_FORMATTER);
+        } else {
+            throw new InvoiceParseErrorException(element.toString(), invoiceUrl);
+        }
     }
 
     private Store createOrFetchStore(Document doc) {
