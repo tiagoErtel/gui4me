@@ -2,6 +2,7 @@ spring:
     application:
         name: gui4me
     jpa:
+        show-sql: true
         hibernate:
             ddl-auto: update
     datasource:
