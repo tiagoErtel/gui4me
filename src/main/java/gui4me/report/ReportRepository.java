@@ -13,7 +13,7 @@ import gui4me.report.dto.InvoicesByStore;
 public interface ReportRepository extends JpaRepository<Invoice, String> {
 
     @Query("""
-                SELECT s.name as storeName, COUNT(*) as invoiceCount
+                SELECT s.name as storeName, COUNT(*) as invoiceCount, SUM(i.totalPrice) as totalPrice
                 FROM Invoice i
                 JOIN Store s on i.store.id = s.id
                 GROUP BY s.name

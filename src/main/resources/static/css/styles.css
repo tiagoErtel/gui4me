@@ -332,3 +332,18 @@ textarea {
 .hidden {
     display: none;
 }
+
+.chart-grid {
+    gap: 2rem;
+    display: grid;
+    justify-content: center;
+}
+
+.chart-box {
+    background-color: var(--panel);
+    width: 90vw;
+    height: 60vh;
+    border: 2px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
