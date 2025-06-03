@@ -2,6 +2,7 @@ spring:
     application:
         name: gui4me
     jpa:
+        show-sql: true
         hibernate:
             ddl-auto: update
     datasource:
@@ -11,6 +12,10 @@ spring:
     docker:
         compose:
             enabled: false
+    web:
+        resources:
+            static-locations[0]: "file:src/main/resources/static/"
+            static-locations[1]: "classpath:/static/"
 
 gg:
     jte:

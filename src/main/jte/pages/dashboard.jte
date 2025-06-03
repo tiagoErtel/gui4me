@@ -11,7 +11,7 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-  @template.partials.message(message = message) 
+  @template.partials.message(message = message)
 
     <section class="dashboard">
         <div class="grid">
@@ -31,7 +31,7 @@ content = @`
                 <h2>🛒 Shopping Lists</h2>
                 <p>Create and track shopping plans.</p>
             </a>
-            <a href="/reports/view" class="card">
+            <a href="/report/dashboard" class="card">
                 <h2>📊 Reports</h2>
                 <p>Analyze your purchases and patterns.</p>
             </a>
