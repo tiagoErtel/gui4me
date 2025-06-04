@@ -57,7 +57,7 @@ public class InvoiceService {
                 invoice.setKey(invoiceKey);
                 invoice.setTotalPrice(parseDouble(doc.selectFirst("span.totalNumb.txtMax").text().trim()));
                 invoice.setIssuanceDate(extractIssuanceDate(doc, invoiceUrl));
-                invoice.setStore(createOrFetchStore(doc));
+                invoice.setStore(fetchAndSaveStore(doc));
                 invoice.setUser(user);
 
                 processInvoiceItems(doc, invoice);
@@ -92,15 +92,10 @@ public class InvoiceService {
         }
     }
 
-    private Store createOrFetchStore(Document doc) {
-        String storeName = doc.getElementsByClass("txtTopo").text();
+    private Store fetchAndSaveStore(Document doc) {
         String storeDocument = doc.getElementsContainingOwnText("CNPJ:").text().replace("CNPJ:", "").strip();
 
-        Store store = new Store();
-        store.setDocument(storeDocument);
-        store.setName(storeName);
-
-        return storeService.checkStoreDocAndSave(store);
+        return storeService.saveStoreFromReceitaWs(storeDocument);
     }
 
     private void processInvoiceItems(Document doc, Invoice invoice) {
