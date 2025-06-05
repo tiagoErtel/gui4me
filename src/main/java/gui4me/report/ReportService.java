@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gui4me.custom_user_details.CustomUserDetails;
+
 @Service
 public class ReportService {
 
@@ -24,8 +26,8 @@ public class ReportService {
         }
     }
 
-    public String getInvoicesByStore() {
-        return parseToJson(reportRepository.getInvoicesByStore());
+    public String getInvoicesByStore(CustomUserDetails user) {
+        return parseToJson(reportRepository.getInvoicesByStore(user));
     }
 
 }
