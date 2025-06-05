@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import gui4me.store.dto.ReceitaWsResponse;
 
@@ -13,10 +12,10 @@ import gui4me.store.dto.ReceitaWsResponse;
 public class StoreService {
 
     @Autowired
-    StoreRepository storeRepository;
+    private StoreRepository storeRepository;
 
     @Autowired
-    RestTemplate restTemplate;
+    private ReceitaWsService receitaWsService;
 
     public Store save(Store store) {
         return storeRepository.save(store);
@@ -30,31 +29,18 @@ public class StoreService {
         return storeRepository.findByDocument(document);
     }
 
-    public Store saveStoreFromReceitaWs(String cnpj) {
-        Store store = fetchStoreFromReceitaWs(cnpj);
+    public Store fetchAndSaveByCnpj(String cnpj) {
+        Store store = findByDocument(cnpj)
+                .orElseGet(() -> createFromReceitaWs(cnpj));
 
         return save(store);
     }
 
-    public Store fetchStoreFromReceitaWs(String cnpj) {
-        String url = "https://receitaws.com.br/v1/cnpj/" + cnpj.replaceAll("[^\\d]", "");
+    private Store createFromReceitaWs(String cnpj) {
+        ReceitaWsResponse response = receitaWsService.fetchByCnpj(cnpj);
 
-        ReceitaWsResponse response = restTemplate.getForObject(url, ReceitaWsResponse.class);
-
-        if (response == null || response.getNome() == null || response.getCnpj() == null) {
-            throw new RuntimeException("Failed to fetch or parse data from ReceitaWS");
-        }
-
-        Optional<Store> optionalStore = findByDocument(cnpj);
-
-        Store store;
-        if (optionalStore.isPresent()) {
-            store = optionalStore.get();
-        } else {
-            store = new Store();
-            store.setDocument(response.getCnpj());
-        }
-
+        Store store = new Store();
+        store.setDocument(response.getCnpj());
         store.setName(response.getNome());
         store.setFantasyName(response.getFantasia());
         store.setType(response.getTipo());
