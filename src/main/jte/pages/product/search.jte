@@ -46,6 +46,7 @@ content = @`
                         <p class="card-details">R$ ${product.getUnitPrice()}</p>
                         <p class="card-details">${product.getStoreName()}</p>
                         <p class="card-details">${product.getFormattedLastIssuanceDate()}</p>
+                        <p class="card-details">${product.getTimeAgo()}</p>
                     </div>
                 </div>
             @endfor
