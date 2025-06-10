@@ -76,7 +76,7 @@ GRANT ALL ON TABLE public.shopping_list_item TO "admin";
 CREATE TABLE public.invoices (
     id TEXT PRIMARY KEY,
     issuance_date TIMESTAMP(6) NOT NULL,
-    key TEXT NOT NULL,
+    key TEXT NOT NULL UNIQUE,
     total_price DOUBLE PRECISION NOT NULL,
     store_id TEXT NOT NULL,
     user_id TEXT NOT NULL,
