@@ -1,5 +1,6 @@
 package gui4me.product;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -11,14 +12,16 @@ public class ProductSearchResultDTO {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public ProductSearchResultDTO(String productName, Double unitPrice, String storeName, LocalDateTime lastIssuanceDate) {
+    public ProductSearchResultDTO(String productName, Double unitPrice, String storeName,
+            LocalDateTime lastIssuanceDate) {
         this.productName = productName;
         this.storeName = storeName;
         this.lastIssuanceDate = lastIssuanceDate;
         this.unitPrice = unitPrice;
     }
 
-    public ProductSearchResultDTO(){}
+    public ProductSearchResultDTO() {
+    }
 
     public Double getUnitPrice() {
         return unitPrice;
@@ -54,5 +57,29 @@ public class ProductSearchResultDTO {
 
     public void setLastIssuanceDate(LocalDateTime lastIssuanceDate) {
         this.lastIssuanceDate = lastIssuanceDate;
+    }
+
+    public String getTimeAgo() {
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(this.lastIssuanceDate, now);
+
+        long seconds = duration.getSeconds();
+
+        if (seconds < 60) {
+            return seconds + " seconds ago";
+        }
+
+        long minutes = seconds / 60;
+        if (minutes < 60) {
+            return minutes + " minutes ago";
+        }
+
+        long hours = minutes / 60;
+        if (hours < 24) {
+            return hours + " hours ago";
+        }
+
+        long days = hours / 24;
+        return days + " days ago";
     }
 }

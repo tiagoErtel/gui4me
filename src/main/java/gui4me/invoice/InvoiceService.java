@@ -95,7 +95,7 @@ public class InvoiceService {
     private Store fetchAndSaveStore(Document doc) {
         String storeDocument = doc.getElementsContainingOwnText("CNPJ:").text().replace("CNPJ:", "").strip();
 
-        return storeService.saveStoreFromReceitaWs(storeDocument);
+        return storeService.fetchAndSaveByCnpj(storeDocument);
     }
 
     private void processInvoiceItems(Document doc, Invoice invoice) {
