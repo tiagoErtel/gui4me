@@ -1,13 +1,20 @@
 package gui4me.invoice;
 
-import gui4me.custom_user_details.CustomUserDetails;
-import gui4me.store.Store;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.store.Store;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "invoices")
@@ -24,7 +31,7 @@ public class Invoice {
     @NotNull
     private LocalDateTime issuanceDate;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
