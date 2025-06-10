@@ -11,6 +11,11 @@ spring:
     docker:
         compose:
             enabled: false
+    flyway:
+        enabled: true
+        schemas: public
+        default-schema: public
+
 
 gg:
     jte:
