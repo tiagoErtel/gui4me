@@ -4,7 +4,7 @@ spring:
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: update
+            ddl-auto: validate
     datasource:
         url: ${DB_URL}
         username: ${DB_USERNAME}
@@ -16,6 +16,10 @@ spring:
         resources:
             static-locations[0]: "file:src/main/resources/static/"
             static-locations[1]: "classpath:/static/"
+    flyway:
+        enabled: true
+        schemas: public
+        default-schema: public
 
 gg:
     jte:
