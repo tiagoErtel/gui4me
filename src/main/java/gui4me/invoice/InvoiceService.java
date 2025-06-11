@@ -104,7 +104,7 @@ public class InvoiceService {
         Matcher matcher = cnpjPattern.matcher(storeDocument);
 
         if (matcher.find()) {
-            String cnpj = matcher.group(); // ensure only valid CNPJ is used
+            String cnpj = matcher.group();
             return storeService.fetchAndSaveByCnpj(cnpj);
         } else {
             throw new InvoiceParseErrorException("Could not extract valid CNPJ", doc.text());
