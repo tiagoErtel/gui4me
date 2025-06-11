@@ -29,6 +29,7 @@ public class InvoiceService {
 
     private static final Pattern DATE_PATTERN = Pattern.compile("\\d{2}/\\d{2}/\\d{4} \\d{2}:\\d{2}:\\d{2}");
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    private static final Pattern cnpjPattern = Pattern.compile("\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}");
 
     @Autowired
     private InvoiceRepository invoiceRepository;
@@ -93,9 +94,21 @@ public class InvoiceService {
     }
 
     private Store fetchAndSaveStore(Document doc) {
-        String storeDocument = doc.getElementsContainingOwnText("CNPJ:").text().replace("CNPJ:", "").strip();
+        Element cnpjElement = doc.getElementsContainingOwnText("CNPJ:").first();
 
-        return storeService.fetchAndSaveByCnpj(storeDocument);
+        if (cnpjElement == null) {
+            throw new InvoiceParseErrorException("Could not find CNPJ element", doc.text());
+        }
+
+        String storeDocument = cnpjElement.text().replace("CNPJ:", "").strip();
+        Matcher matcher = cnpjPattern.matcher(storeDocument);
+
+        if (matcher.find()) {
+            String cnpj = matcher.group(); // ensure only valid CNPJ is used
+            return storeService.fetchAndSaveByCnpj(cnpj);
+        } else {
+            throw new InvoiceParseErrorException("Could not extract valid CNPJ", doc.text());
+        }
     }
 
     private void processInvoiceItems(Document doc, Invoice invoice) {
