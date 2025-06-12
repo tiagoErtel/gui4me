@@ -27,4 +27,5 @@ logging:
         org:
             springframework:
                 security: ERROR
-
+tomtom:
+    api-key: ${TOMTOM_API_KEY}

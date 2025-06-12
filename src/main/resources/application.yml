@@ -31,4 +31,5 @@ logging:
         org:
             springframework:
                 security: DEBUG
-
+tomtom:
+    api-key: ${TOMTOM_API_KEY}
