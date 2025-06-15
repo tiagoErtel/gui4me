@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gui4me.store.dto.ReceitaWsResponse;
+import gui4me.store.dto.TomTomGeocodeResponse;
+import gui4me.store.dto.TomTomGeocodeResponse.Result;
 
 @Service
 public class StoreService {
@@ -16,6 +18,9 @@ public class StoreService {
 
     @Autowired
     private ReceitaWsService receitaWsService;
+
+    @Autowired
+    private TomTomService tomTomService;
 
     public Store save(Store store) {
         return storeRepository.save(store);
@@ -54,6 +59,7 @@ public class StoreService {
         address.setCity(response.getMunicipio());
         address.setState(response.getUf());
         address.setZipCode(response.getCep());
+        address = getCoordinatesFromAddress(address);
         store.setAddress(address);
 
         Contact contact = new Contact();
@@ -63,4 +69,21 @@ public class StoreService {
 
         return store;
     }
+
+    private Address getCoordinatesFromAddress(Address address) {
+
+        String stringAddress = String.join(" ", address.getNumber(), address.getStreet(), address.getStreet(),
+                address.getNeighborhood(), address.getCity(), address.getState(), address.getZipCode());
+
+        TomTomGeocodeResponse response = tomTomService.geocode(stringAddress);
+
+        Result result = response.getTheBestMatchResut();
+
+        address.setLatitude(result.getPosition().getLat());
+        address.setLongitude(result.getPosition().getLon());
+
+        return address;
+
+    }
+
 }

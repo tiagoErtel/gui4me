@@ -11,6 +11,8 @@ public class Address {
     private String number;
     private String zipCode;
     private String complement;
+    private double latitude;
+    private double longitude;
 
     public String getState() {
         return state;
@@ -66,5 +68,21 @@ public class Address {
 
     public void setComplement(String complement) {
         this.complement = complement;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

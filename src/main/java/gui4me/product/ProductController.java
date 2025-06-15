@@ -1,12 +1,14 @@
 package gui4me.product;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import gui4me.product.dto.ProductSearchResult;
 
 @Controller
 @RequestMapping("/product")
@@ -18,7 +20,7 @@ public class ProductController {
     @GetMapping("/search")
     public String searchProduct(Model model, String productName) {
         if (productName != null && !productName.isBlank()) {
-            List<ProductSearchResultDTO> pr = productService.findLatestProductByNameForAllStores(productName);
+            List<ProductSearchResult> pr = productService.findLatestProductByNameForAllStores(productName);
             model.addAttribute("productList", pr);
         }
 
