@@ -1,26 +1,29 @@
 package gui4me.product;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import gui4me.product.dto.ProductSearchResult;
+
 @Service
 public class ProductService {
-	
+
     @Autowired
     ProductRepository productRepository;
 
-    public Optional<Product> findByName(String name){
+    public Optional<Product> findByName(String name) {
         return productRepository.findByName(name);
     }
 
-    public Product save(Product product){
+    public Product save(Product product) {
         return productRepository.save(product);
     }
 
-    public List<ProductSearchResultDTO> findLatestProductByNameForAllStores(String name) {
-            return productRepository.findLatestProductByNameForAllStores(name);
+    public List<ProductSearchResult> findLatestProductByNameForAllStores(String name) {
+        return productRepository.findLatestProductByNameForAllStores(name);
     }
 
     public Product getOrCreateProduct(String productName) {
