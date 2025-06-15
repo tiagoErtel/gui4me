@@ -1,4 +1,4 @@
-@import gui4me.product.ProductSearchResultDTO
+@import gui4me.product.dto.ProductSearchResult
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 @import java.util.List
@@ -7,7 +7,7 @@
 @param String username = ""
 @param String email = null
 @param CsrfHiddenInput csrfHiddenInput
-@param List<ProductSearchResultDTO> productList = null
+@param List<ProductSearchResult> productList = null
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
@@ -39,7 +39,7 @@ content = @`
         </div>
     @else
         <div class="card-list">
-            @for (ProductSearchResultDTO product : productList)
+            @for (ProductSearchResult product : productList)
                 <div class="card-item">
                     <div class="card-content">
                         <h3 class="card-title">${product.getProductName()}</h3>

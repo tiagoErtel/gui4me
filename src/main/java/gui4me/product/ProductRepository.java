@@ -22,7 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
                 JOIN InvoiceItem ii ON p.id = ii.product.id
                 JOIN Invoice i ON ii.invoice.id = i.id
                 JOIN Store s ON i.store.id = s.id
-                WHERE CAST(UNACCENT(LOWER(p.name)) as STRING) LIKE CAST(UNACCENT(LOWER(CONCAT('%', :name, '%'))) as STRING)
+                WHERE UNACCENT(LOWER(p.name)) LIKE UNACCENT(LOWER(CONCAT('%', :name, '%')))
                 AND i.issuanceDate = (
                     SELECT MAX(i2.issuanceDate)
                     FROM Invoice i2
