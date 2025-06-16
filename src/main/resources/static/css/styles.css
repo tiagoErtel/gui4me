@@ -363,3 +363,34 @@ textarea {
     width: 70vh;
   }
 }
+
+.sort-form {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--panel);
+    padding: 1rem;
+    border-radius: var(--radius);
+}
+
+.sort-form label {
+    font-weight: bold;
+    color: var(--text);
+}
+
+.sort-form select {
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid #555;
+    border-radius: var(--radius);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.sort-form select:focus {
+    outline: none;
+    border-color: var(--primary);
+}

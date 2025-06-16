@@ -8,6 +8,7 @@
 @param String email = null
 @param CsrfHiddenInput csrfHiddenInput
 @param List<Invoice> invoiceList = null
+@param String sort = "issuanceDate,desc"
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
@@ -29,6 +30,17 @@ content = @`
                 <p>No invoices found.</p>
             </div>
         @else
+
+            <form method="get" action="/invoice/list">
+                <label for="sort">Sort by:</label>
+                <select id="sort" name="sort" onchange="this.form.submit()">
+                    <option value="issuanceDate,desc" selected="${"issuanceDate,desc".equals(sort)}">Date ↓</option>
+                    <option value="issuanceDate,asc" selected="${"issuanceDate,asc".equals(sort)}">Date ↑</option>
+                    <option value="totalPrice,desc" selected="${"totalPrice,desc".equals(sort)}">Total Price ↓</option>
+                    <option value="totalPrice,asc" selected="${"totalPrice,asc".equals(sort)}">Total Price ↑</option>
+                </select>
+            </form>
+
             <div class="card-list">
                 @for (Invoice invoice : invoiceList)
                     <div class="card-item" onclick="location.assign('/invoice/item/list?invoiceId=${invoice.getId()}')">
