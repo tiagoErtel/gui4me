@@ -15,45 +15,67 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 username = username,
 content = @`
-    <section class="list-container">
-        <div>
-            @template.partials.back-button(href = "/dashboard")
+    @template.partials.back-button(href = "/dashboard")
 
-            <div class="list-header">
-                <h2 class="title">Invoices List</h2>
-                <p class="subtitle">Explore the details of your invoices</p>
-            </div>
+    <div class="list-header">
+        <h2 class="title">Invoices List</h2>
+        <p class="subtitle">Explore the details of your invoices</p>
+    </div>
+
+    @if (invoiceList == null || invoiceList.isEmpty())
+        <div class="no-items">
+            <p>No invoices found.</p>
         </div>
+    @else
+        <form method="get" action="/invoice/list" class="sort-by-form">
+            <label for="sort">Sort by:</label>
+            <select id="sort" name="sort" class="sort-by" onchange="this.form.submit()">
+                <option hidden selected="true">
+                    @if(sort.contains("issuanceDate"))Date@elseif(sort.contains("totalPrice"))Total Price@endif
+                    ${sort.contains("asc") ? " ↑" : " ↓"}
+                </option>
+                <option
+                    value="${sort.equals("issuanceDate,desc") ? "issuanceDate,asc" : "issuanceDate,desc"}">
 
-        @if (invoiceList == null || invoiceList.isEmpty())
-            <div class="no-items">
-                <p>No invoices found.</p>
-            </div>
-        @else
+                    @if(sort.contains("issuanceDate"))
+                        @if(sort.contains("asc"))
+                            Date ↓
+                        @else
+                            Date ↑
+                        @endif
+                    @else
+                        Date
+                    @endif
+                </option>
+                <option
+                    value="${sort.equals("totalPrice,desc") ? "totalPrice,asc" : "totalPrice,desc"}">
 
-            <form method="get" action="/invoice/list">
-                <label for="sort">Sort by:</label>
-                <select id="sort" name="sort" onchange="this.form.submit()">
-                    <option value="issuanceDate,desc" selected="${"issuanceDate,desc".equals(sort)}">Date ↓</option>
-                    <option value="issuanceDate,asc" selected="${"issuanceDate,asc".equals(sort)}">Date ↑</option>
-                    <option value="totalPrice,desc" selected="${"totalPrice,desc".equals(sort)}">Total Price ↓</option>
-                    <option value="totalPrice,asc" selected="${"totalPrice,asc".equals(sort)}">Total Price ↑</option>
-                </select>
-            </form>
+                    @if(sort.contains("totalPrice"))
+                        @if(sort.contains("asc"))
+                            Total Price ↓
+                        @else
+                            Total Price ↑
+                        @endif
+                    @else
+                        Total Price
+                    @endif
+                </option>
 
-            <div class="card-list">
-                @for (Invoice invoice : invoiceList)
-                    <div class="card-item" onclick="location.assign('/invoice/item/list?invoiceId=${invoice.getId()}')">
-                        <div class="card-content">
-                            <h3 class="card-title">${invoice.getStore().getName()}</h3>
-                            <p class="card-details">R$ ${invoice.getTotalPrice()}</p>
-                            <p class="card-details"> ${invoice.getFormattedIssuanceDate()}</p>
-                        </div>
+            </select>
+        </form>
 
+        <div class="card-list">
+            @for (Invoice invoice : invoiceList)
+                <div class="card-item" onclick="location.assign('/invoice/item/list?invoiceId=${invoice.getId()}')">
+                    <div class="card-content">
+                        <h3 class="card-title">${invoice.getStore().getName()}</h3>
+                        <p class="card-details">R$ ${invoice.getTotalPrice()}</p>
+                        <p class="card-details"> ${invoice.getFormattedIssuanceDate()}</p>
                     </div>
-                @endfor
-            </div>
-        @endif
-    </section>
+
+                </div>
+            @endfor
+        </div>
+    @endif
 `)
 

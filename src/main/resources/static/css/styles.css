@@ -2,7 +2,7 @@
     --primary: #bb86fc;
     --primary-light: #d1aaff;
     --bg: #181818;
-    --panel: #242424;
+    --panel: #2c2c2c;
     --text: #f0f0f0;
     --text-muted: #cccccc;
     --radius: 12px;
@@ -198,7 +198,7 @@ textarea {
 
 .card-item {
     padding: 15px;
-    background-color: #2c2c2c;
+    background-color: var(--panel);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -364,33 +364,16 @@ textarea {
   }
 }
 
-.sort-form {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+.sort-by-form {
+    display: inline-block;
+}
+
+.sort-by-form select {
     background-color: var(--panel);
-    padding: 1rem;
-    border-radius: var(--radius);
-}
-
-.sort-form label {
-    font-weight: bold;
     color: var(--text);
-}
-
-.sort-form select {
-    background-color: var(--bg);
-    color: var(--text);
-    border: 1px solid #555;
-    border-radius: var(--radius);
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    transition: var(--transition);
-}
-
-.sort-form select:focus {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 8px;
     outline: none;
-    border-color: var(--primary);
+    padding: 1rem;
 }
