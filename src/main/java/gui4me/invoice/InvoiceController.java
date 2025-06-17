@@ -3,6 +3,7 @@ package gui4me.invoice;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,11 +44,16 @@ public class InvoiceController {
 
     @GetMapping("/list")
     public String list(
-            Model model,
+            @RequestParam(defaultValue = "issuanceDate,desc") String sort, Model model,
             @ModelAttribute("currentUser") CustomUserDetails currentUser) {
-        List<Invoice> invoiceList = invoiceService.findAllByUser(currentUser);
 
-        model.addAttribute("invoiceList", invoiceList);
+        String[] sortParts = sort.split(",");
+        String sortBy = sortParts[0];
+        Sort.Direction direction = Sort.Direction.fromString(sortParts[1]);
+
+        List<Invoice> invoices = invoiceService.findAllByUser(currentUser, Sort.by(direction, sortBy));
+        model.addAttribute("invoiceList", invoices);
+        model.addAttribute("sort", sort);
 
         return "pages/invoice/list";
     }

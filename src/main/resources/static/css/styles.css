@@ -2,7 +2,7 @@
     --primary: #bb86fc;
     --primary-light: #d1aaff;
     --bg: #181818;
-    --panel: #242424;
+    --panel: #2c2c2c;
     --text: #f0f0f0;
     --text-muted: #cccccc;
     --radius: 12px;
@@ -198,7 +198,7 @@ textarea {
 
 .card-item {
     padding: 15px;
-    background-color: #2c2c2c;
+    background-color: var(--panel);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -362,4 +362,18 @@ textarea {
   #qrcode-reader {
     width: 70vh;
   }
+}
+
+.sort-by-form {
+    display: inline-block;
+}
+
+.sort-by-form select {
+    background-color: var(--panel);
+    color: var(--text);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    padding: 1rem;
 }
