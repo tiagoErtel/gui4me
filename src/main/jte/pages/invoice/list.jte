@@ -29,36 +29,18 @@ content = @`
     @else
         <form method="get" action="/invoice/list" class="sort-by-form">
             <label for="sort">Sort by:</label>
-            <select id="sort" name="sort" class="sort-by" onchange="this.form.submit()">
+            <select id="sort" name="sort" onchange="this.form.submit()">
                 <option hidden selected="true">
-                    @if(sort.contains("issuanceDate"))Date@elseif(sort.contains("totalPrice"))Total Price@endif
-                    ${sort.contains("asc") ? " ↑" : " ↓"}
+                    ${sort.contains("issuanceDate") ? "Date" : sort.contains("totalPrice") ? "Total Price" : ""}
+                    ${sort.contains("asc") ? "▲" : "▼"}
                 </option>
                 <option
                     value="${sort.equals("issuanceDate,desc") ? "issuanceDate,asc" : "issuanceDate,desc"}">
-
-                    @if(sort.contains("issuanceDate"))
-                        @if(sort.contains("asc"))
-                            Date ↓
-                        @else
-                            Date ↑
-                        @endif
-                    @else
-                        Date
-                    @endif
+                    Date
                 </option>
                 <option
                     value="${sort.equals("totalPrice,desc") ? "totalPrice,asc" : "totalPrice,desc"}">
-
-                    @if(sort.contains("totalPrice"))
-                        @if(sort.contains("asc"))
-                            Total Price ↓
-                        @else
-                            Total Price ↑
-                        @endif
-                    @else
-                        Total Price
-                    @endif
+                    Total Price
                 </option>
 
             </select>
