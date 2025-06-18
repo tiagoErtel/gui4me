@@ -12,6 +12,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import gui4me.custom_user_details.CustomUserDetails;
@@ -127,8 +128,8 @@ public class InvoiceService {
         }
     }
 
-    public List<Invoice> findAllByUser(CustomUserDetails user) {
-        return invoiceRepository.findAllByUser(user);
+    public List<Invoice> findAllByUser(CustomUserDetails user, Sort sort) {
+        return invoiceRepository.findAllByUser(user, sort);
     }
 
     private String extractText(Element row, String selector) {
