@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import gui4me.product.dto.ProductSearchResult;
+import gui4me.product.dto.ProductAnalyse;
+import gui4me.product.dto.ProductAnalyseByStore;
 
 @Controller
 @RequestMapping("/product")
@@ -18,12 +20,21 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/search")
-    public String searchProduct(Model model, String productName) {
+    public String searchProduct(Model model, @RequestParam(required = false) String productName) {
         if (productName != null && !productName.isBlank()) {
-            List<ProductSearchResult> pr = productService.findLatestProductByNameForAllStores(productName);
-            model.addAttribute("productList", pr);
+            List<ProductAnalyse> products = productService.getProductAnalyse(productName);
+            model.addAttribute("products", products);
         }
 
         return "pages/product/search";
+    }
+
+    @GetMapping("/analyse")
+    public String analyseByStore(Model model, @RequestParam String productId) {
+        List<ProductAnalyseByStore> products = productService.getProductAnalyseByStore(productId);
+
+        model.addAttribute("products", products);
+
+        return "pages/product/analyse";
     }
 }

@@ -1,4 +1,4 @@
-@import gui4me.product.dto.ProductAnalyse
+@import gui4me.product.dto.ProductSearchResult
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 @import java.util.List
@@ -7,7 +7,7 @@
 @param String username = ""
 @param String email = null
 @param CsrfHiddenInput csrfHiddenInput
-@param List<ProductAnalyse> products = null
+@param List<ProductSearchResult> productList = null
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
@@ -18,7 +18,7 @@ content = @`
 
     <div class="list-header">
         <h2 class="title">Search Products</h2>
-        <p class="subtitle">Find items in out database</p>
+        <p class="subtitle">Find items you've bought before</p>
     </div>
 
     <form action="/product/search" method="GET" class="panel form-card">
@@ -33,21 +33,20 @@ content = @`
         </button>
     </form>
 
-    @if (products == null || products.isEmpty())
+    @if (productList == null || productList.isEmpty())
         <div class="no-items">
             <p>No products found. Try a different search term.</p>
         </div>
     @else
         <div class="card-list">
-            @for (ProductAnalyse product : products)
-                <div class="card-item" onclick="location.assign('/product/analyse?productId=${product.getId()}')">
-                    <div>
-                        <h3 class="card-title">${product.getName()}</h3>
-                        <p class="card-details">Max: R$ ${String.format("%.2f", product.getMaxPrice())}</p>
-                        <p class="card-details">Min: R$ ${String.format("%.2f", product.getMinPrice())}</p>
-                        <p class="card-details">Avg: R$ ${String.format("%.2f", product.getAvgPrice())}</p>
-                        <p class="card-details">Times Sold: ${product.getTimesSold()}</p>
-                        <p class="card-details">Stores Cnt: ${product.getStoresCount()}</p>
+            @for (ProductSearchResult product : productList)
+                <div class="card-item">
+                    <div class="card-content">
+                        <h3 class="card-title">${product.getProductName()}</h3>
+                        <p class="card-details">R$ ${product.getUnitPrice()}</p>
+                        <p class="card-details">${product.getStoreName()}</p>
+                        <p class="card-details">${product.getFormattedLastIssuanceDate()}</p>
+                        <p class="card-details">${product.getTimeAgo()}</p>
                     </div>
                 </div>
             @endfor
