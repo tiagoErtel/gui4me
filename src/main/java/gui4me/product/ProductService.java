@@ -6,7 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gui4me.product.dto.ProductSearchResult;
+import gui4me.product.dto.ProductAnalyse;
+import gui4me.product.dto.ProductAnalyseByStore;
 
 @Service
 public class ProductService {
@@ -22,10 +23,6 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<ProductSearchResult> findLatestProductByNameForAllStores(String name) {
-        return productRepository.findLatestProductByNameForAllStores(name);
-    }
-
     public Product getOrCreateProduct(String productName) {
         return findByName(productName)
                 .orElseGet(() -> save(new Product(productName)));
@@ -37,5 +34,13 @@ public class ProductService {
 
     public Product findById(String id) {
         return productRepository.findById(id).orElseThrow();
+    }
+
+    public List<ProductAnalyse> getProductAnalyse(String productName) {
+        return productRepository.getProductAnalyse(productName);
+    }
+
+    public List<ProductAnalyseByStore> getProductAnalyseByStore(String productId) {
+        return productRepository.getProductAnalyseByStore(productId);
     }
 }
