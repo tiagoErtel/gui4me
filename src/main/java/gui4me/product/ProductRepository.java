@@ -8,30 +8,47 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import gui4me.product.dto.ProductSearchResult;
+import gui4me.product.dto.ProductAnalyse;
+import gui4me.product.dto.ProductAnalyseByStore;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
+
     Optional<Product> findByName(String name);
 
     @Query("""
-                SELECT new gui4me.product.dto.ProductSearchResult(
-                    p.name, MAX(ii.unitPrice), s.name, i.issuanceDate
-                )
-                FROM Product p
-                JOIN InvoiceItem ii ON p.id = ii.product.id
-                JOIN Invoice i ON ii.invoice.id = i.id
-                JOIN Store s ON i.store.id = s.id
-                WHERE UNACCENT(LOWER(p.name)) LIKE UNACCENT(LOWER(CONCAT('%', :name, '%')))
-                AND i.issuanceDate = (
-                    SELECT MAX(i2.issuanceDate)
-                    FROM Invoice i2
-                    JOIN InvoiceItem ii2 ON i2.id = ii2.invoice.id
-                    WHERE ii2.product.id = p.id
-                    AND i2.store.id = s.id
-                )
-                GROUP BY p.name, s.name, i.issuanceDate
+            SELECT
+                p.id AS id,
+                p.name AS name,
+                AVG(ii.unitPrice) AS avgPrice,
+                MIN(ii.unitPrice) AS minPrice,
+                MAX(ii.unitPrice) AS maxPrice,
+                COUNT(ii.id) AS timesSold,
+                COUNT(DISTINCT s.id) AS storesCount
+            FROM InvoiceItem ii
+            JOIN ii.invoice i
+            JOIN ii.product p
+            JOIN i.store s
+            WHERE UNACCENT(LOWER(p.name)) LIKE UNACCENT(LOWER(CONCAT('%', :productName, '%')))
+            GROUP BY p.id, p.name
             """)
-    List<ProductSearchResult> findLatestProductByNameForAllStores(@Param("name") String name);
+    List<ProductAnalyse> getProductAnalyse(@Param("productName") String productName);
 
+    @Query("""
+            SELECT
+                p.name as productName,
+                s.name AS storeName,
+                MIN(ii.unitPrice) AS minPrice,
+                MAX(ii.unitPrice) AS maxPrice,
+                AVG(ii.unitPrice) AS avgPrice,
+                COUNT(ii.id) AS timesSold
+            FROM InvoiceItem ii
+            JOIN ii.invoice i
+            JOIN i.store s
+            JOIN ii.product p
+            WHERE p.id = :productId
+            GROUP BY p.name, s.name
+            ORDER BY avgPrice ASC
+            """)
+    List<ProductAnalyseByStore> getProductAnalyseByStore(@Param("productId") String productId);
 }
