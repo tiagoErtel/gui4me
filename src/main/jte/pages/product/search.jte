@@ -21,16 +21,14 @@ content = @`
         <p class="subtitle">Find items in out database</p>
     </div>
 
-    <form action="/product/search" method="GET" class="panel form-card">
+    <form action="/product/search" method="GET" class="search-container">
         <input
                 type="text"
                 name="productName"
                 placeholder="Search by product name..."
                 required
         />
-        <button class="btn btn-primary" type="submit">
-            Search
-        </button>
+        <button type="submit"><i class="fa fa-search"></i></button>
     </form>
 
     @if (products == null || products.isEmpty())
