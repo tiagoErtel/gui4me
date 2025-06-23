@@ -18,7 +18,7 @@ import gui4me.utils.MessageType;
 public class UserController {
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    CustomUserDetailsService userService;
 
     @GetMapping("/settings")
     public String setting(Model model) {
@@ -31,9 +31,25 @@ public class UserController {
             @ModelAttribute("currentUser") CustomUserDetails user,
             @RequestParam String newUsername) {
 
-        customUserDetailsService.updateUsername(user, newUsername);
+        userService.updateUsername(user, newUsername);
 
         Message message = new Message(MessageType.SUCCESS, "Username updated!");
+        redirectAttributes.addFlashAttribute("message", message);
+
+        return "redirect:/user/settings";
+    }
+
+    @PostMapping("/settings/password")
+    public String updatePassword(
+            @RequestParam String currentPassword,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword,
+            @ModelAttribute("currentUser") CustomUserDetails user,
+            RedirectAttributes redirectAttributes) {
+
+        userService.updatePassword(user, currentPassword, newPassword, confirmPassword);
+
+        Message message = new Message(MessageType.SUCCESS, "Password updated succesfully!");
         redirectAttributes.addFlashAttribute("message", message);
 
         return "redirect:/user/settings";

@@ -37,7 +37,7 @@ content = @`
 
         <div class="panel">
             <h3 class="subtitle">Change Password</h3>
-            <form method="post" action="/settings/password">
+            <form method="post" action="/user/settings/password">
                 ${csrfHiddenInput}
 
                 <div>
