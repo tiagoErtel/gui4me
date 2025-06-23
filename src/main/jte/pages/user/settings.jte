@@ -23,12 +23,12 @@ content = @`
 
         <div class="panel">
             <h3 class="subtitle">Account Info</h3>
-            <form method="post" action="/settings/username">
+            <form method="post" action="/user/settings/username">
                 ${csrfHiddenInput}
 
                 <div>
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" value="${username}" required />
+                    <label for="newUsername">Username</label>
+                    <input type="text" id="newUsername" name="newUsername" value="${username}" required />
                 </div>
 
                 <button type="submit" class="btn btn-primary">Update Info</button>

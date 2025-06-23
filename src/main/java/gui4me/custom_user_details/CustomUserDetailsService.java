@@ -37,4 +37,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public boolean existsByEmail(String email) {
         return customUserDetailsRepository.existsByEmail(email);
     }
+
+    public void updateUsername(CustomUserDetails user, String newUsername) {
+        user.setUsername(newUsername);
+
+        customUserDetailsRepository.save(user);
+    }
 }
