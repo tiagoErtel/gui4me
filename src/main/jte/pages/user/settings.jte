@@ -13,6 +13,8 @@ username = username,
 content = @`
     @template.partials.message(message = message)
 
+    @template.partials.back-button(href = "/dashboard")
+
     <div class="list-header">
         <h2 class="title">Settings</h2>
     </div>
