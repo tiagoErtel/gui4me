@@ -29,10 +29,7 @@ content = @`
             <form method="post" action="/user/settings/username">
                 ${csrfHiddenInput}
 
-                <div>
-                    <label for="newUsername">Username</label>
-                    <input type="text" id="newUsername" name="newUsername" value="${username}" required />
-                </div>
+                @template.partials.input(type = "text", id = "newUsername", name = "newUsername", placeholder = "New username", value = username, fieldErrors = fieldErrors)
 
                 <button type="submit" class="btn btn-primary">Update Info</button>
             </form>
@@ -43,9 +40,9 @@ content = @`
             <form method="post" action="/user/settings/password">
                 ${csrfHiddenInput}
 
-                @template.partials.input(type = "password", id = "currentPassword", name = "currentPassword", fieldErrors = fieldErrors)
-                @template.partials.input(type = "password", id = "newPassword", name = "newPassword", fieldErrors = fieldErrors)
-                @template.partials.input(type = "password", id = "confirmPassword", name = "confirmPassword", fieldErrors = fieldErrors)
+                @template.partials.input(type = "password", id = "currentPassword", name = "currentPassword", placeholder = "Current password", fieldErrors = fieldErrors)
+                @template.partials.input(type = "password", id = "newPassword", name = "newPassword", placeholder = "New password", fieldErrors = fieldErrors)
+                @template.partials.input(type = "password", id = "confirmPassword", name = "confirmPassword", placeholder = "Conirm the password", fieldErrors = fieldErrors)
 
                 <button type="submit" class="btn btn-primary">Update Password</button>
             </form>
