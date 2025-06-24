@@ -1,5 +1,8 @@
 package gui4me.exceptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -78,6 +81,13 @@ public class GlobalExceptionHandler {
 
         logger.warn("Passwords do not match");
 
+        Map<String, String> fieldErrors = new HashMap<>();
+
+        fieldErrors.put("newPassword", "Passwords do not match");
+        fieldErrors.put("confirmPassword", "Passwords do not match");
+
+        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
+
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "Passwords do not match"));
         return "redirect:/user/settings";
@@ -88,6 +98,12 @@ public class GlobalExceptionHandler {
             RedirectAttributes redirectAttributes) {
 
         logger.warn("Incorrect current password");
+
+        Map<String, String> fieldErrors = new HashMap<>();
+
+        fieldErrors.put("currentPassword", "Incorrect password");
+
+        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
 
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "Incorrect password!"));
