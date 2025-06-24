@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import gui4me.exceptions.user.IncorrectCurrentPasswordException;
+import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
 import gui4me.exceptions.user.UserNotFoundException;
 
@@ -36,5 +38,25 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public boolean existsByEmail(String email) {
         return customUserDetailsRepository.existsByEmail(email);
+    }
+
+    public void updateUsername(CustomUserDetails user, String newUsername) {
+        user.setUsername(newUsername);
+
+        customUserDetailsRepository.save(user);
+    }
+
+    public void updatePassword(CustomUserDetails user, String password, String newPassword, String confirmPassword) {
+        if (!newPassword.equals(confirmPassword)) {
+            throw new PasswordsDoNotMatchException();
+        }
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IncorrectCurrentPasswordException();
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        customUserDetailsRepository.save(user);
     }
 }

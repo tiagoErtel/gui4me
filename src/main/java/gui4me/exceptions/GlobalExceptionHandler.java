@@ -1,5 +1,8 @@
 package gui4me.exceptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,6 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
 import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
+import gui4me.exceptions.user.IncorrectCurrentPasswordException;
+import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
@@ -69,4 +74,40 @@ public class GlobalExceptionHandler {
 
         return "redirect:/invoice/register";
     }
+
+    @ExceptionHandler(PasswordsDoNotMatchException.class)
+    public String handlePasswordsDoNotMatchException(PasswordsDoNotMatchException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("Passwords do not match");
+
+        Map<String, String> fieldErrors = new HashMap<>();
+
+        fieldErrors.put("newPassword", "Passwords do not match");
+        fieldErrors.put("confirmPassword", "Passwords do not match");
+
+        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "Passwords do not match"));
+        return "redirect:/user/settings";
+    }
+
+    @ExceptionHandler(IncorrectCurrentPasswordException.class)
+    public String handleIncorrectCurrentPasswordException(IncorrectCurrentPasswordException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("Incorrect current password");
+
+        Map<String, String> fieldErrors = new HashMap<>();
+
+        fieldErrors.put("currentPassword", "Incorrect password");
+
+        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "Incorrect password!"));
+        return "redirect:/user/settings";
+    }
+
 }
