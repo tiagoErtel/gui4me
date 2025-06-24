@@ -106,14 +106,6 @@ content = @`
                 form.classList.add('hidden');
                 showBtn.classList.remove('hidden');
             });
-
-            document.addEventListener('click', function(event) {
-                document.querySelectorAll('details.dropdown').forEach(dropdown => {
-                    if (!dropdown.contains(event.target)) {
-                        dropdown.removeAttribute('open');
-                    }
-                });
-            });
         });
     </script>
 `)

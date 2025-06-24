@@ -410,3 +410,9 @@ textarea {
 .search-container button:hover {
     background-color: var(--primary-light);
 }
+
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
