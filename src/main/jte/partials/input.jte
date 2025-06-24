@@ -4,15 +4,16 @@
 @param String id
 @param String name
 @param String value = ""
+@param String placeholder = ""
 @param Map<String, String> fieldErrors
 
 <div>
-    <label for="${id}">${name}</label>
     <input
         type="${type}"
         id="${id}"
         name="${name}"
         value="${value}"
+        placeholder = "${placeholder}"
         required
         class="${fieldErrors.containsKey(name) ? "input-error" : ""}" />
 
