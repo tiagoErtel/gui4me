@@ -25,6 +25,8 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
 
+    private boolean emailVerified;
+
     @NotBlank
     private String password;
 
@@ -94,5 +96,13 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
     }
 }
