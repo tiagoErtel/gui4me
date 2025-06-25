@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.user.User;
 import gui4me.invoice.Invoice;
 import gui4me.report.dto.InvoicesByStore;
 
@@ -21,6 +21,6 @@ public interface ReportRepository extends JpaRepository<Invoice, String> {
                 WHERE i.user = :user
                 GROUP BY s.name
             """)
-    List<InvoicesByStore> getInvoicesByStore(@Param("user") CustomUserDetails user);
+    List<InvoicesByStore> getInvoicesByStore(@Param("user") User user);
 
 }

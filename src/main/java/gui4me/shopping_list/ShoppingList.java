@@ -1,6 +1,6 @@
 package gui4me.shopping_list;
 
-import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,10 +12,10 @@ public class ShoppingList {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-	@ManyToOne
-	@JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     @NotNull
-	private CustomUserDetails user;
+    private User user;
 
     @NotNull
     private String name;
@@ -28,11 +28,11 @@ public class ShoppingList {
         this.id = id;
     }
 
-    public CustomUserDetails getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(CustomUserDetails user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

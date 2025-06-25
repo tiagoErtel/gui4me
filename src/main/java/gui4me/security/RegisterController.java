@@ -1,7 +1,7 @@
 package gui4me.security;
 
-import gui4me.custom_user_details.CustomUserDetails;
-import gui4me.custom_user_details.CustomUserDetailsService;
+import gui4me.user.User;
+import gui4me.user.UserService;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class RegisterController {
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    UserService userService;
 
     @GetMapping("/register")
     public String register(Model model, Message message) {
@@ -24,9 +24,9 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(CustomUserDetails user, RedirectAttributes redirectAttributes){
+    public String register(User user, RedirectAttributes redirectAttributes) {
         try {
-            customUserDetailsService.save(user);
+            userService.save(user);
             return "redirect:login";
         } catch (Exception e) {
             Message message = new Message(MessageType.ERROR, e.getMessage());

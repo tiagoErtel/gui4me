@@ -1,4 +1,4 @@
-package gui4me.custom_user_details;
+package gui4me.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -11,7 +11,7 @@ import java.util.Collections;
 
 @Entity
 @Table(name = "users")
-public class CustomUserDetails implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -96,4 +96,3 @@ public class CustomUserDetails implements UserDetails {
         this.email = email;
     }
 }
-

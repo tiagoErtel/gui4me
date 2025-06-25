@@ -1,4 +1,4 @@
-package gui4me.custom_user_details;
+package gui4me.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,40 +13,40 @@ import gui4me.exceptions.user.UserAlreadyRegisteredException;
 import gui4me.exceptions.user.UserNotFoundException;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     @Autowired
-    CustomUserDetailsRepository customUserDetailsRepository;
+    UserRepository userRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return customUserDetailsRepository.findByEmail(username)
+        return userRepository.findByEmail(username)
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public CustomUserDetails save(CustomUserDetails user) {
+    public User save(User user) {
         if (existsByEmail(user.getEmail())) {
             throw new UserAlreadyRegisteredException();
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return customUserDetailsRepository.save(user);
+        return userRepository.save(user);
     }
 
     public boolean existsByEmail(String email) {
-        return customUserDetailsRepository.existsByEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
-    public void updateUsername(CustomUserDetails user, String newUsername) {
+    public void updateUsername(User user, String newUsername) {
         user.setUsername(newUsername);
 
-        customUserDetailsRepository.save(user);
+        userRepository.save(user);
     }
 
-    public void updatePassword(CustomUserDetails user, String password, String newPassword, String confirmPassword) {
+    public void updatePassword(User user, String password, String newPassword, String confirmPassword) {
         if (!newPassword.equals(confirmPassword)) {
             throw new PasswordsDoNotMatchException();
         }
@@ -57,6 +57,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
 
-        customUserDetailsRepository.save(user);
+        userRepository.save(user);
     }
 }
