@@ -14,6 +14,7 @@ import gui4me.exceptions.invoice.InvoiceParseErrorException;
 import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
 import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
+import gui4me.exceptions.user.UserAlreadyRegisteredException;
 import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
@@ -108,6 +109,17 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "Incorrect password!"));
         return "redirect:/user/settings";
+    }
+
+    @ExceptionHandler(UserAlreadyRegisteredException.class)
+    public String handleUserAlreadyRegisteredException(UserAlreadyRegisteredException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("User already registered");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "User already registered!"));
+        return "redirect:/register";
     }
 
 }
