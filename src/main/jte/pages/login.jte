@@ -6,27 +6,33 @@
 
 @template.layout.default(
 content = @`
-    <div class="panel">
-        <h2 class="title">Sign in to your account</h2>
-        <p class="subtitle">Enter your credentials to access your account.</p>
 
-        @if(message != null && message.isError())
+    @template.partials.message(message = message)
+
+    <div class="center">
+        <div class="panel">
+            <h2 class="title">Sign in to your account</h2>
+            <p class="subtitle">Enter your credentials to access your account.</p>
+
+            @if(message != null && message.isError())
             <div class="message error">${message.getMessage()}</div>
-        @endif
+            @endif
 
-        <form action="/login" method="POST">
-            ${csrfHiddenInput}
-            <input name="email" type="email" required placeholder="Email"
-                   class="${message != null && message.isError() ? "input-error" : ""}" />
-            <input name="password" type="password" required placeholder="Password"
-                   class="${message != null && message.isError() ? "input-error" : ""}" />
+            <form action="/login" method="POST">
+                ${csrfHiddenInput}
+                <input name="email" type="email" required placeholder="Email"
+                    class="${message != null && message.isError() ? "input-error" : ""}" />
+                <input name="password" type="password" required placeholder="Password"
+                    class="${message != null && message.isError() ? "input-error" : ""}" />
 
-            <button type="submit" class="btn btn-primary">Sign in</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </form>
 
-        <p class="mt-2">
-            Don't have an account?
-            <a href="/register" class="link">Create one here</a>
-        </p>
+            <p class="mt-2">
+                Don't have an account?
+                <a href="/register" class="link">Create one here</a>
+            </p>
+        </div>
+
     </div>
 `)

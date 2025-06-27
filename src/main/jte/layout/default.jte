@@ -1,4 +1,7 @@
+@import gui4me.utils.Message
+
 @param gg.jte.Content content
+@param Message message = null
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +13,7 @@
         <link rel="icon" type="image/x-icon" href="/images/logo.png">
     </head>
     <body>
-
-        <main class="main-container center">
+        <main class="main-container">
             ${content}
         </main>
         <script src="/js/removeInputErrorStyling.js" type="text/javascript"></script>
