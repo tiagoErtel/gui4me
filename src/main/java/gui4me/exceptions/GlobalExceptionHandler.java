@@ -15,6 +15,8 @@ import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
 import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
+import gui4me.exceptions.user.UserVerificationTokenDoNotExistsException;
+import gui4me.exceptions.user.UserVerificationTokenExpiredException;
 import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
@@ -120,6 +122,28 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "User already registered!"));
         return "redirect:/register";
+    }
+
+    @ExceptionHandler(UserVerificationTokenDoNotExistsException.class)
+    public String handleUserVerificationTokenDoNotExistsException(UserVerificationTokenDoNotExistsException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("Token do no exists");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "Verification token do not exists!"));
+        return "redirect:/login";
+    }
+
+    @ExceptionHandler(UserVerificationTokenExpiredException.class)
+    public String handleUserVerificationTokenExpiredException(UserVerificationTokenExpiredException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("Token expired");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "Verification token has expired!"));
+        return "redirect:/login";
     }
 
 }
