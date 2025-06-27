@@ -54,4 +54,16 @@ public class UserController {
 
         return "redirect:/user/settings";
     }
+
+    @GetMapping("/verify")
+    public String verifyUser(@RequestParam String token,
+            RedirectAttributes redirectAttributes) {
+
+        userService.verifyUserVerificationToken(token);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.SUCCESS, "User verified!"));
+
+        return "redirect:/login";
+    }
 }

@@ -1,3 +1,5 @@
+app:
+    base-url: ${APP_BASE_URL}
 spring:
     application:
         name: gui4me
@@ -21,6 +23,18 @@ spring:
         schemas: public
         default-schema: public
 
+    mail:
+        host: smtp-relay.brevo.com
+        port: 587
+        username: ${BREVO_USERNAME}
+        password: ${BREVO_PASSWORD}
+        from: gui4me.ltda@gmail.com
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    starttls:
+                        enable: true
 gg:
     jte:
         developmentMode: true

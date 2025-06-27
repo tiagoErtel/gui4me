@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import gui4me.user.User;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
 import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
@@ -24,6 +23,7 @@ import gui4me.invoice_item.InvoiceItemRepository;
 import gui4me.product.ProductService;
 import gui4me.store.Store;
 import gui4me.store.StoreService;
+import gui4me.user.User;
 
 @Service
 public class InvoiceService {
