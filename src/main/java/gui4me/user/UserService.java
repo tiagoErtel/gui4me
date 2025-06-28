@@ -8,7 +8,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import gui4me.email.EmailService;
+import gui4me.email.BrevoService;
+import gui4me.email.OnboardingTemplate;
 import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
@@ -24,7 +25,7 @@ public class UserService implements UserDetailsService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    EmailService emailService;
+    BrevoService brevoService;
 
     @Autowired
     UserVerificationTokenService userVerificationTokenService;
@@ -79,12 +80,10 @@ public class UserService implements UserDetailsService {
         UserVerificationToken userVerificationToken = userVerificationTokenService.generateUserVerificationToken(user);
 
         String link = baseUrl + "/user/verify?token=" + userVerificationToken.getToken();
-        String subject = "Please verify your email";
-        String body = "Click this link to verify your account:\n" + link;
 
-        System.out.println(link);
+        OnboardingTemplate template = new OnboardingTemplate(user.getUsername(), link);
 
-        emailService.send(user.getEmail(), subject, body);
+        brevoService.send(template, user.getEmail());
     }
 
     public void verifyUserVerificationToken(String token) {

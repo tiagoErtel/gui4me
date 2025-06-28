@@ -22,19 +22,10 @@ spring:
         enabled: true
         schemas: public
         default-schema: public
-
-    mail:
-        host: smtp-relay.brevo.com
-        port: 587
-        username: ${BREVO_USERNAME}
-        password: ${BREVO_PASSWORD}
-        from: gui4me.ltda@gmail.com
-        properties:
-            mail:
-                smtp:
-                    auth: true
-                    starttls:
-                        enable: true
+brevo:
+    key: ${BREVO_API_KEY}
+    url: https://api.brevo.com/v3/smtp/email
+    enabled: true
 gg:
     jte:
         developmentMode: true

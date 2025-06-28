@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gui4me.exceptions.email.EmailSendingException;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
 import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
@@ -143,6 +144,18 @@ public class GlobalExceptionHandler {
 
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "Verification token has expired!"));
+        return "redirect:/login";
+    }
+
+    @ExceptionHandler(EmailSendingException.class)
+    public String handleEmailSendingException(EmailSendingException ex,
+            RedirectAttributes redirectAttributes) {
+
+        logger.error("Email sending error: {}", ex.getMessage(), ex);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "We couldn't send you a confirmation email. Please try again later."));
+
         return "redirect:/login";
     }
 
