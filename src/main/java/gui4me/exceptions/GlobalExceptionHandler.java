@@ -9,11 +9,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gui4me.exceptions.email.EmailSendingException;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
 import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
 import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
+import gui4me.exceptions.user.UserAlreadyRegisteredException;
+import gui4me.exceptions.user.UserVerificationTokenDoNotExistsException;
+import gui4me.exceptions.user.UserVerificationTokenExpiredException;
 import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
@@ -108,6 +112,51 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR, "Incorrect password!"));
         return "redirect:/user/settings";
+    }
+
+    @ExceptionHandler(UserAlreadyRegisteredException.class)
+    public String handleUserAlreadyRegisteredException(UserAlreadyRegisteredException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("User already registered");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "User already registered!"));
+        return "redirect:/register";
+    }
+
+    @ExceptionHandler(UserVerificationTokenDoNotExistsException.class)
+    public String handleUserVerificationTokenDoNotExistsException(UserVerificationTokenDoNotExistsException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("Token do no exists");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "Verification token do not exists!"));
+        return "redirect:/login";
+    }
+
+    @ExceptionHandler(UserVerificationTokenExpiredException.class)
+    public String handleUserVerificationTokenExpiredException(UserVerificationTokenExpiredException e,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("Token expired");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "Verification token has expired!"));
+        return "redirect:/login";
+    }
+
+    @ExceptionHandler(EmailSendingException.class)
+    public String handleEmailSendingException(EmailSendingException ex,
+            RedirectAttributes redirectAttributes) {
+
+        logger.error("Email sending error: {}", ex.getMessage(), ex);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, "We couldn't send you a confirmation email. Please try again later."));
+
+        return "redirect:/login";
     }
 
 }

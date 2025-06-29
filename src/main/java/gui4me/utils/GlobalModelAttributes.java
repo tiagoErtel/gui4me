@@ -1,13 +1,14 @@
 package gui4me.utils;
 
-import gui4me.custom_user_details.CustomUserDetails;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.ui.Model;
+
+import gui4me.user.User;
+import jakarta.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class GlobalModelAttributes {
@@ -33,9 +34,9 @@ public class GlobalModelAttributes {
     }
 
     @ModelAttribute("currentUser")
-    public CustomUserDetails currentUser(Authentication authentication) {
-        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
-            return userDetails;
+    public User currentUser(Authentication authentication) {
+        if (authentication != null && authentication.getPrincipal() instanceof User user) {
+            return user;
         }
         return null;
     }

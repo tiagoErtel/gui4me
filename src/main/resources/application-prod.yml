@@ -1,3 +1,5 @@
+app:
+    base-url: ${APP_BASE_URL}
 spring:
     application:
         name: gui4me
@@ -15,8 +17,10 @@ spring:
         enabled: true
         schemas: public
         default-schema: public
-
-
+brevo:
+    key: ${BREVO_API_KEY}
+    url: https://api.brevo.com/v3/smtp/email
+    enabled: true
 gg:
     jte:
         developmentMode: false
