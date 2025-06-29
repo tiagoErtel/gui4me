@@ -40,12 +40,16 @@ public class UserService implements UserDetailsService {
     }
 
     public void save(User user) {
+        userRepository.save(user);
+    }
+
+    public void register(User user) {
         if (existsByEmail(user.getEmail())) {
             throw new UserAlreadyRegisteredException();
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        save(user);
 
         sendVerificationEmail(user);
     }
@@ -57,7 +61,7 @@ public class UserService implements UserDetailsService {
     public void updateUsername(User user, String newUsername) {
         user.setUsername(newUsername);
 
-        userRepository.save(user);
+        save(user);
     }
 
     public void updatePassword(User user, String password, String newPassword, String confirmPassword) {
@@ -71,7 +75,7 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(newPassword));
 
-        userRepository.save(user);
+        save(user);
 
         sendVerificationEmail(user);
     }
@@ -91,6 +95,6 @@ public class UserService implements UserDetailsService {
 
         User user = userToken.getUser();
         user.setEmailVerified(true);
-        userRepository.save(user);
+        save(user);
     }
 }
