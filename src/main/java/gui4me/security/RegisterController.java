@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import gui4me.user.User;
 import gui4me.user.UserService;
 import gui4me.utils.Message;
+import gui4me.utils.MessageType;
 
 @Controller
 public class RegisterController {
@@ -26,6 +27,11 @@ public class RegisterController {
     @PostMapping("/register")
     public String register(User user, RedirectAttributes redirectAttributes) {
         userService.register(user);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.SUCCESS,
+                        "User registered, please check your email to verify your email address"));
+
         return "redirect:/login";
     }
 }
