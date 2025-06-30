@@ -7,12 +7,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.user.User;
 
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     Optional<Invoice> findByKey(String key);
 
-    List<Invoice> findAllByUser(CustomUserDetails user, Sort sort);
+    List<Invoice> findAllByUser(User user, Sort sort);
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.user.User;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
 
@@ -31,7 +31,7 @@ public class InvoiceController {
 
     @PostMapping("/register")
     public String register(
-            @ModelAttribute("currentUser") CustomUserDetails currentUser,
+            @ModelAttribute("currentUser") User currentUser,
             @RequestParam String invoiceUrl,
             RedirectAttributes redirectAttributes) {
 
@@ -45,7 +45,7 @@ public class InvoiceController {
     @GetMapping("/list")
     public String list(
             @RequestParam(defaultValue = "issuanceDate,desc") String sort, Model model,
-            @ModelAttribute("currentUser") CustomUserDetails currentUser) {
+            @ModelAttribute("currentUser") User currentUser) {
 
         String[] sortParts = sort.split(",");
         String sortBy = sortParts[0];

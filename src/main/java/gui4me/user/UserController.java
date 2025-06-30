@@ -1,4 +1,4 @@
-package gui4me.custom_user_details;
+package gui4me.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import gui4me.utils.MessageType;
 public class UserController {
 
     @Autowired
-    CustomUserDetailsService userService;
+    UserService userService;
 
     @GetMapping("/settings")
     public String setting(Model model) {
@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/settings/username")
     public String updateUsername(
             RedirectAttributes redirectAttributes,
-            @ModelAttribute("currentUser") CustomUserDetails user,
+            @ModelAttribute("currentUser") User user,
             @RequestParam String newUsername) {
 
         userService.updateUsername(user, newUsername);
@@ -44,7 +44,7 @@ public class UserController {
             @RequestParam String currentPassword,
             @RequestParam String newPassword,
             @RequestParam String confirmPassword,
-            @ModelAttribute("currentUser") CustomUserDetails user,
+            @ModelAttribute("currentUser") User user,
             RedirectAttributes redirectAttributes) {
 
         userService.updatePassword(user, currentPassword, newPassword, confirmPassword);
@@ -53,5 +53,17 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message", message);
 
         return "redirect:/user/settings";
+    }
+
+    @GetMapping("/verify")
+    public String verifyUser(@RequestParam String token,
+            RedirectAttributes redirectAttributes) {
+
+        userService.verifyUserVerificationToken(token);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.SUCCESS, "User verified!"));
+
+        return "redirect:/login";
     }
 }

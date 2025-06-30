@@ -3,7 +3,7 @@ package gui4me.invoice;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.user.User;
 import gui4me.store.Store;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +37,7 @@ public class Invoice {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private CustomUserDetails user;
+    private User user;
 
     @NotNull
     private Double totalPrice;
@@ -52,11 +52,11 @@ public class Invoice {
         this.totalPrice = totalPrice;
     }
 
-    public CustomUserDetails getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(CustomUserDetails user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

@@ -1,6 +1,6 @@
 package gui4me.shopping_list;
 
-import gui4me.custom_user_details.CustomUserDetails;
+import gui4me.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ public class ShoppingListService {
     @Autowired
     ShoppingListRepository shoppingListRepository;
 
-    public List<ShoppingList> findByUser(CustomUserDetails user) {
+    public List<ShoppingList> findByUser(User user) {
         return shoppingListRepository.findByUser(user);
     }
 
-    public void createShoppingList(String name, CustomUserDetails user) {
+    public void createShoppingList(String name, User user) {
         ShoppingList list = new ShoppingList();
         list.setName(name);
         list.setUser(user);

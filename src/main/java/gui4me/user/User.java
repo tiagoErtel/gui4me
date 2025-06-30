@@ -1,4 +1,4 @@
-package gui4me.custom_user_details;
+package gui4me.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -11,7 +11,7 @@ import java.util.Collections;
 
 @Entity
 @Table(name = "users")
-public class CustomUserDetails implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,6 +24,8 @@ public class CustomUserDetails implements UserDetails {
     @NotBlank
     @Column(unique = true)
     private String email;
+
+    private boolean emailVerified;
 
     @NotBlank
     private String password;
@@ -95,5 +97,12 @@ public class CustomUserDetails implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
-}
 
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+}

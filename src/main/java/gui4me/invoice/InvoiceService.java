@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import gui4me.custom_user_details.CustomUserDetails;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
 import gui4me.exceptions.invoice.InvoiceParseErrorException;
 import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
@@ -24,6 +23,7 @@ import gui4me.invoice_item.InvoiceItemRepository;
 import gui4me.product.ProductService;
 import gui4me.store.Store;
 import gui4me.store.StoreService;
+import gui4me.user.User;
 
 @Service
 public class InvoiceService {
@@ -44,7 +44,7 @@ public class InvoiceService {
     @Autowired
     private ProductService productService;
 
-    public Invoice save(String invoiceUrl, CustomUserDetails user) {
+    public Invoice save(String invoiceUrl, User user) {
         if (isQrCodeUrl(invoiceUrl)) {
             // Proceed normally
             try {
@@ -128,7 +128,7 @@ public class InvoiceService {
         }
     }
 
-    public List<Invoice> findAllByUser(CustomUserDetails user, Sort sort) {
+    public List<Invoice> findAllByUser(User user, Sort sort) {
         return invoiceRepository.findAllByUser(user, sort);
     }
 
