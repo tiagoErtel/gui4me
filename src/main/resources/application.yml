@@ -25,7 +25,7 @@ spring:
 brevo:
     key: ${BREVO_API_KEY}
     url: https://api.brevo.com/v3/smtp/email
-    enabled: true
+    enabled: false
 gg:
     jte:
         developmentMode: true
