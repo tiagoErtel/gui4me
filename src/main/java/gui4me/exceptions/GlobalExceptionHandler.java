@@ -18,6 +18,7 @@ import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
 import gui4me.exceptions.user.UserVerificationTokenDoNotExistsException;
 import gui4me.exceptions.user.UserVerificationTokenExpiredException;
+import gui4me.exceptions.user.WeakPasswordException;
 import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
@@ -157,6 +158,25 @@ public class GlobalExceptionHandler {
                 new Message(MessageType.ERROR, "We couldn't send you a confirmation email. Please try again later."));
 
         return "redirect:/login";
+    }
+
+    @ExceptionHandler(WeakPasswordException.class)
+    public String handleWeakPasswordException(WeakPasswordException ex,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("Weak password");
+
+        Map<String, String> fieldErrors = new HashMap<>();
+
+        fieldErrors.put("password", "Create a stronger password");
+
+        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR,
+                        "Password must be at least 8 characters long and include uppercase, lowercase, and a number."));
+
+        return "redirect:" + ex.getRedirect();
     }
 
 }
