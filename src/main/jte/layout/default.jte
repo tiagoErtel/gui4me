@@ -16,6 +16,6 @@
         <main class="main-container">
             ${content}
         </main>
-        <script src="/js/removeInputErrorStyling.js" type="text/javascript"></script>
+        <script src="/js/passwordValidation.js" type="text/javascript"></script>
     </body>
 </html>

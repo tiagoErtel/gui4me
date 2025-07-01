@@ -20,6 +20,29 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/register")
+    public String register(Model model, Message message) {
+        model.addAttribute("message", message);
+        return "pages/register";
+    }
+
+    @PostMapping("/register")
+    public String register(
+            @RequestParam String username,
+            @RequestParam String email,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword,
+            RedirectAttributes redirectAttributes) {
+
+        userService.register(username, email, newPassword, confirmPassword);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.SUCCESS,
+                        "User registered, please check your email to verify your email address"));
+
+        return "redirect:/login";
+    }
+
     @GetMapping("/settings")
     public String setting(Model model) {
         return "pages/user/settings";

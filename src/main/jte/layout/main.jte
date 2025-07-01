@@ -45,7 +45,7 @@
             ${csrfHiddenInput}
         </form>
 
-        <script src="/js/removeInputErrorStyling.js" type="text/javascript"></script>
+        <script src="/js/passwordValidation.js" type="text/javascript"></script>
         <script src="/js/dropdownButton.js" type="text/javascript"></script>
     </body>
 </html>
