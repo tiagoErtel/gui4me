@@ -1,0 +1,2 @@
+ALTER TABLE user_verification_tokens
+DROP CONSTRAINT user_verification_tokens_user_id_key;
