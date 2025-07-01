@@ -5,9 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import gui4me.user.User;
 import gui4me.user.UserService;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
@@ -25,8 +25,14 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public String register(User user, RedirectAttributes redirectAttributes) {
-        userService.register(user);
+    public String register(
+            @RequestParam String username,
+            @RequestParam String email,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword,
+            RedirectAttributes redirectAttributes) {
+
+        userService.register(username, email, newPassword, confirmPassword);
 
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.SUCCESS,

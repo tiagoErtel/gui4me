@@ -14,6 +14,7 @@ import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
 import gui4me.exceptions.user.UserNotFoundException;
+import gui4me.exceptions.user.WeakPasswordException;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -43,12 +44,27 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void register(User user) {
-        if (existsByEmail(user.getEmail())) {
+    public void register(String username, String email, String newPassword, String confirmPassword) {
+        User user = new User();
+
+        if (existsByEmail(email)) {
             throw new UserAlreadyRegisteredException();
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!newPassword.equals(confirmPassword)) {
+            throw new PasswordsDoNotMatchException();
+        }
+
+        user.setUsername(username);
+        user.setEmail(email);
+
+        try {
+            user = setUserPassword(user, newPassword);
+        } catch (WeakPasswordException e) {
+            e.setRedirect("/register");
+            throw e;
+        }
+
         save(user);
 
         sendVerificationEmail(user);
@@ -56,6 +72,16 @@ public class UserService implements UserDetailsService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public User setUserPassword(User user, String password) {
+        if (!isStrongPassword(password)) {
+            throw new WeakPasswordException();
+        }
+
+        user.setPassword(passwordEncoder.encode(password));
+
+        return user;
     }
 
     public void updateUsername(User user, String newUsername) {
@@ -73,11 +99,14 @@ public class UserService implements UserDetailsService {
             throw new IncorrectCurrentPasswordException();
         }
 
-        user.setPassword(passwordEncoder.encode(newPassword));
+        try {
+            user = setUserPassword(user, newPassword);
+        } catch (WeakPasswordException e) {
+            e.setRedirect("/user/settings");
+            throw e;
+        }
 
         save(user);
-
-        sendVerificationEmail(user);
     }
 
     public void sendVerificationEmail(User user) {
@@ -96,5 +125,10 @@ public class UserService implements UserDetailsService {
         User user = userToken.getUser();
         user.setEmailVerified(true);
         save(user);
+    }
+
+    public boolean isStrongPassword(String password) {
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+        return password != null && password.matches(regex);
     }
 }
