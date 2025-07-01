@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (pass === confirm) {
-            confirmPasswordInput.classList.add("match");
-            confirmPasswordFeedback.textContent = "Passwords match.";
+            confirmPasswordInput.classList.remove("error");
+            confirmPasswordFeedback.textContent = "";
         } else {
             confirmPasswordInput.classList.add("error");
             confirmPasswordFeedback.textContent = "Passwords do not match.";
