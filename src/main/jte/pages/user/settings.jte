@@ -37,7 +37,7 @@ content = @`
 
         <div class="panel">
             <h3 class="subtitle">Change Password</h3>
-            <form method="post" action="/user/settings/password">
+            <form method="post" action="/user/settings/password" id="passwordForm">
                 ${csrfHiddenInput}
 
                 @template.partials.input(type = "password", id = "currentPassword", name = "currentPassword", placeholder = "Current password", fieldErrors = fieldErrors)

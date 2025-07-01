@@ -5,9 +5,10 @@
 @param String name
 @param String value = ""
 @param String placeholder = ""
-@param Map<String, String> fieldErrors
+@param Map<String, String> fieldErrors = java.util.Collections.emptyMap()
 
-<div>
+
+<div class="input-container">
     <input
         type="${type}"
         id="${id}"
@@ -15,9 +16,8 @@
         value="${value}"
         placeholder = "${placeholder}"
         required
-        class="${fieldErrors.containsKey(name) ? "input-error" : ""}" />
+        class="${fieldErrors.containsKey(name) ? "error" : ""}"
+    />
 
-    @if (fieldErrors.containsKey(name))
-        <div class="error-message">${fieldErrors.get(name)}</div>
-    @endif
+        <div class="input-feedback" id="${id}Feedback">${fieldErrors.containsKey(name) ? fieldErrors.get(name) : ""}</div>
 </div>

@@ -148,16 +148,6 @@ label {
     font-weight: 600;
 }
 
-input,
-select,
-textarea {
-    padding: 0.75rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: var(--radius);
-    font-size: 1rem;
-    width: 100%;
-}
-
 .input-error {
     border-color: #f44336;
     background-color: #ffebee;
@@ -415,4 +405,32 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.input-container input {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    width: 100%;
+}
+
+input.error {
+    border: 2px solid #e74c3c;
+    background-color: #fbeaea;
+}
+
+input.warning {
+    border: 2px solid #f39c12;
+    background-color: #fff6e5;
+}
+
+.password-feedback {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.25rem;
+}
+
+.login-container {
+    width: 500px;
 }
