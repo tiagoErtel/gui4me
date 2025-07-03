@@ -1,10 +1,9 @@
 package gui4me.user;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +12,10 @@ import gui4me.email.OnboardingTemplate;
 import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
-import gui4me.exceptions.user.UserNotFoundException;
 import gui4me.exceptions.user.WeakPasswordException;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     @Autowired
     UserRepository userRepository;
@@ -34,14 +32,12 @@ public class UserService implements UserDetailsService {
     @Value("${app.base-url}")
     private String baseUrl;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username)
-                .orElseThrow(UserNotFoundException::new);
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     public void register(String username, String email, String newPassword, String confirmPassword) {
@@ -57,6 +53,7 @@ public class UserService implements UserDetailsService {
 
         user.setUsername(username);
         user.setEmail(email);
+        user.setAuthProvider(AuthProvider.LOCAL);
 
         try {
             user = setUserPassword(user, newPassword);
@@ -65,9 +62,21 @@ public class UserService implements UserDetailsService {
             throw e;
         }
 
-        save(user);
+        user = save(user);
 
         sendVerificationEmail(user);
+    }
+
+    public User registerOAuth2User(String email, String name, AuthProvider authProvider) {
+
+        User user = new User();
+        user.setEmail(email);
+        user.setUsername(name != null ? name : email.split("@")[0]);
+        user.setPassword("");
+        user.setEmailVerified(true);
+        user.setAuthProvider(authProvider);
+
+        return save(user);
     }
 
     public boolean existsByEmail(String email) {
