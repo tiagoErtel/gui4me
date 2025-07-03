@@ -12,7 +12,7 @@ content = @`
     @template.partials.message(message = message)
 
     <div class="center">
-        <div class="panel">
+        <div class="login-container panel">
             <h2 class="title">Sign in to your account</h2>
             <p class="subtitle">Enter your credentials to access your account.</p>
 
@@ -29,6 +29,8 @@ content = @`
 
                 <button type="submit" class="btn btn-primary">Sign in</button>
             </form>
+
+            @template.partials.oauth()
 
             <p class="mt-2">
                 Don't have an account?

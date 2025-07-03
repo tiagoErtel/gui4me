@@ -28,6 +28,8 @@ content = @`
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>
 
+            @template.partials.oauth()
+
             <p class="mt-2">
                 Already have an account?
                 <a href="/login" class="link">Sign in here</a>

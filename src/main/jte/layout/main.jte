@@ -1,11 +1,11 @@
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
+@import gui4me.user.User
 
 @param gg.jte.Content content
 @param CsrfHiddenInput csrfHiddenInput
 @param Message message = null
-@param String username = ""
-@param String email = null
+@param User currentUser
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +23,7 @@
             <a href="/dashboard" class="logo">Gui4Me</a>
 
             <div class="profile">
-                <p>${username}</p>
+                <p>${currentUser.getUsername()}</p>
 
                 <details class="dropdown">
                     <summary class="dropdown-toggle">&#x22EE;</summary>
