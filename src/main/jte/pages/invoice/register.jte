@@ -1,15 +1,17 @@
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
+@import gui4me.user.User
+@import java.util.Map
 
 @param Message message = null
-@param String username = ""
-@param String email = null
+@param User currentUser
 @param CsrfHiddenInput csrfHiddenInput
+@param Map<String, String> fieldErrors = java.util.Collections.emptyMap()
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
 message = message,
-username = username,
+currentUser = currentUser,
 content = @`
     @template.partials.message(message = message) 
 
@@ -40,13 +42,9 @@ content = @`
 
     <form action="/invoice/register" method="POST" id="invoiceForm" class="mt-2 hidden">
         ${csrfHiddenInput}
-        <input
-                type="text"
-                id="invoiceUrl"
-                name="invoiceUrl"
-                placeholder="Paste the invoice link here"
-                required
-        />
+
+        @template.partials.input(type = "text", id = "invoiceUrl", name = "invoiceUrl", placeholder = "Paste the invoice link here", fieldErrors = fieldErrors)
+
         <button type="submit" class="btn btn-primary">
             Submit Link
         </button>

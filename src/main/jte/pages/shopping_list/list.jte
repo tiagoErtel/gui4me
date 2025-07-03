@@ -2,17 +2,17 @@
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 @import java.util.List
+@import gui4me.user.User
 
 @param List<ShoppingList> shoppingLists = null
+@param User currentUser
 @param Message message = null
-@param String username = ""
-@param String email = null
 @param CsrfHiddenInput csrfHiddenInput
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
 message = message,
-username = username,
+currentUser = currentUser,
 content = @`
     @template.partials.back-button(href = "/dashboard")
 
