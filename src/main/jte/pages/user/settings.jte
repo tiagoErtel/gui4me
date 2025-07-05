@@ -1,18 +1,17 @@
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 @import java.util.Map
+@import gui4me.user.User
 
 @param Message message = null
-@param String username = ""
-@param String email = null
+@param User currentUser
 @param CsrfHiddenInput csrfHiddenInput
 @param Map<String, String> fieldErrors = java.util.Collections.emptyMap()
-
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
 message = message,
-username = username,
+currentUser = currentUser,
 content = @`
     @template.partials.message(message = message)
 
@@ -29,7 +28,7 @@ content = @`
             <form method="post" action="/user/settings/username">
                 ${csrfHiddenInput}
 
-                @template.partials.input(type = "text", id = "newUsername", name = "newUsername", placeholder = "New username", value = username, fieldErrors = fieldErrors)
+                @template.partials.input(type = "text", id = "newUsername", name = "newUsername", placeholder = "New username", value = currentUser.getUsername(), fieldErrors = fieldErrors)
 
                 <button type="submit" class="btn btn-primary">Update Info</button>
             </form>
@@ -37,7 +36,7 @@ content = @`
 
         <div class="panel">
             <h3 class="subtitle">Change Password</h3>
-            <form method="post" action="/user/settings/password">
+            <form method="post" action="/user/settings/password" id="passwordForm">
                 ${csrfHiddenInput}
 
                 @template.partials.input(type = "password", id = "currentPassword", name = "currentPassword", placeholder = "Current password", fieldErrors = fieldErrors)

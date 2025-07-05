@@ -26,6 +26,9 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/dashboard", true)
                         .usernameParameter("email") // Match 'email' field in login form
                         .permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/dashboard", true))
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                         .permitAll());

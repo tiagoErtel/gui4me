@@ -22,10 +22,26 @@ spring:
         enabled: true
         schemas: public
         default-schema: public
+    security:
+        oauth2:
+          client:
+              registration:
+                  google:
+                      client-id: ${GOOGLE_CLIENT_ID}
+                      client-secret: ${GOOGLE_CLIENT_SECRET}
+                      scope:
+                          - email
+                          - profile
+                  github:
+                      client-id: ${GITHUB_CLIENT_ID}
+                      client-secret: ${GITHUB_CLIENT_SECRET}
+                      scope:
+                          - user:email
+                          - read:user
 brevo:
     key: ${BREVO_API_KEY}
     url: https://api.brevo.com/v3/smtp/email
-    enabled: true
+    enabled: false
 gg:
     jte:
         developmentMode: true

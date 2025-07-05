@@ -24,8 +24,6 @@ public class TomTomService {
         String encodedAddress = URLEncoder.encode(address, StandardCharsets.UTF_8);
         String url = "https://api.tomtom.com/search/2/geocode/" + encodedAddress + ".json?key=" + apiKey;
 
-        System.out.println(url);
-
         TomTomGeocodeResponse response = restTemplate.getForObject(url, TomTomGeocodeResponse.class);
 
         return response;
