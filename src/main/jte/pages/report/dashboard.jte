@@ -1,16 +1,16 @@
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
+@import gui4me.user.User
 
 @param Message message = null
-@param String username = ""
-@param String email = null
+@param User currentUser
 @param CsrfHiddenInput csrfHiddenInput
 @param String invoicesByStore
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
 message = message,
-username = username,
+currentUser = currentUser,
 content = @`
     @template.partials.message(message = message)
     @template.partials.back-button(href = "/dashboard")

@@ -2,10 +2,10 @@
 @import gui4me.security.CsrfHiddenInput
 @import gui4me.utils.Message
 @import java.util.List
+@import gui4me.user.User
 
 @param Message message = null
-@param String username = ""
-@param String email = null
+@param User currentUser
 @param CsrfHiddenInput csrfHiddenInput
 @param List<Invoice> invoiceList = null
 @param String sort = "issuanceDate,desc"
@@ -13,7 +13,7 @@
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
 message = message,
-username = username,
+currentUser = currentUser,
 content = @`
     @template.partials.back-button(href = "/dashboard")
 

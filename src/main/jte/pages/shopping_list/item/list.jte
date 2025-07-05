@@ -4,18 +4,19 @@
 @import gui4me.shopping_list_item.ShoppingListItem
 @import gui4me.utils.Message
 @import java.util.List
+@import gui4me.user.User
 
 @param ShoppingList shoppingList
 @param List<ShoppingListItem> shoppingListItems
 @param CsrfHiddenInput csrfHiddenInput
 @param Message message = null
-@param String username = null
+@param User currentUser
 @param List<Product> productList
 
 @template.layout.main(
 csrfHiddenInput = csrfHiddenInput,
 message = message,
-username = username,
+currentUser = currentUser,
 content = @`
     @template.partials.back-button(href = "/shopping-list")
 
