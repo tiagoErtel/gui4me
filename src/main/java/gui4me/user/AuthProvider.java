@@ -1,5 +1,7 @@
 package gui4me.user;
 
+import org.springframework.util.StringUtils;
+
 public enum AuthProvider {
     LOCAL,
     GOOGLE,
@@ -13,4 +15,10 @@ public enum AuthProvider {
         }
         throw new IllegalArgumentException("Unknown auth provider: " + value);
     }
+
+    @Override
+    public String toString() {
+        return StringUtils.capitalize(name().toLowerCase());
+    }
+
 }
