@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import gui4me.exceptions.user.ProviderMismatchException;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -16,6 +18,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (!user.getAuthProvider().equals(AuthProvider.LOCAL)) {
+            throw new ProviderMismatchException(user.getAuthProvider());
+        }
         return new UserPrincipal(user);
     }
 }
