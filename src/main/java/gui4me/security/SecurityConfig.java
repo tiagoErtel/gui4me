@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -16,7 +17,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/login", "/register", "/login-error", "/user/verify", "/static/**",
+                        .requestMatchers("/", "/login", "/register", "/login-error", "/auth/error", "/user/verify",
+                                "/static/**",
                                 "/js/**", "/css/**", "/images/**")
                         .permitAll()
                         .anyRequest().authenticated())
@@ -28,7 +30,8 @@ public class SecurityConfig {
                         .permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", true))
+                        .defaultSuccessUrl("/dashboard", true)
+                        .failureHandler(customOAuth2FailureHandler()))
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                         .permitAll());
@@ -39,5 +42,10 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler customOAuth2FailureHandler() {
+        return new CustomOAuth2FailureHandler();
     }
 }
