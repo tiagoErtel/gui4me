@@ -3,6 +3,7 @@ package gui4me.user;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -12,15 +13,16 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import gui4me.exceptions.user.ProviderMismatchException;
+
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final UserService userService;
-    private final RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    UserService userService;
 
-    public CustomOAuth2UserService(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    RestTemplate restTemplate;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -46,6 +48,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         User user = userService.findByEmail(email)
                 .orElseGet(() -> userService.registerOAuth2User(email, name, provider));
+
+        if (user.getAuthProvider() != provider) {
+            throw new ProviderMismatchException(user.getAuthProvider());
+        }
 
         return new UserPrincipal(user, attributes);
     }
