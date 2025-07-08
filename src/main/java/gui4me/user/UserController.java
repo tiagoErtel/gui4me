@@ -66,4 +66,53 @@ public class UserController {
 
         return "redirect:/login";
     }
+
+    @GetMapping("/recover")
+    public String getRecoverUser() {
+        return "pages/user/recover";
+    }
+
+    @PostMapping("/recover")
+    public String recoverUser(
+            @RequestParam String email,
+            RedirectAttributes redirectAttributes) {
+
+        userService.sendRecoverAccountEmail(email);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.SUCCESS, "We sent you an email with the recover link!"));
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/reset-password")
+    public String showResetPassword(
+            @RequestParam String token,
+            Model model) {
+
+        User user = userService.findUserToken(token);
+
+        model.addAttribute("email", user.getEmail());
+
+        model.addAttribute("token", token);
+
+        return "pages/user/reset-password";
+
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(
+            @RequestParam String token,
+            @RequestParam String email,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword,
+            RedirectAttributes redirectAttributes) {
+
+        userService.resetPassword(token, email, newPassword, confirmPassword);
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.SUCCESS, "Your password was updated"));
+
+        return "redirect:/login";
+    }
 }
