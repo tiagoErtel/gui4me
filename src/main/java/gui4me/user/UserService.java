@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import gui4me.email.BrevoService;
 import gui4me.email.OnboardingTemplate;
+import gui4me.email.RecoverAccountTemplate;
 import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
+import gui4me.exceptions.user.UserNotFoundException;
 import gui4me.exceptions.user.WeakPasswordException;
 
 @Service
@@ -139,5 +141,46 @@ public class UserService {
     public boolean isStrongPassword(String password) {
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
         return password != null && password.matches(regex);
+    }
+
+    public void sendRecoverAccountEmail(String email) {
+        User user = findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+
+        UserVerificationToken userVerificationToken = userVerificationTokenService.generateUserVerificationToken(user);
+
+        String link = baseUrl + "/user/reset-password?token=" + userVerificationToken.getToken();
+
+        System.out.println(link);
+
+        RecoverAccountTemplate template = new RecoverAccountTemplate(user.getUsername(), link);
+
+        brevoService.send(template, user.getEmail());
+    }
+
+    public User findUserToken(String token) {
+        return userVerificationTokenService.findValidToken(token).getUser();
+    }
+
+    public void resetPassword(
+            String token,
+            String email,
+            String newPassword,
+            String confirmPassword) {
+
+        User user = findUserToken(token);
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new PasswordsDoNotMatchException();
+        }
+
+        try {
+            user = setUserPassword(user, newPassword);
+        } catch (WeakPasswordException e) {
+            e.setRedirect("/login");
+            throw e;
+        }
+
+        save(user);
     }
 }

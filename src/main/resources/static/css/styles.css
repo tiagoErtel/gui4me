@@ -407,12 +407,33 @@ label {
     align-items: center;
 }
 
-.input-container input {
-    padding: 0.75rem 1rem;
+.input-box {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.input-box input {
+    padding: 0.75rem 2.5em 0.75rem 1rem;
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: var(--radius);
-    font-size: 1rem;
-    width: 100%;
+}
+
+.password-icon {
+    position: absolute;
+    right: 0.75em;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 1.5em;
+    width: 1.5em;
+    font-size: 1em;
+    color: #ccc;
+    z-index: 2;
 }
 
 input.error {
