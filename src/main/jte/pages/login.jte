@@ -16,10 +16,6 @@ content = @`
             <h2 class="title">Sign in to your account</h2>
             <p class="subtitle">Enter your credentials to access your account.</p>
 
-            @if(message != null && message.isError())
-            <div class="message error">${message.getMessage()}</div>
-            @endif
-
             <form action="/login" method="POST">
                 ${csrfHiddenInput}
 
@@ -35,6 +31,10 @@ content = @`
             <p class="mt-2">
                 Don't have an account?
                 <a href="/register" class="link">Create one here</a>
+            </p>
+            <p class="mt-2">
+                Forgot your account?
+                <a href="/user/recover" class="link">Recover your account</a>
             </p>
         </div>
 

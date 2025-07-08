@@ -5,9 +5,10 @@
 @param String name
 @param String value = ""
 @param String placeholder = ""
+@param boolean hidden = false
 @param Map<String, String> fieldErrors = java.util.Collections.emptyMap()
 
-<div>
+<div class="${hidden ? "hidden" : ""}">
     <div class="input-box">
         <input
             type="${type}"
