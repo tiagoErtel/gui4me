@@ -151,8 +151,6 @@ public class UserService {
 
         String link = baseUrl + "/user/reset-password?token=" + userVerificationToken.getToken();
 
-        System.out.println(link);
-
         RecoverAccountTemplate template = new RecoverAccountTemplate(user.getUsername(), link);
 
         brevoService.send(template, user.getEmail());
