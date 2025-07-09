@@ -11,8 +11,6 @@ content = @`
 
     @template.partials.message(message = message)
 
-    @template.partials.back-button(href = "/login")
-
     <div class="center">
         <div class="login-container panel">
             <h2 class="title">Resend verification email</h2>
