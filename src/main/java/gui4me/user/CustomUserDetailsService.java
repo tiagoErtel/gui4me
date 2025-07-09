@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import gui4me.exceptions.user.ProviderMismatchException;
+import gui4me.exceptions.user.UserNotVerifiedException;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -21,6 +22,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         if (!user.getAuthProvider().equals(AuthProvider.LOCAL)) {
             throw new ProviderMismatchException(user.getAuthProvider());
+        }
+
+        if (!user.isEmailVerified()) {
+            throw new UserNotVerifiedException();
         }
         return new UserPrincipal(user);
     }
