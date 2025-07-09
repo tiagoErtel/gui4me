@@ -145,7 +145,7 @@ public class UserService {
 
     public void sendRecoverAccountEmail(String email) {
         User user = findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new UserNotFoundException("/user/recover"));
 
         UserVerificationToken userVerificationToken = userVerificationTokenService.generateUserVerificationToken(user);
 
@@ -182,5 +182,12 @@ public class UserService {
         }
 
         save(user);
+    }
+
+    public void resendVerificationEmail(String email) {
+        User user = findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("/user/resend-verification-email"));
+
+        sendVerificationEmail(user);
     }
 }
