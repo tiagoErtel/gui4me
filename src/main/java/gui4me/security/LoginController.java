@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gui4me.utils.Message;
-import gui4me.utils.MessageType;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class LoginController {
@@ -18,8 +18,12 @@ public class LoginController {
     }
 
     @GetMapping("/login-error")
-    public String loginError(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("message", new Message(MessageType.ERROR, "Invalid email or password"));
+    public String showAuthError(HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        Message message = (Message) request.getSession().getAttribute("message");
+
+        request.getSession().removeAttribute("message");
+
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/login";
     }
 
