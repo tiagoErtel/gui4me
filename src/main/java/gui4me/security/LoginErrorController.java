@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import gui4me.exceptions.user.ProviderMismatchException;
 import gui4me.exceptions.user.UserNotVerifiedException;
 import gui4me.utils.Link;
 import gui4me.utils.Message;
@@ -32,7 +33,8 @@ public class LoginErrorController {
         Throwable cause = exception;
         while (cause != null) {
             logger.warn("Exception in chain: {}", cause.getClass().getName());
-            if (cause instanceof BadCredentialsException || cause instanceof UserNotVerifiedException) {
+            if (cause instanceof BadCredentialsException || cause instanceof UserNotVerifiedException
+                    || cause instanceof ProviderMismatchException) {
                 break;
             }
             cause = cause.getCause();
@@ -48,6 +50,8 @@ public class LoginErrorController {
             message.setMessage("Incorrect email or password!");
             fieldErrors.put("email", "");
             fieldErrors.put("password", "");
+        } else if (cause instanceof ProviderMismatchException) {
+            message.setMessage(cause.getMessage());
         } else {
             message.setMessage("Unknow error, please try again!");
         }
