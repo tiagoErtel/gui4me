@@ -1,5 +1,6 @@
 package gui4me.store;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,13 +36,17 @@ public class StoreService {
     }
 
     public Store fetchAndSaveByCnpj(String cnpj) {
-        Store store = findByDocument(cnpj)
-                .orElseGet(() -> createFromReceitaWs(cnpj));
+        Optional<Store> optionalStore = findByDocument(cnpj);
 
-        return save(store);
+        if (optionalStore.isPresent()) {
+            return save(optionalStore.get());
+        }
+
+        Store newStore = fetchFromReceitaWs(cnpj);
+        return save(newStore);
     }
 
-    private Store createFromReceitaWs(String cnpj) {
+    public Store fetchFromReceitaWs(String cnpj) {
         ReceitaWsResponse response = receitaWsService.fetchByCnpj(cnpj);
 
         Store store = new Store();
@@ -50,6 +55,7 @@ public class StoreService {
         store.setFantasyName(response.getFantasia());
         store.setType(response.getTipo());
         store.setSize(response.getPorte());
+        store.setLastUpdate(LocalDateTime.now());
 
         Address address = new Address();
         address.setStreet(response.getLogradouro());
@@ -86,4 +92,7 @@ public class StoreService {
 
     }
 
+    public List<Store> findStoresOutdated() {
+        return storeRepository.findByLastUpdateBefore(LocalDateTime.now().minusMonths(1));
+    }
 }
