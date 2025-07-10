@@ -9,9 +9,8 @@
 @param Map<String, String> fieldErrors = java.util.Collections.emptyMap()
 
 @template.layout.default(
+message = message,
 content = @`
-
-    @template.partials.message(message = message)
 
     <div class="center">
         <div class="login-container panel">

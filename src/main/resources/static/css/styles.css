@@ -300,21 +300,75 @@ label {
     margin-top: 1rem;
 }
 
+.message-container {
+    position: fixed;
+    right: 1rem;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    display: inline-block;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.message-container.show {
+    animation-name: slideInFromRight;
+}
+
+.message-container.hide {
+    animation-name: slideOutToRight;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToRight{
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
 .message {
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    padding: 8px 18px 8px 12px;
+    border-radius: 4px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: red;
 }
 
 .error {
-    background-color: #f8d7da;
+    background-color: rgba(250, 215, 215, 1);
     color: #842029;
     border: 1px solid #f5c2c7;
 }
 
 .success {
-    background-color: #d1e7dd;
+    background-color: rgba(210,230,220, 1);
     color: #0f5132;
     border: 1px solid #badbcc;
 }
