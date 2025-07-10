@@ -145,13 +145,11 @@ public class UserService {
 
     public void sendRecoverAccountEmail(String email) {
         User user = findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new UserNotFoundException("/user/recover"));
 
         UserVerificationToken userVerificationToken = userVerificationTokenService.generateUserVerificationToken(user);
 
         String link = baseUrl + "/user/reset-password?token=" + userVerificationToken.getToken();
-
-        System.out.println(link);
 
         RecoverAccountTemplate template = new RecoverAccountTemplate(user.getUsername(), link);
 
@@ -182,5 +180,12 @@ public class UserService {
         }
 
         save(user);
+    }
+
+    public void resendVerificationEmail(String email) {
+        User user = findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("/user/resend-verification-email"));
+
+        sendVerificationEmail(user);
     }
 }

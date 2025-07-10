@@ -18,7 +18,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     </head>
     <body>
-
         <nav class="navbar">
             <a href="/dashboard" class="logo">Gui4Me</a>
 
@@ -37,6 +36,8 @@
             </div>
         </nav>
 
+        @template.partials.message(message = message)
+
         <main class="main-container">
             ${content}
         </main>
@@ -48,5 +49,6 @@
         <script src="/js/passwordValidation.js" type="text/javascript"></script>
         <script src="/js/showPassword.js" type="text/javascript"></script>
         <script src="/js/dropdownButton.js" type="text/javascript"></script>
+        <script src="/js/dismissMessage.js" type="text/javascript"></script>
     </body>
 </html>

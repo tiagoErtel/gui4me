@@ -17,23 +17,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/login", "/register", "/user/recover", "/user/reset-password",
-                                "/login-error", "/auth/error",
-                                "/user/verify",
-                                "/static/**",
-                                "/js/**", "/css/**", "/images/**")
+                        .requestMatchers("/", "/login", "/register", "/user/recover", "/user/resend-verification-email",
+                                "/user/reset-password", "/login-error", "/user/verify", "/static/**", "/js/**",
+                                "/css/**", "/images/**")
                         .permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .failureUrl("/login-error")
                         .defaultSuccessUrl("/dashboard", true)
                         .usernameParameter("email") // Match 'email' field in login form
+                        .failureHandler(customFailureHandler())
                         .permitAll())
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard", true)
-                        .failureHandler(customOAuth2FailureHandler()))
+                        .failureHandler(customFailureHandler()))
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                         .permitAll());
@@ -47,7 +45,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationFailureHandler customOAuth2FailureHandler() {
-        return new CustomOAuth2FailureHandler();
+    public AuthenticationFailureHandler customFailureHandler() {
+        return new CustomFailureHandler();
     }
 }

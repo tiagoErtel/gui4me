@@ -7,18 +7,16 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
-public class CustomOAuth2FailureHandler implements AuthenticationFailureHandler {
+public class CustomFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException exception) throws IOException {
-        HttpSession session = request.getSession();
 
-        session.setAttribute("error", exception.getMessage());
+        request.getSession().setAttribute("exception", exception);
 
-        response.sendRedirect("/auth/error");
+        response.sendRedirect("/login-error");
     }
 }

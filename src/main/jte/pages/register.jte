@@ -7,8 +7,8 @@
 @param Map<String, String> fieldErrors = java.util.Collections.emptyMap()
 
 @template.layout.default(
+message = message,
 content = @`
-    @template.partials.message(message)
     <div class="center">
         <div class="login-container panel">
             <h2 class="title">Create your account</h2>

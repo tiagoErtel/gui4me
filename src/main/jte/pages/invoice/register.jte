@@ -13,7 +13,6 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 currentUser = currentUser,
 content = @`
-    @template.partials.message(message = message) 
 
     @template.partials.back-button(href = "/dashboard")
 

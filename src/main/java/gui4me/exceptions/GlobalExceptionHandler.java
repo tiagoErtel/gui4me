@@ -16,6 +16,8 @@ import gui4me.exceptions.invoice.InvoiceUrlIsNotQrCode;
 import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
+import gui4me.exceptions.user.UserNotFoundException;
+import gui4me.exceptions.user.UserNotVerifiedException;
 import gui4me.exceptions.user.UserVerificationTokenDoNotExistsException;
 import gui4me.exceptions.user.UserVerificationTokenExpiredException;
 import gui4me.exceptions.user.WeakPasswordException;
@@ -175,6 +177,31 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("message",
                 new Message(MessageType.ERROR,
                         "Password must be at least 8 characters long and include uppercase, lowercase, and a number."));
+
+        return "redirect:" + ex.getRedirect();
+    }
+
+    @ExceptionHandler(UserNotVerifiedException.class)
+    public String handleUserNotVerifiedException(UserNotVerifiedException ex,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("User not verified");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, ex.getMessage(),
+                        new Link("/user/resend-verification-email", "resend verification email")));
+
+        return "redirect:/login";
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public String handleUserNotFoundException(UserNotFoundException ex,
+            RedirectAttributes redirectAttributes) {
+
+        logger.warn("User not found");
+
+        redirectAttributes.addFlashAttribute("message",
+                new Message(MessageType.ERROR, ex.getMessage()));
 
         return "redirect:" + ex.getRedirect();
     }

@@ -11,7 +11,6 @@ csrfHiddenInput = csrfHiddenInput,
 message = message,
 currentUser = currentUser,
 content = @`
-    @template.partials.message(message = message)
 
     <div class="grid">
         <a href="/product/search" class="card">
