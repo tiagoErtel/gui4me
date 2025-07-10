@@ -1,5 +1,7 @@
 package gui4me.store;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -30,6 +32,9 @@ public class Store {
     private String type;
 
     private String size;
+
+    @NotNull
+    private LocalDateTime lastUpdate;
 
     @Embedded
     private Address address;
@@ -99,5 +104,13 @@ public class Store {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    public LocalDateTime getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(LocalDateTime lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 }
