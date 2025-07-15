@@ -1,0 +1,54 @@
+app:
+  base-url: http://localhost:8080
+
+spring:
+  application:
+    name: gui4me-test
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+  web:
+    resources:
+      static-locations:
+        - "file:src/main/resources/static/"
+        - "classpath:/static/"
+
+spring-security:
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: test
+          client-secret: test
+          scope:
+            - email
+            - profile
+        github:
+          client-id: test
+          client-secret: test
+          scope:
+            - user:email
+            - read:user
+
+brevo:
+  enabled: false
+  key: test-api-key
+  url: https://api.brevo.com/v3/smtp/email
+
+gg:
+  jte:
+    developmentMode: true
+    usePrecompiledTemplates: false
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
