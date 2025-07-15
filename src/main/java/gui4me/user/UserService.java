@@ -42,7 +42,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void register(String username, String email, String newPassword, String confirmPassword) {
+    public User register(String username, String email, String newPassword, String confirmPassword) {
         User user = new User();
 
         if (existsByEmail(email)) {
@@ -67,6 +67,8 @@ public class UserService {
         user = save(user);
 
         sendVerificationEmail(user);
+
+        return user;
     }
 
     public User registerOAuth2User(String email, String name, AuthProvider authProvider) {
