@@ -46,7 +46,6 @@ public class InvoiceService {
 
     public Invoice save(String invoiceUrl, User user) {
         if (isQrCodeUrl(invoiceUrl)) {
-            // Proceed normally
             try {
                 Document doc = Jsoup.connect(invoiceUrl).get();
                 String invoiceKey = doc.getElementsByClass("chave").text();
