@@ -1,9 +1,19 @@
 const html5QrCode = new Html5Qrcode("qrcode-reader");
 const cameraSelect = document.getElementById('cameraSelect');
 
-function onScanSuccess(decodedText, decodedResult) {
+async function onScanSuccess(decodedText, decodedResult) {
+    try {
+        await html5QrCode.stop();
+        html5QrCode.clear();
+    } catch (err) {
+        console.error("Failed to stop scanner:", err);
+    }
+
+    document.getElementById('loadingOverlay').classList.add('active');
+
     const invoiceInput = document.getElementById('invoiceUrl');
     invoiceInput.value = decodedText;
+
     document.getElementById('invoiceForm').submit();
 }
 

@@ -576,3 +576,59 @@ input.warning {
     width: 1.25rem;
     margin-right: 0.5rem;
 }
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(24, 24, 24, 0.85);
+    z-index: 9999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(2px);
+    transition: var(--transition);
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+
+.loading-box {
+    background-color: var(--panel);
+    padding: 2rem 2.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1.125rem;
+    transition: var(--transition);
+
+    max-width: 90vw;
+    width: 400px;
+    margin: 0 1rem;
+    box-sizing: border-box;
+}
+
+
+.loading-box .spinner {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 3px solid var(--primary-light);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

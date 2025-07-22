@@ -39,6 +39,13 @@ content = @`
         }
     </script>
 
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-box">
+            <span class="spinner"></span>
+            <span>Loading invoice, please wait...</span>
+        </div>
+    </div>
+
     <form action="/invoice/register" method="POST" id="invoiceForm" class="mt-2 hidden">
         ${csrfHiddenInput}
 
