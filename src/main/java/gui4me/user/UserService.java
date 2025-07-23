@@ -14,6 +14,7 @@ import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
 import gui4me.exceptions.user.UserNotFoundException;
+import gui4me.exceptions.user.UserNotVerifiedException;
 import gui4me.exceptions.user.WeakPasswordException;
 
 @Service
@@ -186,7 +187,7 @@ public class UserService {
 
     public void resendVerificationEmail(String email) {
         User user = findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException("/user/resend-verification-email"));
+                .orElseThrow(() -> new UserNotFoundException("/login"));
 
         sendVerificationEmail(user);
     }
