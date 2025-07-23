@@ -117,14 +117,10 @@ public class UserController {
     }
 
     @GetMapping("/resend-verification-email")
-    public String showResendVerificationEmail() {
-        return "pages/user/resend-verification-email";
-    }
+    public String showResendVerificationEmail(@RequestParam String token, RedirectAttributes redirectAttributes) {
+        User user = userService.findUserToken(token);
 
-    @PostMapping("/resend-verification-email")
-    public String resendVerificationEmail(@RequestParam String email, RedirectAttributes redirectAttributes) {
-
-        userService.resendVerificationEmail(email);
+        userService.resendVerificationEmail(user.getEmail());
 
         redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS,
                 "We sent a email with the verification link"));

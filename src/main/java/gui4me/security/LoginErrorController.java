@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gui4me.exceptions.user.ProviderMismatchException;
 import gui4me.exceptions.user.UserNotVerifiedException;
+import gui4me.user.UserVerificationToken;
+import gui4me.user.UserVerificationTokenService;
 import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
@@ -20,6 +23,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class LoginErrorController {
+
+    @Autowired
+    UserVerificationTokenService userVerificationTokenService;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginErrorController.class);
 
@@ -43,9 +49,14 @@ public class LoginErrorController {
         Message message = new Message(MessageType.ERROR);
         Map<String, String> fieldErrors = new HashMap<>();
 
-        if (cause instanceof UserNotVerifiedException) {
+        if (cause instanceof UserNotVerifiedException ex) {
             message.setMessage(cause.getMessage());
-            message.setLink(new Link("/user/resend-verification-email", "click here to resend the email."));
+
+            UserVerificationToken userVerificationToken = userVerificationTokenService
+                    .generateUserVerificationToken(ex.getUser());
+
+            message.setLink(new Link("/user/resend-verification-email?token=" + userVerificationToken.getToken(),
+                    "click here to resend the email."));
         } else if (cause instanceof BadCredentialsException) {
             message.setMessage("Incorrect email or password!");
             fieldErrors.put("email", "");
