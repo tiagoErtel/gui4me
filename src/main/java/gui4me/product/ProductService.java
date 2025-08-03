@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import gui4me.product.dto.ProductAnalyse;
 import gui4me.product.dto.ProductAnalyseByStore;
@@ -19,13 +20,17 @@ public class ProductService {
         return productRepository.findByName(name);
     }
 
-    public Product save(Product product) {
+    public Product save(String productName) {
+        Product product = new Product();
+
+        product.setName(productName);
+        product.setNormalizedName(normalizeName(productName));
         return productRepository.save(product);
     }
 
     public Product getOrCreateProduct(String productName) {
         return findByName(productName)
-                .orElseGet(() -> save(new Product(productName)));
+                .orElseGet(() -> save(productName));
     }
 
     public List<Product> findAll() {
@@ -42,5 +47,9 @@ public class ProductService {
 
     public List<ProductAnalyseByStore> getProductAnalyseByStore(String productId) {
         return productRepository.getProductAnalyseByStore(productId);
+    }
+
+    private String normalizeName(String productName) {
+        return StringUtils.capitalize(productName.toLowerCase());
     }
 }
