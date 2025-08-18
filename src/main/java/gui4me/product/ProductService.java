@@ -52,4 +52,14 @@ public class ProductService {
     private String normalizeName(String productName) {
         return StringUtils.capitalize(productName.toLowerCase());
     }
+
+    public void normalizeAllProductNames() {
+        List<Product> products = findAll();
+
+        for (Product product : products) {
+            product.setNormalizedName(normalizeName(product.getName()));
+        }
+
+        productRepository.saveAll(products);
+    }
 }
