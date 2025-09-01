@@ -10,8 +10,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
     private String name;
+
+    private String normalizedName;
 
     public String getId() {
         return id;
@@ -29,9 +30,11 @@ public class Product {
         this.name = name;
     }
 
-    public Product(String name) {
-        this.name = name;
+    public String getNormalizedName() {
+        return normalizedName;
     }
 
-    public Product() {}
+    public void setNormalizedName(String normalizedName) {
+        this.normalizedName = normalizedName;
+    }
 }
