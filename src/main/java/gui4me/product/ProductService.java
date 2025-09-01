@@ -53,7 +53,7 @@ public class ProductService {
         return StringUtils.capitalize(productName.toLowerCase());
     }
 
-    public void normalizeAllProductNames() {
+    public void normalizeAllProductsName() {
         List<Product> products = findAll();
 
         for (Product product : products) {
