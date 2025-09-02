@@ -17,7 +17,7 @@ content = @`
     @template.partials.back-button(href = "/product/search")
 
     <div class="list-header">
-        <h2 class="title">Products Analyse: ${!products.isEmpty() ? products.get(0).getProductName() : ""}</h2>
+        <h2 class="title">Products Analyse: ${!products.isEmpty() ? products.get(0).getProductNormalizedName() : ""}</h2>
         <p class="subtitle">Analyse the product</p>
     </div>
 

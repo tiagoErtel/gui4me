@@ -6,15 +6,17 @@ import java.time.format.DateTimeFormatter;
 
 public class ProductSearchResult {
     private String productName;
+    private String productNormalizedName;
     private Double unitPrice;
     private String storeName;
     private LocalDateTime lastIssuanceDate;
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public ProductSearchResult(String productName, Double unitPrice, String storeName,
+    public ProductSearchResult(String productName, String productNormalizedName, Double unitPrice, String storeName,
             LocalDateTime lastIssuanceDate) {
         this.productName = productName;
+        this.productNormalizedName = productNormalizedName;
         this.storeName = storeName;
         this.lastIssuanceDate = lastIssuanceDate;
         this.unitPrice = unitPrice;
@@ -26,6 +28,10 @@ public class ProductSearchResult {
 
     public String getProductName() {
         return productName;
+    }
+
+    public String getProductNormalizedName() {
+        return productNormalizedName;
     }
 
     public String getStoreName() {
@@ -62,5 +68,9 @@ public class ProductSearchResult {
 
         long days = hours / 24;
         return days + " days ago";
+    }
+
+    public static DateTimeFormatter getFormatter() {
+        return FORMATTER;
     }
 }
