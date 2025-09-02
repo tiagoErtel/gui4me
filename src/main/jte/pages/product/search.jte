@@ -23,10 +23,10 @@ content = @`
 
     <form action="/product/search" method="GET" class="search-container">
         <input
-                type="text"
-                name="productName"
-                placeholder="Search by product name..."
-                required
+            type="text"
+            name="productName"
+            placeholder="Search by product name..."
+            required
         />
         <button type="submit"><i class="fa fa-search"></i></button>
     </form>
