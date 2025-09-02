@@ -41,12 +41,12 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow();
     }
 
-    public List<ProductAnalyse> getProductAnalyse(String productName) {
-        return productRepository.getProductAnalyse(productName);
+    public List<ProductAnalyse> getProductsAnalyse(String productName) {
+        return productRepository.getProductsAnalyse(productName);
     }
 
-    public List<ProductAnalyseByStore> getProductAnalyseByStore(String productId) {
-        return productRepository.getProductAnalyseByStore(productId);
+    public List<ProductAnalyseByStore> getProductAnalyseByStores(String productId) {
+        return productRepository.getProductAnalyseByStores(productId);
     }
 
     private String normalizeName(String productName) {

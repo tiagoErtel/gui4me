@@ -20,6 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             SELECT
                 p.id AS id,
                 p.name AS name,
+                p.normalizedName AS productNormalizedName,
                 AVG(ii.unitPrice) AS avgPrice,
                 MIN(ii.unitPrice) AS minPrice,
                 MAX(ii.unitPrice) AS maxPrice,
@@ -30,13 +31,14 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             JOIN ii.product p
             JOIN i.store s
             WHERE UNACCENT(LOWER(p.name)) LIKE UNACCENT(LOWER(CONCAT('%', :productName, '%')))
-            GROUP BY p.id, p.name
+            GROUP BY p.id, p.name, p.normalizedName
             """)
-    List<ProductAnalyse> getProductAnalyse(@Param("productName") String productName);
+    List<ProductAnalyse> getProductsAnalyse(@Param("productName") String productName);
 
     @Query("""
             SELECT
-                p.name as productName,
+                p.name AS productName,
+                p.normalizedName AS productNormalizedName,
                 s.name AS storeName,
                 MIN(ii.unitPrice) AS minPrice,
                 MAX(ii.unitPrice) AS maxPrice,
@@ -47,8 +49,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             JOIN i.store s
             JOIN ii.product p
             WHERE p.id = :productId
-            GROUP BY p.name, s.name
+            GROUP BY p.name, p.normalizedName, s.name
             ORDER BY avgPrice ASC
             """)
-    List<ProductAnalyseByStore> getProductAnalyseByStore(@Param("productId") String productId);
+    List<ProductAnalyseByStore> getProductAnalyseByStores(@Param("productId") String productId);
 }

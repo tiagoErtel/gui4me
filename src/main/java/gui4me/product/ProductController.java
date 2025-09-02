@@ -22,7 +22,7 @@ public class ProductController {
     @GetMapping("/search")
     public String searchProduct(Model model, @RequestParam(required = false) String productName) {
         if (productName != null && !productName.isBlank()) {
-            List<ProductAnalyse> products = productService.getProductAnalyse(productName);
+            List<ProductAnalyse> products = productService.getProductsAnalyse(productName);
             model.addAttribute("products", products);
         }
 
@@ -31,7 +31,7 @@ public class ProductController {
 
     @GetMapping("/analyse")
     public String analyseByStore(Model model, @RequestParam String productId) {
-        List<ProductAnalyseByStore> products = productService.getProductAnalyseByStore(productId);
+        List<ProductAnalyseByStore> products = productService.getProductAnalyseByStores(productId);
 
         model.addAttribute("products", products);
 

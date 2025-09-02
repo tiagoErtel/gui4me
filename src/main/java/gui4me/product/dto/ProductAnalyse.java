@@ -7,6 +7,8 @@ public interface ProductAnalyse {
 
     String getName();
 
+    String getNormalizedName();
+
     BigDecimal getAvgPrice();
 
     BigDecimal getMinPrice();
