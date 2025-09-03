@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 public interface ProductAnalyseByStore {
     String getProductName();
 
+    String getProductNormalizedName();
+
     String getStoreName();
 
     BigDecimal getAvgPrice();
