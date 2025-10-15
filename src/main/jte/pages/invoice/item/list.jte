@@ -33,7 +33,7 @@ content = @`
                 @for (InvoiceItem item : invoiceItemsList)
                     <div class="card-item">
                         <div class="card-content">
-                            <h3 class="card-title">${item.getProduct().getName()}</h3>
+                            <h3 class="card-title">${item.getProductName()}</h3>
                             <p class="card-details">${item.getQuantity()} ${item.getUnit()}</p>
                             <p class="card-details">Unit: R$ ${item.getUnitPrice()}</p>
                             <p class="card-details">Total: R$ ${item.getTotalPrice()}</p>
