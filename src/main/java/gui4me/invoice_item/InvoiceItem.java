@@ -89,4 +89,8 @@ public class InvoiceItem {
         this.unit = unit;
     }
 
+    public String getProductName() {
+        return product.getNormalizedName();
+    }
+
 }
