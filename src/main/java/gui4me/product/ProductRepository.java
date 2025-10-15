@@ -20,7 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
             SELECT
                 p.id AS id,
                 p.name AS name,
-                p.normalizedName AS productNormalizedName,
+                p.normalizedName AS normalizedName,
                 AVG(ii.unitPrice) AS avgPrice,
                 MIN(ii.unitPrice) AS minPrice,
                 MAX(ii.unitPrice) AS maxPrice,
@@ -37,8 +37,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     @Query("""
             SELECT
-                p.name AS productName,
-                p.normalizedName AS productNormalizedName,
+                p.name AS name,
+                p.normalizedName AS normalizedName,
                 s.name AS storeName,
                 MIN(ii.unitPrice) AS minPrice,
                 MAX(ii.unitPrice) AS maxPrice,
