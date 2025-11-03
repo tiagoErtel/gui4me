@@ -5,16 +5,22 @@ import org.hibernate.boot.model.FunctionContributor;
 import org.hibernate.query.sqm.function.SqmFunctionRegistry;
 import org.hibernate.type.StandardBasicTypes;
 
-public class UnaccentFunctionContributor implements FunctionContributor {
+public class PostGisFunctionContributor implements FunctionContributor {
 
     @Override
     public void contributeFunctions(FunctionContributions functionContributions) {
         SqmFunctionRegistry functionRegistry = functionContributions.getFunctionRegistry();
 
         functionRegistry.registerNamed(
-                "unaccent",
+                "ST_DWithin",
                 functionContributions.getTypeConfiguration()
                         .getBasicTypeRegistry()
-                        .resolve(StandardBasicTypes.STRING));
+                        .resolve(StandardBasicTypes.BOOLEAN));
+
+        functionRegistry.registerNamed(
+                "ST_MakePoint",
+                functionContributions.getTypeConfiguration()
+                        .getBasicTypeRegistry()
+                        .resolve(StandardBasicTypes.OBJECT_TYPE));
     }
 }
