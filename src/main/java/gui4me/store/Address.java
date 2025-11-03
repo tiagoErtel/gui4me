@@ -1,5 +1,8 @@
 package gui4me.store;
 
+import org.springframework.data.geo.Point;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
@@ -13,6 +16,9 @@ public class Address {
     private String complement;
     private double latitude;
     private double longitude;
+
+    @Column(columnDefinition = "geography(Point,4326)")
+    private Point location;
 
     public String getState() {
         return state;
@@ -84,5 +90,13 @@ public class Address {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
     }
 }
