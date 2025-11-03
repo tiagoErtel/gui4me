@@ -456,6 +456,12 @@ label {
     background-color: var(--primary-light);
 }
 
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .profile {
     display: flex;
     justify-content: center;

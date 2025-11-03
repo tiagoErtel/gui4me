@@ -1,5 +1,6 @@
 package gui4me.product;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +42,10 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow();
     }
 
-    public List<ProductAnalyse> getProductsAnalyse(String productName) {
-        return productRepository.getProductsAnalyse(productName);
+    public List<ProductAnalyse> getProductsAnalyse(String productName, LocalDate minDate, LocalDate maxDate,
+            Double distance, Double latitude, Double longitude) {
+        distance = distance * 1000;
+        return productRepository.getProductsAnalyse(productName, minDate, maxDate, distance, latitude, longitude);
     }
 
     public List<ProductAnalyseByStore> getProductAnalyseByStores(String productId) {

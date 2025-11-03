@@ -1,5 +1,6 @@
 package gui4me.product;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import gui4me.product.dto.ProductAnalyse;
 import gui4me.product.dto.ProductAnalyseByStore;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/product")
@@ -20,10 +22,21 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/search")
-    public String searchProduct(Model model, @RequestParam(required = false) String productName) {
+    public String searchProduct(Model model, HttpServletRequest request,
+            @RequestParam(required = false) String productName,
+            @RequestParam(required = false) LocalDate minDate,
+            @RequestParam(required = false) LocalDate maxDate,
+            @RequestParam(required = false) Double distance,
+            @RequestParam(required = false) Double latitude,
+            @RequestParam(required = false) Double longitude) {
         if (productName != null && !productName.isBlank()) {
-            List<ProductAnalyse> products = productService.getProductsAnalyse(productName);
+            List<ProductAnalyse> products = productService.getProductsAnalyse(productName, minDate, maxDate, distance,
+                    latitude, longitude);
             model.addAttribute("products", products);
+        }
+
+        if ("true".equals(request.getHeader("HX-Request"))) {
+            return "pages/product/_analyse_card";
         }
 
         return "pages/product/search";
