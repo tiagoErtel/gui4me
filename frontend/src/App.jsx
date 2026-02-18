@@ -1,23 +1,30 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./auth/AuthContext";
-import ProtectedRoute from "./routes/ProtectedRoute";
-import Landing from "./pages/Landing";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 import Login from "./pages/Login";
-import Register from "./pages/Register";
 import Home from "./pages/Home";
+import Register from "./pages/Register"
 
-export default function App() {
-  return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/landing" element={<Landing />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
-  );
+function App() {
+    return (
+        <Router>
+            <AuthProvider>
+                <Routes>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/" element={<Navigate to="/home" replace />} />
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/admin" element={<div>Admin Panel</div>} />
+                    </Route>
+
+                    <Route path="*" element={<div>404 Not Found</div>} />
+                </Routes>
+            </AuthProvider>
+        </Router>
+    );
 }
 
+export default App;

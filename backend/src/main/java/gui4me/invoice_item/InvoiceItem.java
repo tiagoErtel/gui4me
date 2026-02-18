@@ -11,7 +11,7 @@ public class InvoiceItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String Id;
+    private String id;
 
     @NotNull
     private Double unitPrice;
@@ -25,8 +25,8 @@ public class InvoiceItem {
     @NotNull
     private String unit;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "invoice_id")
+    @ManyToOne
+    @JoinColumn(name = "invoice_id", nullable = false)
     private Invoice invoice;
 
     @ManyToOne
@@ -50,11 +50,11 @@ public class InvoiceItem {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        this.id = id;
     }
 
     public Double getUnitPrice() {

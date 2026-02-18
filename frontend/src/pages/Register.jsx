@@ -1,40 +1,59 @@
 import React, { useState } from "react";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../context/UseAuth";
 import { useNavigate } from "react-router-dom";
-import "../index.css"; // Tailwind CSS
+import "../index.css";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 export default function Register() {
   const { register } = useAuth();
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    newPassword: "",
+    password: "",
     confirmPassword: "",
   });
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+
+    // Clear the red outline as soon as they start fixing it
+    if (fieldErrors[name]) {
+      setFieldErrors({ ...fieldErrors, [name]: null });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setFieldErrors({});
 
-    if (formData.newPassword !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       setLoading(false);
+      setFieldErrors({ password: true, confirmPassword: true });
       return;
     }
 
     try {
-      await register(formData);
-      navigate("/login");
+      await register(
+        formData.username,
+        formData.email,
+        formData.password,
+        formData.confirmPassword,
+      );
+      navigate("/home");
     } catch (err) {
       setError(err.message || "Register failed");
+      if (err.fieldErrors) setFieldErrors(err.fieldErrors);
     } finally {
       setLoading(false);
     }
@@ -51,57 +70,54 @@ export default function Register() {
         </p>
 
         {error && (
-          <div className="mt-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>
+          <div className="mt-4 p-2 bg-red-100 text-red-700 rounded">
+            {error}
+          </div>
         )}
 
         <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
-          <input
-            type="text"
+          <Input
+            label="Username"
             name="username"
             placeholder="Name"
             value={formData.username}
             onChange={handleChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            error={fieldErrors.username}
             required
           />
-
-          <input
+          <Input
+            label="Email"
             type="email"
             name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            error={fieldErrors.email}
             required
           />
-
-          <input
+          <Input
+            label="Password"
             type="password"
-            name="newPassword"
-            placeholder="Password"
-            value={formData.newPassword}
+            name="password"
+            placeholder="••••••••"
+            value={formData.password}
             onChange={handleChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            error={fieldErrors.password}
             required
           />
-
-          <input
+          <Input
+            label="Confirm Password"
             type="password"
             name="confirmPassword"
-            placeholder="Confirm Password"
+            placeholder="••••••••"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            error={fieldErrors.confirmPassword}
             required
           />
-
-          <button
-            type="submit"
-            className="w-full rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700 transition"
-            disabled={loading}
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
+          <Button type="submit" loading={loading}>
+            Register
+          </Button>{" "}
         </form>
 
         <p className="mt-4 text-center text-gray-600">
@@ -114,4 +130,3 @@ export default function Register() {
     </div>
   );
 }
-

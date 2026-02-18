@@ -1,14 +1,12 @@
 package gui4me.email;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import org.springframework.boot.jackson.JsonComponent;
-
 import java.io.IOException;
 import java.util.Map;
 
-@JsonComponent
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+
 public class BrevoRequestSerializer extends JsonSerializer<BrevoRequest> {
 
     @Override

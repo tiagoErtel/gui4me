@@ -9,11 +9,11 @@ public class Link {
         this.text = text;
     }
 
-    public String getUlr() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUlr(String url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 

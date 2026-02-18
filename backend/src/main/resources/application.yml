@@ -7,6 +7,10 @@ spring:
         show-sql: true
         hibernate:
             ddl-auto: validate
+        data:
+            jpa:
+                repositories:
+                    bootstrap-mode: deferred
     datasource:
         url: ${DB_URL}
         username: ${DB_USERNAME}
@@ -22,6 +26,7 @@ spring:
         enabled: true
         schemas: public
         default-schema: public
+        baseline-on-migrate: true
     security:
         oauth2:
           client:
@@ -54,3 +59,6 @@ logging:
                 security: DEBUG
 tomtom:
     api-key: ${TOMTOM_API_KEY}
+
+jwt:
+    secret-key: my-secret-key

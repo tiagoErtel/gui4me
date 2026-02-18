@@ -16,6 +16,11 @@ public class BrevoConfig {
     }
 
     @Bean
+    public RestClient.Builder restClientBuilder() {
+        return RestClient.builder();
+    }
+
+    @Bean
     public RestClient client(RestClient.Builder builder) {
         return builder
                 .baseUrl(props.getUrl())

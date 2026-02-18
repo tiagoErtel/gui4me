@@ -5,8 +5,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gui4me.exceptions.email.EmailSendingException;
@@ -24,47 +27,56 @@ import gui4me.utils.Link;
 import gui4me.utils.Message;
 import gui4me.utils.MessageType;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException ex) {
+        logger.warn("Authentication failed: {}", ex.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "message", "Invalid email or password"));
+    }
+
     @ExceptionHandler(Exception.class)
-    public String handleGeneralException(Exception e, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> handleGeneralException(Exception e) {
 
         logger.error("Unexpected error", e);
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "An unexpected error occurred. Please try again later."));
-
-        return "redirect:/dashboard";
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(
+                        "message", "An unexpected error occurred. Please try again later."));
     }
 
     @ExceptionHandler(InvoiceAlreadyProcessedException.class)
-    public String handleInvoiceAlreadyProcessed(InvoiceAlreadyProcessedException e,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> handleInvoiceAlreadyProcessed(InvoiceAlreadyProcessedException e) {
 
         logger.warn("Invoice already processed: {}", e.getInvoiceKey());
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "This invoice has already been processed."));
-
-        return "redirect:/invoice/register";
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of(
+                        "message", "This invoice has already been processed."));
     }
 
     @ExceptionHandler(InvoiceParseErrorException.class)
-    public String handleInvoiceParseError(InvoiceParseErrorException e, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> handleInvoiceParseError(InvoiceParseErrorException e) {
 
         logger.error("Invoice parse error: {}, message: {}", e.getInvoiceUrl(), e.getMessage());
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "Failed to parse the invoice."));
-
-        return "redirect:/invoice/register";
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(Map.of(
+                        "message", "Failed to parse the invoice."));
     }
 
     @ExceptionHandler(InvoiceUrlIsNotQrCode.class)
-    public String handleInvoiceUrlIsNotQrCode(InvoiceUrlIsNotQrCode e, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, Object>> handleInvoiceUrlIsNotQrCode(InvoiceUrlIsNotQrCode e) {
 
         logger.warn("Invoice URL is not qr code: {}", e.getInvoiceKey());
 
@@ -73,123 +85,114 @@ public class GlobalExceptionHandler {
 
         Link link = new Link(redirectUrl, "Click here to access the official invoice page.");
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR,
-                        "Invoice QR Code is invalid, please access the official invoice page and copy the QR Code link (additional information tab), then paste the link in the invoice link field.",
-                        link));
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Invoice QR Code is invalid...");
+        response.put("link", link);
 
-        return "redirect:/invoice/register";
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
     }
 
     @ExceptionHandler(PasswordsDoNotMatchException.class)
-    public String handlePasswordsDoNotMatchException(PasswordsDoNotMatchException e,
-            RedirectAttributes redirectAttributes) {
-
-        logger.warn("Passwords do not match");
+    public ResponseEntity<Map<String, Object>> handlePasswordsDoNotMatch(PasswordsDoNotMatchException e) {
+        logger.warn("Passwords do not match validation triggered");
 
         Map<String, String> fieldErrors = new HashMap<>();
-
-        fieldErrors.put("newPassword", "Passwords do not match");
+        fieldErrors.put("password", "Passwords do not match");
         fieldErrors.put("confirmPassword", "Passwords do not match");
 
-        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", "Validation failed: Passwords do not match.");
+        body.put("fieldErrors", fieldErrors);
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "Passwords do not match"));
-        return "redirect:/user/settings";
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(body);
     }
 
     @ExceptionHandler(IncorrectCurrentPasswordException.class)
-    public String handleIncorrectCurrentPasswordException(IncorrectCurrentPasswordException e,
-            RedirectAttributes redirectAttributes) {
-
-        logger.warn("Incorrect current password");
+    public ResponseEntity<Map<String, Object>> handleIncorrectCurrentPassword(IncorrectCurrentPasswordException e) {
+        logger.warn("Incorrect current password attempt for user settings");
 
         Map<String, String> fieldErrors = new HashMap<>();
+        fieldErrors.put("currentPassword", "The password you entered is incorrect.");
 
-        fieldErrors.put("currentPassword", "Incorrect password");
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", "Could not update settings: Incorrect password.");
+        body.put("fieldErrors", fieldErrors);
 
-        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
-
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "Incorrect password!"));
-        return "redirect:/user/settings";
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(body);
     }
 
     @ExceptionHandler(UserAlreadyRegisteredException.class)
-    public String handleUserAlreadyRegisteredException(UserAlreadyRegisteredException e,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> handleUserAlreadyRegisteredException(UserAlreadyRegisteredException e) {
 
         logger.warn("User already registered");
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "User already registered!"));
-        return "redirect:/register";
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of("message", "User already registered!"));
     }
 
     @ExceptionHandler(UserVerificationTokenDoNotExistsException.class)
-    public String handleUserVerificationTokenDoNotExistsException(UserVerificationTokenDoNotExistsException e,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> handleUserVerificationTokenDoNotExistsException(
+            UserVerificationTokenDoNotExistsException e) {
 
         logger.warn("Token do no exists");
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "Verification token do not exists!"));
-        return "redirect:/login";
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message",
+                        "This verification link is invalid. It may have already been used or was never created."));
     }
 
     @ExceptionHandler(UserVerificationTokenExpiredException.class)
-    public String handleUserVerificationTokenExpiredException(UserVerificationTokenExpiredException e,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, Object>> handleUserVerificationTokenExpired(
+            UserVerificationTokenExpiredException e) {
+        logger.warn("Token expired for verification attempt");
 
-        logger.warn("Token expired");
-
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "Verification token has expired!"));
-        return "redirect:/login";
+        return ResponseEntity
+                .status(HttpStatus.GONE)
+                .body(Map.of(
+                        "message", "Verification token has expired! Please request a new one.",
+                        "errorCode", "TOKEN_EXPIRED",
+                        "canResend", true));
     }
 
     @ExceptionHandler(EmailSendingException.class)
-    public String handleEmailSendingException(EmailSendingException ex,
-            RedirectAttributes redirectAttributes) {
-
+    public ResponseEntity<Map<String, String>> handleEmailSending(EmailSendingException ex) {
         logger.error("Email sending error: {}", ex.getMessage(), ex);
 
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, "We couldn't send you a confirmation email. Please try again later."));
-
-        return "redirect:/login";
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of(
+                        "message", "We couldn't send you a confirmation email. Please try again later.",
+                        "error", "EMAIL_SERVICE_DOWN"));
     }
 
     @ExceptionHandler(WeakPasswordException.class)
-    public String handleWeakPasswordException(WeakPasswordException ex,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, Object>> handleWeakPassword(WeakPasswordException ex) {
+        logger.warn("Weak password validation failed");
 
-        logger.warn("Weak password");
+        Map<String, String> fieldErrors = Map.of(
+                "password", "Create a stronger password");
 
-        Map<String, String> fieldErrors = new HashMap<>();
-
-        fieldErrors.put("password", "Create a stronger password");
-
-        redirectAttributes.addFlashAttribute("fieldErrors", fieldErrors);
-
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR,
-                        "Password must be at least 8 characters long and include uppercase, lowercase, and a number."));
-
-        return "redirect:" + ex.getRedirect();
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                        "message",
+                        "Password must be at least 8 characters long and include uppercase, lowercase, and a number.",
+                        "fieldErrors", fieldErrors));
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public String handleUserNotFoundException(UserNotFoundException ex,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException ex) {
+        logger.warn("User not found: {}", ex.getMessage());
 
-        logger.warn("User not found");
-
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.ERROR, ex.getMessage()));
-
-        return "redirect:" + ex.getRedirect();
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", ex.getMessage()));
     }
 
 }
