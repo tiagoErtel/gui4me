@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useAuth } from "../context/UseAuth";
+import { useAuth } from "@/context/UseAuth";
 import { useNavigate } from "react-router-dom";
-import "../index.css";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import "@/index.css";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
 
 export default function Register() {
   const { register } = useAuth();
