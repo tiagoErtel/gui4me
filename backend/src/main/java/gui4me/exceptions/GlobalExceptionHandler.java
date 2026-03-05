@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import gui4me.exceptions.email.EmailSendingException;
 import gui4me.exceptions.invoice.InvoiceAlreadyProcessedException;
@@ -20,12 +20,11 @@ import gui4me.exceptions.user.IncorrectCurrentPasswordException;
 import gui4me.exceptions.user.PasswordsDoNotMatchException;
 import gui4me.exceptions.user.UserAlreadyRegisteredException;
 import gui4me.exceptions.user.UserNotFoundException;
+import gui4me.exceptions.user.UserNotVerifiedException;
 import gui4me.exceptions.user.UserVerificationTokenDoNotExistsException;
 import gui4me.exceptions.user.UserVerificationTokenExpiredException;
 import gui4me.exceptions.user.WeakPasswordException;
 import gui4me.utils.Link;
-import gui4me.utils.Message;
-import gui4me.utils.MessageType;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -195,4 +194,18 @@ public class GlobalExceptionHandler {
                 .body(Map.of("message", ex.getMessage()));
     }
 
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public ResponseEntity<Map<String, String>> handleInternalAuthServiceException(
+            InternalAuthenticationServiceException ex) {
+
+        if (ex.getCause() instanceof UserNotVerifiedException) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(Map.of("message", ex.getMessage()));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("message", "Authentication service error"));
+    }
 }
