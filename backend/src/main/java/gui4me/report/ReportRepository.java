@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import gui4me.user.User;
 import gui4me.invoice.Invoice;
-import gui4me.report.dto.InvoicesByStore;
+import gui4me.report.dto.StoreReportDTO;
+import gui4me.user.User;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Invoice, String> {
@@ -21,6 +21,6 @@ public interface ReportRepository extends JpaRepository<Invoice, String> {
                 WHERE i.user = :user
                 GROUP BY s.name
             """)
-    List<InvoicesByStore> getInvoicesByStore(@Param("user") User user);
+    List<StoreReportDTO> getInvoicesByStore(@Param("user") User user);
 
 }

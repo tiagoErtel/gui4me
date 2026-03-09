@@ -1,26 +1,29 @@
 package gui4me.report;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import gui4me.report.dto.StoreReportDTO;
 import gui4me.user.User;
 
-@Controller
-@RequestMapping("/report")
+@RestController
+@RequestMapping("/api/reports")
 public class ReportController {
 
     @Autowired
-    ReportService reportService;
+    private ReportService reportService;
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model,
-            @ModelAttribute("currentUser") User user) {
-        model.addAttribute("invoicesByStore", reportService.getInvoicesByStore(user));
-        return "pages/report/dashboard";
+    @GetMapping("/invoices-by-store")
+    public ResponseEntity<List<StoreReportDTO>> invoicesByStore(@AuthenticationPrincipal User user) {
+
+        List<StoreReportDTO> reportData = reportService.getInvoicesByStore(user);
+
+        return ResponseEntity.ok(reportData);
     }
-
 }
