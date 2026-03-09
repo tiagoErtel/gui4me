@@ -8,7 +8,7 @@ export default function BackButton() {
       onClick={() => navigate(-1)}
       className="mb-6 text-blue-600 hover:text-blue-800 flex items-center gap-2"
     >
-      ← Back to Home
+      ← Back
     </button>
   );
 }

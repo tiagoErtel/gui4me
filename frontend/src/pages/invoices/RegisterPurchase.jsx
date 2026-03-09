@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Html5Qrcode, Html5QrcodeScannerState } from "html5-qrcode";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import BackButton from "@/components/BackButton";
 import api from "@/api/axios";
 import { useNotification } from "@/context/NotificationContext";
 
@@ -97,6 +98,7 @@ export default function RegisterPurchase() {
 
   return (
     <div className="max-w-xl mx-auto p-6">
+      <BackButton />
       <div className="mb-6 text-center">
         <h2 className="text-3xl font-bold">Register Purchase</h2>
         <p className="text-gray-600">Scan the invoice or input the link</p>
