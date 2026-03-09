@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
+import BackButton from "../../components/BackButton";
 import api from "@/api/axios";
 
 export default function SearchProducts() {
@@ -28,14 +29,7 @@ export default function SearchProducts() {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      {/* Back Button */}
-      <button
-        onClick={() => navigate("/home")}
-        className="mb-6 text-blue-600 hover:text-blue-800 flex items-center gap-2"
-      >
-        ← Back to Home
-      </button>
-
+      <BackButton />
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-bold text-gray-900">Search Products</h2>
         <p className="text-gray-600">Find items in our database</p>
