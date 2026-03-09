@@ -13,6 +13,8 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import SearchProducts from "./pages/products/SearchProducts";
 import RegisterPurchase from "./pages/invoices/RegisterPurchase";
+import InvoiceList from "./pages/invoices/InvoiceList";
+import InvoiceItemsList from "./pages/invoices/items/InvoiceItemList";
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
               <Route path="/product/search" element={<SearchProducts />} />
 
               <Route path="/invoice/register" element={<RegisterPurchase />} />
+              <Route path="/invoice/list" element={<InvoiceList />} />
+
+              <Route path="/invoice/item/list" element={<InvoiceItemsList />} />
 
               <Route path="/admin" element={<div>Admin Panel</div>} />
             </Route>
