@@ -1,23 +1,23 @@
-import React from "react";
 import {
+  Navigate,
+  Route,
   BrowserRouter as Router,
   Routes,
-  Route,
-  Navigate,
 } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { NotificationProvider } from "./context/NotificationContext";
-import { ProtectedRoute } from "./routes/ProtectedRoute";
-import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Register from "./pages/Register";
-import SearchProducts from "./pages/products/SearchProducts";
-import RegisterPurchase from "./pages/invoices/RegisterPurchase";
 import InvoiceList from "./pages/invoices/InvoiceList";
+import RegisterPurchase from "./pages/invoices/RegisterPurchase";
 import InvoiceItemsList from "./pages/invoices/items/InvoiceItemList";
+import ProductAnalyse from "./pages/products/ProductAnalyse";
+import SearchProducts from "./pages/products/SearchProducts";
+import Reports from "./pages/report/Reports";
 import ShoppingLists from "./pages/shoppingList/ShoppingLists";
 import ShoppingListItemList from "./pages/shoppingList/item/ShoppingListItemList";
-import Reports from "./pages/report/Reports";
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 
 function App() {
   return (
@@ -33,6 +33,10 @@ function App() {
               <Route path="/home" element={<Home />} />
 
               <Route path="/product/search" element={<SearchProducts />} />
+              <Route
+                path="/product/analyse/:productId"
+                element={<ProductAnalyse />}
+              />
 
               <Route path="/invoice/register" element={<RegisterPurchase />} />
               <Route path="/invoice/list" element={<InvoiceList />} />
