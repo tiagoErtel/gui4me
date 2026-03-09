@@ -59,7 +59,7 @@ public class Message {
     }
 
     public String getLinkUrl() {
-        return link.getUlr();
+        return link.getUrl();
     }
 
     public String getLinkText() {
