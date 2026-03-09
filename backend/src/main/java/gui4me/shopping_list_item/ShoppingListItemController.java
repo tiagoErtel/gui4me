@@ -4,74 +4,64 @@ import gui4me.product.Product;
 import gui4me.product.ProductService;
 import gui4me.shopping_list.ShoppingList;
 import gui4me.shopping_list.ShoppingListRepository;
-import gui4me.utils.Message;
-import gui4me.utils.MessageType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@Controller
-@RequestMapping("/shopping-list/{shoppingListId}/item")
+@RestController
+@RequestMapping("/api/shopping-list/{shoppingListId}/item")
 public class ShoppingListItemController {
 
     @Autowired
-    ShoppingListItemRepository shoppingListItemRepository;
+    private ShoppingListItemRepository shoppingListItemRepository;
 
     @Autowired
-    ShoppingListRepository shoppingListRepository;
+    private ShoppingListRepository shoppingListRepository;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Autowired
-    ShoppingListItemService shoppingListItemService;
+    private ShoppingListItemService shoppingListItemService;
 
     @GetMapping
-    public String list(
-            Model model,
-            @PathVariable String shoppingListId
-    ) {
-        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId).orElseThrow();
+    public ResponseEntity<Map<String, Object>> list(@PathVariable String shoppingListId) {
+        ShoppingList shoppingList = shoppingListRepository.findById(shoppingListId)
+                .orElseThrow(() -> new RuntimeException("Shopping list not found"));
+
         List<ShoppingListItem> shoppingListItems = shoppingListItemRepository.findAllByShoppingListId(shoppingListId);
         List<Product> productList = productService.findAll();
 
-        model.addAttribute("shoppingList", shoppingList);
-        model.addAttribute("shoppingListItems", shoppingListItems);
-        model.addAttribute("productList", productList);
+        Map<String, Object> response = new HashMap<>();
+        response.put("shoppingList", shoppingList);
+        response.put("shoppingListItems", shoppingListItems);
+        response.put("productList", productList);
 
-        return "pages/shopping_list/item/list";
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/save")
-    public String addItem(
+    public ResponseEntity<?> addItem(
             @PathVariable String shoppingListId,
-            @ModelAttribute ShoppingListItem shoppingListItem,
-            RedirectAttributes redirectAttributes
-    ) {
-        String message = (shoppingListItem.getId() == null) ?
-                "Item added to shopping list." : "Item updated.";
+            @RequestBody ShoppingListItem shoppingListItem) {
+
+        ShoppingList list = shoppingListRepository.findById(shoppingListId).orElseThrow();
+        shoppingListItem.setShoppingList(list);
+
+        String message = (shoppingListItem.getId() == null) ? "Item added to shopping list." : "Item updated.";
 
         shoppingListItemService.save(shoppingListItem);
 
-        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, message));
-
-        return "redirect:/shopping-list/" + shoppingListId + "/item";
+        return ResponseEntity.ok(Map.of("message", message));
     }
 
     @PostMapping("/delete")
-    public String deleteItem(
-            @PathVariable String shoppingListId,
-            @ModelAttribute ShoppingListItem shoppingListItem,
-            RedirectAttributes redirectAttributes
-    ) {
+    public ResponseEntity<?> deleteItem(@RequestBody ShoppingListItem shoppingListItem) {
         shoppingListItemService.delete(shoppingListItem);
-
-        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Item removed from shopping list."));
-
-        return "redirect:/shopping-list/" + shoppingListId + "/item";
+        return ResponseEntity.ok(Map.of("message", "Item removed from shopping list."));
     }
 }
