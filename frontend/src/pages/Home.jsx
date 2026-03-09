@@ -29,7 +29,7 @@ export default function Home() {
     {
       title: "🛒 Shopping Lists",
       desc: "Create and track shopping plans.",
-      href: "/shopping-list",
+      href: "/shopping-list/list",
     },
     {
       title: "📊 Reports",

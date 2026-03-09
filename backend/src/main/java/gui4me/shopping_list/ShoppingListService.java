@@ -1,10 +1,12 @@
 package gui4me.shopping_list;
 
-import gui4me.user.User;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import gui4me.user.User;
 
 @Service
 public class ShoppingListService {
@@ -23,8 +25,8 @@ public class ShoppingListService {
         shoppingListRepository.save(list);
     }
 
-    public ShoppingList findById(String id) {
-        return shoppingListRepository.findById(id).orElseThrow();
+    public Optional<ShoppingList> findById(String id) {
+        return shoppingListRepository.findById(id);
     }
 
     public void delete(ShoppingList shoppingList) {

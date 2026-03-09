@@ -15,6 +15,7 @@ import SearchProducts from "./pages/products/SearchProducts";
 import RegisterPurchase from "./pages/invoices/RegisterPurchase";
 import InvoiceList from "./pages/invoices/InvoiceList";
 import InvoiceItemsList from "./pages/invoices/items/InvoiceItemList";
+import ShoppingLists from "./pages/shoppingList/ShoppingLists";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
               <Route path="/invoice/list" element={<InvoiceList />} />
 
               <Route path="/invoice/item/list" element={<InvoiceItemsList />} />
+
+              <Route path="/shopping-list/list" element={<ShoppingLists />} />
 
               <Route path="/admin" element={<div>Admin Panel</div>} />
             </Route>
