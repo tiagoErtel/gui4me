@@ -1,60 +1,45 @@
 package gui4me.invoice;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import gui4me.user.User;
-import gui4me.utils.Message;
-import gui4me.utils.MessageType;
 
-@Controller
-@RequestMapping("/invoice")
+@RestController
+@RequestMapping("/api/invoice")
 public class InvoiceController {
 
     @Autowired
-    InvoiceService invoiceService;
-
-    @GetMapping("/register")
-    public String register() {
-        return "pages/invoice/register";
-    }
+    private InvoiceService invoiceService;
 
     @PostMapping("/register")
-    public String register(
-            @ModelAttribute("currentUser") User currentUser,
-            @RequestParam String invoiceUrl,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Map<String, String>> register(
+            @AuthenticationPrincipal User currentUser,
+            @RequestBody Map<String, String> request) {
 
+        String invoiceUrl = request.get("invoiceUrl");
         invoiceService.save(invoiceUrl, currentUser);
 
-        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS, "Invoice registered!"));
-
-        return "redirect:/dashboard";
+        return ResponseEntity.ok(Map.of("message", "Invoice registered successfully!"));
     }
 
     @GetMapping("/list")
-    public String list(
-            @RequestParam(defaultValue = "issuanceDate,desc") String sort, Model model,
-            @ModelAttribute("currentUser") User currentUser) {
+    public ResponseEntity<List<Invoice>> list(
+            @RequestParam(defaultValue = "issuanceDate,desc") String sort,
+            @AuthenticationPrincipal User currentUser) {
 
         String[] sortParts = sort.split(",");
         String sortBy = sortParts[0];
         Sort.Direction direction = Sort.Direction.fromString(sortParts[1]);
 
         List<Invoice> invoices = invoiceService.findAllByUser(currentUser, Sort.by(direction, sortBy));
-        model.addAttribute("invoiceList", invoices);
-        model.addAttribute("sort", sort);
 
-        return "pages/invoice/list";
+        return ResponseEntity.ok(invoices);
     }
 }
