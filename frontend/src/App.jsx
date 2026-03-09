@@ -17,6 +17,7 @@ import SearchProducts from "./pages/products/SearchProducts";
 import Reports from "./pages/report/Reports";
 import ShoppingLists from "./pages/shoppingList/ShoppingLists";
 import ShoppingListItemList from "./pages/shoppingList/item/ShoppingListItemList";
+import Settings from "./pages/user/Settings";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 
 function App() {
@@ -45,12 +46,15 @@ function App() {
 
               <Route path="/shopping-list/list" element={<ShoppingLists />} />
 
-              <Route path="/reports" element={<Reports />} />
-
               <Route
                 path="/shopping-list/:shoppingListId/item"
                 element={<ShoppingListItemList />}
               />
+
+              <Route path="/reports" element={<Reports />} />
+
+              <Route path="/user/settings" element={<Settings />} />
+
               <Route path="/admin" element={<div>Admin Panel</div>} />
             </Route>
 
