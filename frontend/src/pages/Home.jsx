@@ -34,7 +34,7 @@ export default function Home() {
     {
       title: "📊 Reports",
       desc: "Analyze your purchases and patterns.",
-      href: "/report/dashboard",
+      href: "/reports",
     },
   ];
 

@@ -17,6 +17,7 @@ import InvoiceList from "./pages/invoices/InvoiceList";
 import InvoiceItemsList from "./pages/invoices/items/InvoiceItemList";
 import ShoppingLists from "./pages/shoppingList/ShoppingLists";
 import ShoppingListItemList from "./pages/shoppingList/item/ShoppingListItemList";
+import Reports from "./pages/report/Reports";
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
               <Route path="/invoice/item/list" element={<InvoiceItemsList />} />
 
               <Route path="/shopping-list/list" element={<ShoppingLists />} />
+
+              <Route path="/reports" element={<Reports />} />
 
               <Route
                 path="/shopping-list/:shoppingListId/item"
