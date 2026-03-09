@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "@/components/Input";
 import Button from "@/components/Button";
-import BackButton from "../../components/BackButton";
+import BackButton from "@/components/BackButton";
 import api from "@/api/axios";
 
 export default function SearchProducts() {
