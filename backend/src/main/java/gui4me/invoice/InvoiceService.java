@@ -48,6 +48,7 @@ public class InvoiceService {
         if (isQrCodeUrl(invoiceUrl)) {
             try {
                 Document doc = Jsoup.connect(invoiceUrl).get();
+
                 String invoiceKey = doc.getElementsByClass("chave").text();
 
                 if (invoiceRepository.findByKey(invoiceKey).isPresent()) {
@@ -61,8 +62,10 @@ public class InvoiceService {
                 invoice.setStore(fetchAndSaveStore(doc));
                 invoice.setUser(user);
 
+                invoice = invoiceRepository.save(invoice);
+
                 processInvoiceItems(doc, invoice);
-                return invoiceRepository.save(invoice);
+                return invoice;
             } catch (IOException e) {
                 throw new InvoiceParseErrorException(invoiceUrl);
             }
