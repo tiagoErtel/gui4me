@@ -1,129 +1,72 @@
 package gui4me.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
-import gui4me.utils.Message;
-import gui4me.utils.MessageType;
+import java.util.Map;
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
-    UserService userService;
-
-    @GetMapping("/settings")
-    public String setting(Model model) {
-        return "pages/user/settings";
-    }
+    private UserService userService;
 
     @PostMapping("/settings/username")
-    public String updateUsername(
-            RedirectAttributes redirectAttributes,
-            @ModelAttribute("currentUser") User user,
-            @RequestParam String newUsername) {
+    public ResponseEntity<?> updateUsername(
+            @AuthenticationPrincipal User user,
+            @RequestBody Map<String, String> request) {
 
+        String newUsername = request.get("newUsername");
         userService.updateUsername(user, newUsername);
 
-        Message message = new Message(MessageType.SUCCESS, "Username updated!");
-        redirectAttributes.addFlashAttribute("message", message);
-
-        return "redirect:/user/settings";
+        return ResponseEntity.ok(Map.of("message", "Username updated!"));
     }
 
     @PostMapping("/settings/password")
-    public String updatePassword(
-            @RequestParam String currentPassword,
-            @RequestParam String newPassword,
-            @RequestParam String confirmPassword,
-            @ModelAttribute("currentUser") User user,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> updatePassword(
+            @AuthenticationPrincipal User user,
+            @RequestBody Map<String, String> request) {
 
-        userService.updatePassword(user, currentPassword, newPassword, confirmPassword);
+        userService.updatePassword(
+                user,
+                request.get("currentPassword"),
+                request.get("newPassword"),
+                request.get("confirmPassword"));
 
-        Message message = new Message(MessageType.SUCCESS, "Password updated succesfully!");
-        redirectAttributes.addFlashAttribute("message", message);
-
-        return "redirect:/user/settings";
+        return ResponseEntity.ok(Map.of("message", "Password updated successfully!"));
     }
 
     @GetMapping("/verify")
-    public String verifyUser(@RequestParam String token,
-            RedirectAttributes redirectAttributes) {
-
+    public ResponseEntity<?> verifyUser(@RequestParam String token) {
         userService.verifyUserVerificationToken(token);
-
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.SUCCESS, "User verified!"));
-
-        return "redirect:/login";
-    }
-
-    @GetMapping("/recover")
-    public String getRecoverUser() {
-        return "pages/user/recover";
+        return ResponseEntity.ok(Map.of("message", "User verified! You can now log in."));
     }
 
     @PostMapping("/recover")
-    public String recoverUser(
-            @RequestParam String email,
-            RedirectAttributes redirectAttributes) {
-
-        userService.sendRecoverAccountEmail(email);
-
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.SUCCESS, "We sent you an email with the recover link!"));
-
-        return "redirect:/login";
-    }
-
-    @GetMapping("/reset-password")
-    public String showResetPassword(
-            @RequestParam String token,
-            Model model) {
-
-        User user = userService.findUserToken(token);
-
-        model.addAttribute("email", user.getEmail());
-
-        model.addAttribute("token", token);
-
-        return "pages/user/reset-password";
-
+    public ResponseEntity<?> recoverUser(@RequestBody Map<String, String> request) {
+        userService.sendRecoverAccountEmail(request.get("email"));
+        return ResponseEntity.ok(Map.of("message", "We sent you an email with the recovery link!"));
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(
-            @RequestParam String token,
-            @RequestParam String email,
-            @RequestParam String newPassword,
-            @RequestParam String confirmPassword,
-            RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+        userService.resetPassword(
+                request.get("token"),
+                request.get("email"),
+                request.get("newPassword"),
+                request.get("confirmPassword"));
 
-        userService.resetPassword(token, email, newPassword, confirmPassword);
-
-        redirectAttributes.addFlashAttribute("message",
-                new Message(MessageType.SUCCESS, "Your password was updated"));
-
-        return "redirect:/login";
+        return ResponseEntity.ok(Map.of("message", "Your password was updated"));
     }
 
     @GetMapping("/resend-verification-email")
-    public String showResendVerificationEmail(@RequestParam String token, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> resendVerificationEmail(@RequestParam String token) {
         User user = userService.findUserToken(token);
-
         userService.resendVerificationEmail(user.getEmail());
 
-        redirectAttributes.addFlashAttribute("message", new Message(MessageType.SUCCESS,
-                "We sent a email with the verification link"));
-        return "redirect:/login";
+        return ResponseEntity.ok(Map.of("message", "We sent an email with the verification link"));
     }
 }
