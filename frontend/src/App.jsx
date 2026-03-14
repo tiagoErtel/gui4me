@@ -18,6 +18,7 @@ import Reports from "./pages/report/Reports";
 import ShoppingLists from "./pages/shoppingList/ShoppingLists";
 import ShoppingListItemList from "./pages/shoppingList/item/ShoppingListItemList";
 import Settings from "./pages/user/Settings";
+import RecoverAccount from "./pages/user/RecoverAccount";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/recover-account" element={<RecoverAccount />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Navigate to="/home" replace />} />

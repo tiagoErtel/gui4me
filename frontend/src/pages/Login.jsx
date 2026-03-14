@@ -98,7 +98,7 @@ export default function Login() {
           <p className="text-gray-500">
             Forgot your account?{" "}
             <Link
-              to="/recover"
+              to="/recover-account"
               className="text-blue-600 hover:underline font-medium"
             >
               Recover your account
