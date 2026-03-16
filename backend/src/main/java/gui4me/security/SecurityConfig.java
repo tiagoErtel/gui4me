@@ -51,6 +51,7 @@ public class SecurityConfig {
                                 "/api/register",
                                 "/api/user/recover",
                                 "/api/user/verify",
+                                "/api/user/reset-password",
                                 "/error")
                         .permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")

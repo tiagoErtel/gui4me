@@ -151,7 +151,9 @@ public class UserService {
 
         UserVerificationToken userVerificationToken = userVerificationTokenService.generateUserVerificationToken(user);
 
-        String link = baseUrl + "/user/reset-password?token=" + userVerificationToken.getToken();
+        String link = baseUrl + "/reset-password?email=" + email + "&token=" + userVerificationToken.getToken();
+
+        System.out.println(link);
 
         RecoverAccountTemplate template = new RecoverAccountTemplate(user.getUsername(), link);
 

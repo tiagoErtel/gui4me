@@ -19,6 +19,7 @@ import ShoppingLists from "./pages/shoppingList/ShoppingLists";
 import ShoppingListItemList from "./pages/shoppingList/item/ShoppingListItemList";
 import Settings from "./pages/user/Settings";
 import RecoverAccount from "./pages/user/RecoverAccount";
+import ResetPassword from "./pages/user/ResetPassword";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/recover-account" element={<RecoverAccount />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Navigate to="/home" replace />} />
