@@ -24,7 +24,6 @@ export default function Login() {
       await login(email, password);
       navigate("/home");
     } catch (err) {
-      // Access the message and fieldErrors thrown by your AuthContext
       setError(err.message || "Something went wrong");
 
       if (err.fieldErrors) {

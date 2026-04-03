@@ -50,6 +50,7 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/register",
                                 "/api/user/recover",
+                                "/api/user/resend-verification-email",
                                 "/api/user/verify",
                                 "/api/user/reset-password",
                                 "/error")

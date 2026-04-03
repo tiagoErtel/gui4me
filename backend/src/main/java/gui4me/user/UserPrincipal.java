@@ -28,7 +28,6 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return user;
     }
 
-    // --- UserDetails ---
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(() -> user.getRole());
@@ -64,7 +63,6 @@ public class UserPrincipal implements OAuth2User, UserDetails {
         return true;
     }
 
-    // --- OAuth2User ---
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;

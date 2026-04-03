@@ -14,6 +14,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(Map.of(
+                "username", user.getUsername(),
+                "email", user.getEmail()));
+    }
+
     @PostMapping("/settings/username")
     public ResponseEntity<?> updateUsername(
             @AuthenticationPrincipal User user,
@@ -62,11 +69,13 @@ public class UserController {
         return ResponseEntity.ok(Map.of("message", "Your password was updated"));
     }
 
-    @GetMapping("/resend-verification-email")
-    public ResponseEntity<?> resendVerificationEmail(@RequestParam String token) {
-        User user = userService.findUserToken(token);
-        userService.resendVerificationEmail(user.getEmail());
+    @PostMapping("/resend-verification-email")
+    public ResponseEntity<?> resendVerification(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
 
-        return ResponseEntity.ok(Map.of("message", "We sent an email with the verification link"));
+        userService.resendVerificationEmail(email);
+
+        return ResponseEntity.ok(Map.of(
+                "message", "We sent an email with the verification link"));
     }
 }
