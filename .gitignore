@@ -35,3 +35,5 @@ build/
 
 ### jte ###
 jte-classes
+
+frontend/.vite/
