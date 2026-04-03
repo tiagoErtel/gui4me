@@ -201,7 +201,7 @@ public class GlobalExceptionHandler {
         if (ex.getCause() instanceof UserNotVerifiedException) {
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("message", ex.getMessage()));
+                    .body(Map.of("message", "unverified"));
         }
 
         return ResponseEntity

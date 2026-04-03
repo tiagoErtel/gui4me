@@ -11,7 +11,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [fieldErrors, setFieldErrors] = useState({}); // Track specific field highlights
+  const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -46,10 +46,21 @@ export default function Login() {
 
         {error && (
           <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
-            {error}
+            {error === "unverified" ? (
+              <div className="flex flex-col gap-2">
+                <p>Your email is not verified.</p>
+                <Link
+                  to="/resend-verification"
+                  className="text-blue-600 font-semibold hover:text-blue-800 hover:underline"
+                >
+                  Click here to resend the link
+                </Link>
+              </div>
+            ) : (
+              error
+            )}
           </div>
         )}
-
         <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
           <Input
             label="Email"

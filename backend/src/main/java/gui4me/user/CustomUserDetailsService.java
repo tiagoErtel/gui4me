@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         if (!user.isEmailVerified()) {
-            throw new UserNotVerifiedException(user);
+            throw new UserNotVerifiedException();
         }
         return user;
     }
